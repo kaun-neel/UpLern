@@ -190,24 +190,20 @@ const CoursesPage = () => {
   };
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section with Welcome Background and Popular Courses */}
-      <div className="relative bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 overflow-hidden min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+      {/* Hero Section with Welcome Background */}
+      <div className="relative overflow-hidden">
         {/* Welcome Background Text */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="text-[20rem] font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-200/30 via-blue-200/30 to-pink-200/30 select-none whitespace-nowrap transform -rotate-12">
+          <div className="text-[15rem] lg:text-[20rem] font-bold text-purple-100/20 select-none whitespace-nowrap">
             Welcome
           </div>
         </div>
 
-        {/* Floating Background Elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl opacity-20 animate-float"></div>
-          <div className="absolute top-40 right-20 w-16 h-16 bg-gradient-to-br from-pink-400 to-red-500 rounded-full opacity-30 animate-float" style={{animationDelay: '1s'}}></div>
-          <div className="absolute bottom-40 left-20 w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-3xl opacity-25 animate-float" style={{animationDelay: '2s'}}></div>
-          <div className="absolute bottom-20 right-40 w-12 h-12 bg-gradient-to-br from-green-400 to-teal-500 rounded-xl opacity-35 animate-float" style={{animationDelay: '0.5s'}}></div>
-          <div className="absolute top-60 left-1/3 w-8 h-8 bg-gradient-to-br from-indigo-400 to-blue-500 rounded-lg opacity-40 animate-float" style={{animationDelay: '1.5s'}}></div>
-        </div>
+        {/* Floating decorative elements */}
+        <div className="absolute top-20 right-20 w-16 h-16 bg-pink-200 rounded-2xl opacity-60"></div>
+        <div className="absolute bottom-40 left-20 w-20 h-20 bg-blue-200 rounded-full opacity-40"></div>
+        <div className="absolute top-1/2 right-1/3 w-12 h-12 bg-green-200 rounded-xl opacity-50"></div>
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 py-16">
           {/* Breadcrumb */}
@@ -227,7 +223,7 @@ const CoursesPage = () => {
             </p>
           </div>
 
-          {/* Popular Courses Slider */}
+          {/* Popular Courses Section */}
           <div className="mb-16">
             <h2 className="text-3xl font-bold mb-8 text-gray-800">Popular Courses</h2>
             
@@ -316,10 +312,10 @@ const CoursesPage = () => {
                   <button
                     key={index}
                     onClick={() => goToSlide(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    className={`h-3 rounded-full transition-all duration-300 ${
                       index === currentSlide 
                         ? 'bg-violet-600 w-8' 
-                        : 'bg-gray-300 hover:bg-gray-400'
+                        : 'bg-gray-300 hover:bg-gray-400 w-3'
                     }`}
                   />
                 ))}
