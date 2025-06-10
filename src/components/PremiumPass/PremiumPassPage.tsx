@@ -1,9 +1,20 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, GraduationCap, Clock, BookOpen, Home, Award } from 'lucide-react';
+import { ChevronLeft, GraduationCap, Clock, BookOpen, Award } from 'lucide-react';
 import CountUp from 'react-countup';
+import PaymentModal from '../Payment/PaymentModal';
+import { usePayment } from '../../hooks/usePayment';
 
 const PremiumPassPage = () => {
+  // Payment integration
+  const {
+    isPaymentModalOpen,
+    currentPaymentData,
+    initiatePremiumPassPayment,
+    closePaymentModal,
+    handlePaymentSuccess
+  } = usePayment();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -90,7 +101,10 @@ const PremiumPassPage = () => {
                 <button className="w-full py-2 rounded-full bg-violet-500 hover:bg-violet-600 transition-colors">
                   Save 16%
                 </button>
-                <button className="w-full py-2 rounded-full bg-white text-purple-900 hover:bg-gray-100 transition-colors">
+                <button 
+                  onClick={initiatePremiumPassPayment}
+                  className="w-full py-2 rounded-full bg-white text-purple-900 hover:bg-gray-100 transition-colors"
+                >
                   Start learning
                 </button>
               </div>
@@ -175,6 +189,16 @@ const PremiumPassPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Payment Modal */}
+      {currentPaymentData && (
+        <PaymentModal
+          isOpen={isPaymentModalOpen}
+          onClose={closePaymentModal}
+          paymentData={currentPaymentData}
+          onSuccess={handlePaymentSuccess}
+        />
+      )}
     </div>
   );
 };

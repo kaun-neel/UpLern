@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Clock, BookOpen, ChevronLeft, ChevronRight } from 'lucide-react';
+import PaymentModal from '../Payment/PaymentModal';
+import { usePayment } from '../../hooks/usePayment';
 
 interface CourseDetailProps {
   courseId?: string;
@@ -8,6 +10,15 @@ interface CourseDetailProps {
 
 const CourseDetailPage: React.FC<CourseDetailProps> = ({ courseId }) => {
   const navigate = useNavigate();
+  
+  // Payment integration
+  const {
+    isPaymentModalOpen,
+    currentPaymentData,
+    initiateCoursePayment,
+    closePaymentModal,
+    handlePaymentSuccess
+  } = usePayment();
 
   const courseDetails = {
     title: 'Web Development Course',
@@ -52,6 +63,10 @@ const CourseDetailPage: React.FC<CourseDetailProps> = ({ courseId }) => {
       avatar: "https://randomuser.me/api/portraits/men/67.jpg"
     }
   ];
+
+  const handleEnrollClick = () => {
+    initiateCoursePayment(courseId || 'web-development', courseDetails.title);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
@@ -137,7 +152,10 @@ const CourseDetailPage: React.FC<CourseDetailProps> = ({ courseId }) => {
                 <span className="text-green-500 font-medium">75% OFF</span>
               </div>
 
-              <button className="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 rounded-full font-medium hover:shadow-lg transition-all duration-300 mb-4">
+              <button 
+                onClick={handleEnrollClick}
+                className="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 rounded-full font-medium hover:shadow-lg transition-all duration-300 mb-4"
+              >
                 Enroll Now
               </button>
 
@@ -211,6 +229,16 @@ const CourseDetailPage: React.FC<CourseDetailProps> = ({ courseId }) => {
           </div>
         </div>
       </div>
+
+      {/* Payment Modal */}
+      {currentPaymentData && (
+        <PaymentModal
+          isOpen={isPaymentModalOpen}
+          onClose={closePaymentModal}
+          paymentData={currentPaymentData}
+          onSuccess={handlePaymentSuccess}
+        />
+      )}
     </div>
   );
 };

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Clock, BookOpen, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import PaymentModal from '../Payment/PaymentModal';
+import { usePayment } from '../../hooks/usePayment';
 
 const topCourses = [
   {
@@ -150,6 +152,16 @@ const CoursesPage = () => {
   const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  
+  // Payment integration
+  const {
+    isPaymentModalOpen,
+    currentPaymentData,
+    initiateCoursePayment,
+    initiatePremiumPassPayment,
+    closePaymentModal,
+    handlePaymentSuccess
+  } = usePayment();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -169,6 +181,11 @@ const CoursesPage = () => {
   const handleCourseClick = (courseId: string) => {
     window.scrollTo(0, 0);
     navigate(`/courses/${courseId}`);
+  };
+
+  const handleEnrollClick = (e: React.MouseEvent, courseId: string, courseName: string) => {
+    e.stopPropagation();
+    initiateCoursePayment(courseId, courseName);
   };
 
   const nextSlide = () => {
@@ -353,7 +370,10 @@ const CoursesPage = () => {
                     <span className="text-lg font-bold text-gray-900">₹{course.price}</span>
                     <span className="text-sm text-gray-400 line-through ml-2">₹{course.originalPrice}</span>
                   </div>
-                  <button className="px-4 py-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white rounded-full text-sm font-medium hover:shadow-lg hover:scale-105 transition-all duration-300">
+                  <button 
+                    onClick={(e) => handleEnrollClick(e, course.id, course.title)}
+                    className="px-4 py-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white rounded-full text-sm font-medium hover:shadow-lg hover:scale-105 transition-all duration-300"
+                  >
                     Enroll Now
                   </button>
                 </div>
@@ -425,9 +445,8 @@ const CoursesPage = () => {
                       </li>
                     </ul>
                     
-                    <Link 
-                      to="/premium-pass"
-                      onClick={() => window.scrollTo(0, 0)}
+                    <button 
+                      onClick={initiatePremiumPassPayment}
                       className="inline-flex items-center gap-2 px-8 py-3 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full hover:bg-white/30 transition-all duration-300 font-medium"
                     >
                       <span>Explore</span>
@@ -436,7 +455,7 @@ const CoursesPage = () => {
                           <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
                         </svg>
                       </div>
-                    </Link>
+                    </button>
                   </div>
                   
                   {/* Right Illustration */}
@@ -484,6 +503,16 @@ const CoursesPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Payment Modal */}
+      {currentPaymentData && (
+        <PaymentModal
+          isOpen={isPaymentModalOpen}
+          onClose={closePaymentModal}
+          paymentData={currentPaymentData}
+          onSuccess={handlePaymentSuccess}
+        />
+      )}
     </div>
   );
 };
