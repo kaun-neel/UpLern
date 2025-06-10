@@ -27,7 +27,7 @@ export interface PaymentResponse {
   razorpay_signature?: string;
 }
 
-class RazorpayService {
+export class RazorpayService {
   private keyId: string;
   private isLoaded: boolean = false;
 
