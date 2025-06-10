@@ -213,22 +213,12 @@ const CoursesPage = () => {
             <span>All Courses</span>
           </div>
 
-          {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-violet-600 to-pink-600 text-transparent bg-clip-text">
-              Courses
-            </h1>
-            <p className="text-gray-600 text-lg">
-              Courses that help beginner candidates become true unicorns.
-            </p>
-          </div>
-
           {/* Popular Courses Section */}
           <div className="mb-16">
             <h2 className="text-3xl font-bold mb-8 text-gray-800">Popular Courses</h2>
             
-            <div className="relative">
-              {/* Slider Container */}
+            <div className="relative max-w-5xl mx-auto">
+              {/* Slider Container - Made smaller */}
               <div className="overflow-hidden rounded-3xl">
                 <div 
                   className="flex transition-transform duration-500 ease-in-out"
@@ -292,16 +282,16 @@ const CoursesPage = () => {
                 </div>
               </div>
 
-              {/* Navigation Arrows */}
+              {/* Navigation Arrows - Now outside the rounded container */}
               <button
                 onClick={prevSlide}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white hover:scale-110 transition-all z-10"
+                className="absolute left-[-60px] top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white hover:scale-110 transition-all z-10"
               >
                 <ChevronLeft className="w-6 h-6 text-gray-800" />
               </button>
               <button
                 onClick={nextSlide}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white hover:scale-110 transition-all z-10"
+                className="absolute right-[-60px] top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white hover:scale-110 transition-all z-10"
               >
                 <ChevronRight className="w-6 h-6 text-gray-800" />
               </button>
