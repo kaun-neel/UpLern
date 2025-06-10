@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, CreditCard, Shield, CheckCircle, AlertCircle } from 'lucide-react';
-import { razorpayService, PaymentData, PRICING } from '../../lib/razorpay';
+import { razorpayService, RazorpayService, PaymentData, PRICING } from '../../lib/razorpay';
 import { useAuth } from '../../lib/auth';
 import toast from 'react-hot-toast';
 
@@ -34,7 +34,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
       }
 
       const paymentOptions = {
-        amount: razorpayService.formatAmount(paymentData.amount),
+        amount: RazorpayService.formatAmount(paymentData.amount),
         currency: 'INR',
         name: paymentData.itemName,
         description: `Purchase of ${paymentData.itemName} from upLern`,
