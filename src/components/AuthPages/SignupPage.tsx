@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { supabase } from '../../lib/supabase';
+import { useAuth } from '../../lib/auth';
 import toast from 'react-hot-toast';
 
 const SignupPage = () => {
   const navigate = useNavigate();
+  const { signUp } = useAuth();
   const [formData, setFormData] = useState({
     firstName: '',
     middleName: '',
@@ -15,6 +16,7 @@ const SignupPage = () => {
     confirmPassword: '',
     agreeToTerms: false
   });
+  const [loading, setLoading] = useState(false);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,38 +26,34 @@ const SignupPage = () => {
       return;
     }
 
+    if (!formData.agreeToTerms) {
+      toast.error('Please agree to the terms and conditions');
+      return;
+    }
+
+    setLoading(true);
+
     try {
-      const { error } = await supabase.auth.signUp({
+      const { error } = await signUp({
         email: formData.email,
         password: formData.password,
-        options: {
-          data: {
-            first_name: formData.firstName,
-            middle_name: formData.middleName,
-            last_name: formData.lastName,
-            phone: formData.phone
-          }
-        }
+        first_name: formData.firstName,
+        middle_name: formData.middleName,
+        last_name: formData.lastName,
+        phone: formData.phone
       });
 
-      if (error) throw error;
+      if (error) {
+        toast.error(error);
+        return;
+      }
 
-      toast.success('Account created successfully! Please check your email for verification.');
-      navigate('/login');
+      toast.success('Account created successfully!');
+      navigate('/');
     } catch (error) {
       toast.error('Failed to create account. Please try again.');
-    }
-  };
-
-  const handleGoogleSignup = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google'
-      });
-
-      if (error) throw error;
-    } catch (error) {
-      toast.error('Failed to sign up with Google.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -76,6 +74,7 @@ const SignupPage = () => {
                 onChange={(e) => setFormData({...formData, firstName: e.target.value})}
                 className="col-span-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 required
+                disabled={loading}
               />
               <input
                 type="text"
@@ -83,6 +82,7 @@ const SignupPage = () => {
                 value={formData.middleName}
                 onChange={(e) => setFormData({...formData, middleName: e.target.value})}
                 className="col-span-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                disabled={loading}
               />
               <input
                 type="text"
@@ -91,6 +91,7 @@ const SignupPage = () => {
                 onChange={(e) => setFormData({...formData, lastName: e.target.value})}
                 className="col-span-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 required
+                disabled={loading}
               />
             </div>
 
@@ -103,6 +104,7 @@ const SignupPage = () => {
                 onChange={(e) => setFormData({...formData, phone: e.target.value})}
                 className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 required
+                disabled={loading}
               />
             </div>
 
@@ -113,6 +115,7 @@ const SignupPage = () => {
               onChange={(e) => setFormData({...formData, email: e.target.value})}
               className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
               required
+              disabled={loading}
             />
 
             <div className="grid grid-cols-2 gap-4">
@@ -123,6 +126,7 @@ const SignupPage = () => {
                 onChange={(e) => setFormData({...formData, password: e.target.value})}
                 className="px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 required
+                disabled={loading}
               />
               <input
                 type="password"
@@ -131,6 +135,7 @@ const SignupPage = () => {
                 onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
                 className="px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 required
+                disabled={loading}
               />
             </div>
 
@@ -141,6 +146,7 @@ const SignupPage = () => {
                 onChange={(e) => setFormData({...formData, agreeToTerms: e.target.checked})}
                 className="mr-2"
                 required
+                disabled={loading}
               />
               <span className="text-sm text-gray-600">
                 By creating an account, I agree to this website's privacy policy and terms of service.
@@ -149,21 +155,12 @@ const SignupPage = () => {
 
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 rounded-lg font-medium hover:shadow-lg transition-all duration-300"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 rounded-lg font-medium hover:shadow-lg transition-all duration-300 disabled:opacity-50"
             >
-              Create Account
+              {loading ? 'Creating Account...' : 'Create Account'}
             </button>
           </form>
-
-          <div className="mt-6">
-            <button
-              onClick={handleGoogleSignup}
-              className="w-full flex items-center justify-center gap-2 border border-gray-300 py-3 rounded-lg hover:bg-gray-50 transition-colors"
-            >
-              <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
-              Continue with Google
-            </button>
-          </div>
 
           <div className="mt-6 text-center text-sm">
             <span className="text-gray-600">Already have an account? </span>

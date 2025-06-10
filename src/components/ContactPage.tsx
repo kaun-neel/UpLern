@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Phone } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { localDB } from '../lib/database';
 import toast from 'react-hot-toast';
 
 const ContactPage = () => {
@@ -10,20 +10,26 @@ const ContactPage = () => {
     phone: '',
     message: ''
   });
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    
     try {
-      const { error } = await supabase
-        .from('contact_messages')
-        .insert([formData]);
+      const { error } = await localDB.insertContactMessage(formData);
 
-      if (error) throw error;
+      if (error) {
+        toast.error(error);
+        return;
+      }
 
       toast.success('Message sent successfully!');
       setFormData({ name: '', email: '', phone: '', message: '' });
     } catch (error) {
       toast.error('Failed to send message. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -66,6 +72,7 @@ const ContactPage = () => {
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
                   className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                   required
+                  disabled={loading}
                 />
               </div>
               <div>
@@ -76,6 +83,7 @@ const ContactPage = () => {
                   onChange={(e) => setFormData({...formData, phone: e.target.value})}
                   className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                   required
+                  disabled={loading}
                 />
               </div>
             </div>
@@ -88,6 +96,7 @@ const ContactPage = () => {
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
                 className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 required
+                disabled={loading}
               />
             </div>
 
@@ -99,14 +108,16 @@ const ContactPage = () => {
                 className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                 rows={4}
                 required
+                disabled={loading}
               ></textarea>
             </div>
 
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 rounded-lg font-medium hover:shadow-lg transition-all duration-300"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 rounded-lg font-medium hover:shadow-lg transition-all duration-300 disabled:opacity-50"
             >
-              Send Message
+              {loading ? 'Sending...' : 'Send Message'}
             </button>
           </form>
         </div>

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, Mail, Phone, BookOpen, GraduationCap, Settings, CreditCard } from 'lucide-react';
-import { supabase } from '../../lib/supabase';
+import { useAuth } from '../../lib/auth';
+import { localDB } from '../../lib/database';
 import toast from 'react-hot-toast';
 
 const AccountPage = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [profile, setProfile] = useState({
     first_name: '',
     middle_name: '',
@@ -16,35 +18,30 @@ const AccountPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
     const getProfile = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
-        
-        if (!user) {
-          navigate('/login');
-          return;
-        }
-
-        // Using maybeSingle() instead of single() to handle cases where profile doesn't exist
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', user.id)
-          .maybeSingle();
+        const { data, error } = await localDB.getProfile(user.id);
 
         if (error) {
           console.error('Error fetching profile:', error);
-          throw error;
+          toast.error('Error loading profile. Please try again later.');
+          return;
         }
 
-        // If data is null (no profile found), we'll use empty strings as defaults
-        setProfile({
-          first_name: data?.first_name || '',
-          middle_name: data?.middle_name || '',
-          last_name: data?.last_name || '',
-          email: user.email || '',
-          phone: data?.phone || ''
-        });
+        if (data) {
+          setProfile({
+            first_name: data.first_name || '',
+            middle_name: data.middle_name || '',
+            last_name: data.last_name || '',
+            email: data.email || '',
+            phone: data.phone || ''
+          });
+        }
       } catch (error) {
         console.error('Error in getProfile:', error);
         toast.error('Error loading profile. Please try again later.');
@@ -54,7 +51,7 @@ const AccountPage = () => {
     };
 
     getProfile();
-  }, [navigate]);
+  }, [user, navigate]);
 
   const menuItems = [
     { icon: <User size={20} />, label: 'Profile', active: true },

@@ -1,30 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GraduationCap, User, LogOut } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { useAuth } from '../lib/auth';
 import toast from 'react-hot-toast';
 
 const Navbar = () => {
-  const [user, setUser] = useState(null);
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-    });
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   const handleLogout = async () => {
     try {
-      await supabase.auth.signOut();
+      const { error } = await signOut();
+      if (error) {
+        toast.error(error);
+        return;
+      }
       toast.success('Logged out successfully');
       navigate('/');
     } catch (error) {
