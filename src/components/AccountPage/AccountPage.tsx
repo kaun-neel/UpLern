@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, Mail, Phone, BookOpen, GraduationCap, Settings, CreditCard } from 'lucide-react';
-import { useAuth } from '../../lib/auth';
+import { useAuth } from '../../lib/auth.tsx';
 import { localDB } from '../../lib/database';
 import toast from 'react-hot-toast';
 

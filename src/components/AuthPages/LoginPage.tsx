@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../lib/auth';
+import { useAuth } from '../../lib/auth.tsx';
 import toast from 'react-hot-toast';
 
 const LoginPage = () => {
