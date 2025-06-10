@@ -9,9 +9,9 @@ const BenefitsSection = () => {
       icon: <Clock className="text-indigo-600" size={32} />
     },
     {
-      title: 'LIFETIME ACCESS   ',
+      title: 'LIFETIME ACCESS',
       description: 'Revisit your courses anytime because learning never stop.',
-      icon: <Infinity className="text-indigo-600\" size={32} />
+      icon: <Infinity className="text-indigo-600" size={32} />
     },
     {
       title: 'AFFORDABLE',
@@ -21,7 +21,7 @@ const BenefitsSection = () => {
     {
       title: 'CERTIFICATION',
       description: 'Earn credible certificates to boost your resume and career.',
-      icon: <Award className="text-indigo-600\" size={32} />
+      icon: <Award className="text-indigo-600" size={32} />
     }
   ];
 
@@ -42,11 +42,11 @@ const BenefitsSection = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {benefits.map((benefit, index) => (
             <div key={index} className="benefit-card">
-              <div className="w-16 h-16 rounded-full bg-pink-50 flex items-center justify-center mb-4 z-10">
+              <div className="w-16 h-16 rounded-full bg-pink-50 flex items-center justify-center mb-4 z-10 relative">
                 {benefit.icon}
               </div>
-              <h3 className="font-bold text-lg mb-3 z-10">{benefit.title}</h3>
-              <p className="text-gray-600 text-sm text-center z-10">
+              <h3 className="font-bold text-lg mb-3 z-10 relative text-center">{benefit.title}</h3>
+              <p className="text-gray-600 text-sm text-center z-10 relative">
                 {benefit.description}
               </p>
             </div>
