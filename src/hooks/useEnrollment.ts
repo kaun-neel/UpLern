@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { localDB } from '../lib/database';
 import { useAuth } from '../lib/auth';
 
@@ -21,19 +21,13 @@ export const useEnrollment = () => {
   const [loading, setLoading] = useState(true);
   const [hasPremiumPass, setHasPremiumPass] = useState(false);
 
-  useEffect(() => {
-    if (user) {
-      loadUserEnrollments();
-      checkPremiumStatus();
-    } else {
+  const loadUserEnrollments = useCallback(async () => {
+    if (!user) {
       setEnrollments([]);
       setHasPremiumPass(false);
       setLoading(false);
+      return;
     }
-  }, [user]);
-
-  const loadUserEnrollments = async () => {
-    if (!user) return;
 
     try {
       setLoading(true);
@@ -47,24 +41,35 @@ export const useEnrollment = () => {
       
       console.log('Loaded enrollments:', userEnrollments);
       setEnrollments(userEnrollments);
+
+      // Check for premium pass
+      const premiumEnrollment = userEnrollments.find(e => e.enrollment_type === 'premium_pass');
+      setHasPremiumPass(!!premiumEnrollment);
+      console.log('Premium status:', !!premiumEnrollment);
+      
     } catch (error) {
       console.error('Error loading enrollments:', error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
-  const checkPremiumStatus = async () => {
-    if (!user) return;
+  useEffect(() => {
+    loadUserEnrollments();
+  }, [loadUserEnrollments]);
 
-    try {
-      const { hasPremium } = await localDB.hasPremiumPass(user.id);
-      console.log('Premium status for user:', user.id, hasPremium);
-      setHasPremiumPass(hasPremium);
-    } catch (error) {
-      console.error('Error checking premium status:', error);
-    }
-  };
+  // Listen for storage changes to update enrollments in real-time
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'uplern_enrollments' && user) {
+        console.log('Enrollment data changed, reloading...');
+        loadUserEnrollments();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, [user, loadUserEnrollments]);
 
   const isEnrolledInCourse = async (courseId: string): Promise<boolean> => {
     if (!user) return false;
@@ -79,9 +84,29 @@ export const useEnrollment = () => {
   };
 
   const getCourseEnrollment = (courseId: string): Enrollment | undefined => {
+    // Check if user has premium pass (gives access to all courses)
+    if (hasPremiumPass) {
+      const premiumEnrollment = enrollments.find(e => e.enrollment_type === 'premium_pass');
+      if (premiumEnrollment) {
+        return premiumEnrollment;
+      }
+    }
+    
+    // Check for specific course enrollment
     const enrollment = enrollments.find(e => e.course_id === courseId);
     console.log(`Getting enrollment for course ${courseId}:`, enrollment);
     return enrollment;
+  };
+
+  const isEnrolledInCourseSync = (courseId: string): boolean => {
+    // Check if user has premium pass
+    if (hasPremiumPass) {
+      return true;
+    }
+    
+    // Check for specific course enrollment
+    const enrollment = enrollments.find(e => e.course_id === courseId);
+    return !!enrollment;
   };
 
   const updateProgress = async (enrollmentId: string, progress: number) => {
@@ -105,13 +130,20 @@ export const useEnrollment = () => {
     }
   };
 
+  // Force refresh enrollments (useful after payment)
+  const refreshEnrollments = useCallback(() => {
+    console.log('Force refreshing enrollments...');
+    return loadUserEnrollments();
+  }, [loadUserEnrollments]);
+
   return {
     enrollments,
     loading,
     hasPremiumPass,
     isEnrolledInCourse,
+    isEnrolledInCourseSync,
     getCourseEnrollment,
     updateProgress,
-    refreshEnrollments: loadUserEnrollments
+    refreshEnrollments
   };
 };

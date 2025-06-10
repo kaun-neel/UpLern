@@ -171,12 +171,24 @@ const CoursesPage = () => {
     enrollments,
     loading: enrollmentLoading,
     hasPremiumPass,
-    getCourseEnrollment
+    isEnrolledInCourseSync,
+    refreshEnrollments
   } = useEnrollment();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // Listen for enrollment updates
+  useEffect(() => {
+    const handleEnrollmentUpdate = () => {
+      console.log('Enrollment update event received, refreshing...');
+      refreshEnrollments();
+    };
+
+    window.addEventListener('enrollmentUpdated', handleEnrollmentUpdate);
+    return () => window.removeEventListener('enrollmentUpdated', handleEnrollmentUpdate);
+  }, [refreshEnrollments]);
 
   // Auto-slide functionality
   useEffect(() => {
@@ -204,8 +216,8 @@ const CoursesPage = () => {
   };
 
   const isEnrolledInCourse = (courseId: string): boolean => {
-    if (hasPremiumPass) return true;
-    return !!getCourseEnrollment(courseId);
+    if (enrollmentLoading) return false;
+    return isEnrolledInCourseSync(courseId);
   };
 
   const nextSlide = () => {

@@ -83,7 +83,6 @@ export const usePayment = () => {
           return;
         }
 
-        toast.success(`🎉 Successfully enrolled in ${currentPaymentData.itemName}!`);
         console.log('Course enrollment created:', enrollment);
         
       } else if (currentPaymentData.type === PaymentType.PREMIUM_PASS) {
@@ -103,18 +102,33 @@ export const usePayment = () => {
           return;
         }
 
-        toast.success('🚀 Premium Pass activated! You now have access to all courses!');
         console.log('Premium pass enrollment created:', enrollment);
       }
 
-      // Close the payment modal first
+      // Close the payment modal
       closePaymentModal();
 
-      // Show success message and reload after a delay to ensure data persistence
+      // Show success message
+      if (currentPaymentData.type === PaymentType.COURSE) {
+        toast.success(`🎉 Successfully enrolled in ${currentPaymentData.itemName}!`);
+      } else {
+        toast.success('🚀 Premium Pass activated! You now have access to all courses!');
+      }
+
+      // Trigger a custom event to notify components about the enrollment change
+      window.dispatchEvent(new CustomEvent('enrollmentUpdated', {
+        detail: {
+          type: currentPaymentData.type,
+          courseId: currentPaymentData.itemId,
+          courseName: currentPaymentData.itemName
+        }
+      }));
+
+      // Force a page reload after a short delay to ensure UI updates
       setTimeout(() => {
-        toast.success('🔄 Refreshing page to update your enrollment status...');
+        console.log('Reloading page to reflect enrollment changes...');
         window.location.reload();
-      }, 1500);
+      }, 2000);
 
     } catch (error) {
       console.error('Post-payment processing error:', error);

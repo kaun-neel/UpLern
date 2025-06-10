@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Clock, BookOpen, ChevronLeft, ChevronRight, CheckCircle } from 'lucide-react';
 import PaymentModal from '../Payment/PaymentModal';
 import CourseContent from './CourseContent';
@@ -7,12 +7,9 @@ import { usePayment } from '../../hooks/usePayment';
 import { useEnrollment } from '../../hooks/useEnrollment';
 import { useAuth } from '../../lib/auth';
 
-interface CourseDetailProps {
-  courseId?: string;
-}
-
-const CourseDetailPage: React.FC<CourseDetailProps> = ({ courseId }) => {
+const CourseDetailPage: React.FC = () => {
   const navigate = useNavigate();
+  const { courseId } = useParams<{ courseId: string }>();
   const { user } = useAuth();
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [enrollment, setEnrollment] = useState<any>(null);
@@ -31,8 +28,10 @@ const CourseDetailPage: React.FC<CourseDetailProps> = ({ courseId }) => {
     enrollments,
     loading: enrollmentLoading,
     hasPremiumPass,
+    isEnrolledInCourseSync,
     getCourseEnrollment,
-    updateProgress
+    updateProgress,
+    refreshEnrollments
   } = useEnrollment();
 
   const courseDetails = {
@@ -79,19 +78,32 @@ const CourseDetailPage: React.FC<CourseDetailProps> = ({ courseId }) => {
     }
   ];
 
+  // Listen for enrollment updates
+  useEffect(() => {
+    const handleEnrollmentUpdate = () => {
+      console.log('Enrollment update event received in course detail, refreshing...');
+      refreshEnrollments();
+    };
+
+    window.addEventListener('enrollmentUpdated', handleEnrollmentUpdate);
+    return () => window.removeEventListener('enrollmentUpdated', handleEnrollmentUpdate);
+  }, [refreshEnrollments]);
+
   // Check enrollment status
   useEffect(() => {
     if (user && courseId && !enrollmentLoading) {
+      const enrolled = isEnrolledInCourseSync(courseId);
       const courseEnrollment = getCourseEnrollment(courseId);
-      if (courseEnrollment || hasPremiumPass) {
-        setIsEnrolled(true);
-        setEnrollment(courseEnrollment);
-      } else {
-        setIsEnrolled(false);
-        setEnrollment(null);
-      }
+      
+      console.log(`Course ${courseId} enrollment status:`, { enrolled, courseEnrollment, hasPremiumPass });
+      
+      setIsEnrolled(enrolled);
+      setEnrollment(courseEnrollment);
+    } else {
+      setIsEnrolled(false);
+      setEnrollment(null);
     }
-  }, [user, courseId, enrollments, hasPremiumPass, enrollmentLoading]);
+  }, [user, courseId, enrollments, hasPremiumPass, enrollmentLoading, isEnrolledInCourseSync, getCourseEnrollment]);
 
   const handleEnrollClick = () => {
     if (!user) {
