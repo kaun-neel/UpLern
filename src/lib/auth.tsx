@@ -41,6 +41,25 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
+// Mock Google accounts for demonstration
+const mockGoogleAccounts = [
+  {
+    email: 'john.doe@gmail.com',
+    name: 'John Doe',
+    avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
+  },
+  {
+    email: 'sarah.smith@gmail.com',
+    name: 'Sarah Smith',
+    avatar: 'https://randomuser.me/api/portraits/women/44.jpg'
+  },
+  {
+    email: 'mike.johnson@gmail.com',
+    name: 'Mike Johnson',
+    avatar: 'https://randomuser.me/api/portraits/men/67.jpg'
+  }
+];
+
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -79,19 +98,95 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return { error };
   };
 
+  const showGoogleAccountSelector = (): Promise<any> => {
+    return new Promise((resolve) => {
+      // Create modal overlay
+      const overlay = document.createElement('div');
+      overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+      
+      // Create modal content
+      const modal = document.createElement('div');
+      modal.className = 'bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full mx-4';
+      modal.innerHTML = `
+        <div class="text-center mb-6">
+          <img src="https://www.google.com/favicon.ico" alt="Google" class="w-8 h-8 mx-auto mb-3">
+          <h2 class="text-xl font-semibold text-gray-900">Choose an account</h2>
+          <p class="text-gray-600 text-sm">to continue to upLern</p>
+        </div>
+        <div class="space-y-3">
+          ${mockGoogleAccounts.map((account, index) => `
+            <button 
+              class="google-account-option w-full flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors border border-gray-200"
+              data-index="${index}"
+            >
+              <img src="${account.avatar}" alt="${account.name}" class="w-10 h-10 rounded-full">
+              <div class="text-left">
+                <div class="font-medium text-gray-900">${account.name}</div>
+                <div class="text-sm text-gray-600">${account.email}</div>
+              </div>
+            </button>
+          `).join('')}
+        </div>
+        <div class="mt-6 pt-4 border-t border-gray-200">
+          <button class="cancel-google-signin w-full text-center text-gray-600 hover:text-gray-900 transition-colors">
+            Cancel
+          </button>
+        </div>
+      `;
+      
+      overlay.appendChild(modal);
+      document.body.appendChild(overlay);
+      
+      // Add event listeners
+      const accountOptions = modal.querySelectorAll('.google-account-option');
+      accountOptions.forEach((option) => {
+        option.addEventListener('click', (e) => {
+          const index = parseInt((e.currentTarget as HTMLElement).dataset.index || '0');
+          const selectedAccount = mockGoogleAccounts[index];
+          document.body.removeChild(overlay);
+          resolve(selectedAccount);
+        });
+      });
+      
+      const cancelButton = modal.querySelector('.cancel-google-signin');
+      cancelButton?.addEventListener('click', () => {
+        document.body.removeChild(overlay);
+        resolve(null);
+      });
+      
+      // Close on overlay click
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+          document.body.removeChild(overlay);
+          resolve(null);
+        }
+      });
+    });
+  };
+
   const signInWithGoogle = async () => {
     try {
-      // Simulate Google OAuth flow
-      const mockGoogleUser = {
-        email: `google.user.${Date.now()}@gmail.com`,
+      // Show Google account selector
+      const selectedAccount = await showGoogleAccountSelector();
+      
+      if (!selectedAccount) {
+        return { error: 'Google sign-in cancelled' };
+      }
+
+      // Create user data from selected Google account
+      const [firstName, ...lastNameParts] = selectedAccount.name.split(' ');
+      const lastName = lastNameParts.join(' ');
+      
+      const googleUserData = {
+        email: selectedAccount.email,
         password: 'google-oauth-temp',
-        first_name: 'Google',
+        first_name: firstName,
         middle_name: '',
-        last_name: 'User',
+        last_name: lastName,
         phone: '9999999999'
       };
 
-      const { user: newUser, error } = await localDB.signUp(mockGoogleUser);
+      const { user: newUser, error } = await localDB.signUp(googleUserData);
       if (newUser) {
         setUser(newUser);
         return { error: null };

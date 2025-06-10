@@ -100,6 +100,13 @@ body {
   animation: float 4s ease-in-out infinite;
 }
 
+/* Google Account Selector Styles */
+.google-account-option:hover {
+  background-color: #f9fafb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }
