@@ -5,12 +5,13 @@ import toast from 'react-hot-toast';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { signIn } = useAuth();
+  const { signIn, signInWithGoogle } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,6 +31,23 @@ const LoginPage = () => {
       toast.error('Failed to log in. Please try again.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setGoogleLoading(true);
+    try {
+      const { error } = await signInWithGoogle();
+      if (error) {
+        toast.error(error);
+        return;
+      }
+      toast.success('Logged in successfully with Google!');
+      navigate('/');
+    } catch (error) {
+      toast.error('Failed to log in with Google.');
+    } finally {
+      setGoogleLoading(false);
     }
   };
 
@@ -73,6 +91,17 @@ const LoginPage = () => {
             {loading ? 'Logging in...' : 'Log in'}
           </button>
         </form>
+
+        <div className="mt-6">
+          <button
+            onClick={handleGoogleLogin}
+            disabled={googleLoading}
+            className="w-full flex items-center justify-center gap-2 border border-gray-300 py-3 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+          >
+            <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
+            {googleLoading ? 'Signing in...' : 'Continue with Google'}
+          </button>
+        </div>
 
         <div className="mt-6 text-center text-sm">
           <span className="text-gray-600">Demo credentials:</span>

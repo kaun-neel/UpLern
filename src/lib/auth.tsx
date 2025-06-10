@@ -23,6 +23,7 @@ interface AuthContextType {
     phone: string;
   }) => Promise<{ error: string | null }>;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
+  signInWithGoogle: () => Promise<{ error: string | null }>;
   signOut: () => Promise<{ error: string | null }>;
 }
 
@@ -78,6 +79,29 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return { error };
   };
 
+  const signInWithGoogle = async () => {
+    try {
+      // Simulate Google OAuth flow
+      const mockGoogleUser = {
+        email: `google.user.${Date.now()}@gmail.com`,
+        password: 'google-oauth-temp',
+        first_name: 'Google',
+        middle_name: '',
+        last_name: 'User',
+        phone: '9999999999'
+      };
+
+      const { user: newUser, error } = await localDB.signUp(mockGoogleUser);
+      if (newUser) {
+        setUser(newUser);
+        return { error: null };
+      }
+      return { error: error || 'Failed to sign in with Google' };
+    } catch (error) {
+      return { error: 'Google sign-in failed. Please try again.' };
+    }
+  };
+
   const signOut = async () => {
     const { error } = await localDB.signOut();
     if (!error) {
@@ -91,6 +115,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     loading,
     signUp,
     signIn,
+    signInWithGoogle,
     signOut
   };
 

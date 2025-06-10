@@ -95,6 +95,11 @@ body {
   @apply bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-6 rounded-full transition-all duration-300;
 }
 
+/* Enhanced floating animation for signup page */
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }

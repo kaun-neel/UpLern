@@ -82,7 +82,8 @@ const PricingSection = () => {
 
                 <div className="text-center mt-auto">
                   <Link
-                    to="/premium-pass"
+                    to="/courses"
+                    onClick={() => window.scrollTo(0, 0)}
                     className={`w-full py-3 px-6 rounded-full font-medium transition-all duration-300 block text-center ${plan.buttonStyle}`}
                   >
                     Enroll now
