@@ -191,16 +191,17 @@ const CoursesPage = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section with Background Design */}
-      <div className="relative bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 overflow-hidden">
+      {/* Hero Section with Welcome Background and Popular Courses */}
+      <div className="relative bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 overflow-hidden min-h-screen">
+        {/* Welcome Background Text */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="text-[20rem] font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-200/30 via-blue-200/30 to-pink-200/30 select-none whitespace-nowrap transform -rotate-12">
+            Welcome
+          </div>
+        </div>
+
         {/* Floating Background Elements */}
         <div className="absolute inset-0">
-          {/* Large background text */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-[20rem] font-bold text-white/5 select-none pointer-events-none whitespace-nowrap">
-            upLern
-          </div>
-          
-          {/* Floating geometric shapes */}
           <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-br from-blue-400 to-purple-500 rounded-2xl opacity-20 animate-float"></div>
           <div className="absolute top-40 right-20 w-16 h-16 bg-gradient-to-br from-pink-400 to-red-500 rounded-full opacity-30 animate-float" style={{animationDelay: '1s'}}></div>
           <div className="absolute bottom-40 left-20 w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-3xl opacity-25 animate-float" style={{animationDelay: '2s'}}></div>
