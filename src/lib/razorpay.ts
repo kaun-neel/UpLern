@@ -44,6 +44,13 @@ class RazorpayService {
     }
 
     return new Promise((resolve, reject) => {
+      // Check if script is already loaded
+      if (document.querySelector('script[src*="checkout.razorpay.com"]')) {
+        this.isLoaded = true;
+        resolve();
+        return;
+      }
+
       const script = document.createElement('script');
       script.src = 'https://checkout.razorpay.com/v1/checkout.js';
       script.onload = () => {
@@ -61,7 +68,11 @@ class RazorpayService {
     try {
       await this.loadRazorpayScript();
 
-      // For demo purposes, simulate payment creation
+      // For demo purposes, always use demo payment
+      return this.createDemoPayment(options);
+
+      // Uncomment below for production with real Razorpay key
+      /*
       if (this.keyId === 'rzp_test_demo_key') {
         return this.createDemoPayment(options);
       }
@@ -89,7 +100,9 @@ class RazorpayService {
         const rzp = new window.Razorpay(razorpayOptions);
         rzp.open();
       });
+      */
     } catch (error) {
+      console.error('Payment initialization error:', error);
       return { success: false, error: 'Failed to initialize payment' };
     }
   }
@@ -106,7 +119,9 @@ class RazorpayService {
       const closeBtn = modal.querySelector('.demo-close');
 
       const cleanup = () => {
-        document.body.removeChild(modal);
+        if (document.body.contains(modal)) {
+          document.body.removeChild(modal);
+        }
       };
 
       successBtn?.addEventListener('click', () => {
@@ -143,10 +158,10 @@ class RazorpayService {
 
   private createDemoModal(options: PaymentOptions): HTMLElement {
     const modal = document.createElement('div');
-    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60]';
     
     modal.innerHTML = `
-      <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full mx-4 relative">
+      <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full mx-4 relative animate-in fade-in duration-300">
         <button class="demo-close absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -159,37 +174,51 @@ class RazorpayService {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
             </svg>
           </div>
-          <h2 class="text-2xl font-semibold text-gray-900 mb-2">Demo Payment</h2>
-          <p class="text-gray-600">This is a demo payment gateway</p>
+          <h2 class="text-2xl font-semibold text-gray-900 mb-2">Demo Payment Gateway</h2>
+          <p class="text-gray-600">Simulate your payment experience</p>
         </div>
 
-        <div class="bg-gray-50 rounded-xl p-4 mb-6">
+        <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 mb-6 border border-blue-200">
           <div class="flex justify-between items-center mb-2">
-            <span class="text-gray-600">Item:</span>
-            <span class="font-medium">${options.name}</span>
+            <span class="text-gray-700 font-medium">Course:</span>
+            <span class="font-semibold text-gray-900">${options.name}</span>
           </div>
           <div class="flex justify-between items-center mb-2">
-            <span class="text-gray-600">Description:</span>
+            <span class="text-gray-700 font-medium">Description:</span>
             <span class="text-sm text-gray-700">${options.description}</span>
           </div>
-          <div class="flex justify-between items-center">
-            <span class="text-gray-600">Amount:</span>
-            <span class="text-xl font-bold text-violet-600">₹${(options.amount / 100).toFixed(2)}</span>
+          <div class="flex justify-between items-center pt-2 border-t border-blue-200">
+            <span class="text-gray-700 font-medium">Amount:</span>
+            <span class="text-2xl font-bold text-violet-600">₹${(options.amount / 100).toFixed(0)}</span>
           </div>
         </div>
 
         <div class="space-y-3">
-          <button class="demo-success w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 rounded-xl font-medium hover:shadow-lg transition-all duration-300">
-            ✓ Simulate Successful Payment
+          <button class="demo-success w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 rounded-xl font-semibold text-lg hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            Complete Payment Successfully
           </button>
-          <button class="demo-cancel w-full border-2 border-red-300 text-red-600 py-3 rounded-xl font-medium hover:bg-red-50 transition-colors">
-            ✗ Simulate Payment Failure
+          <button class="demo-cancel w-full border-2 border-red-300 text-red-600 py-3 rounded-xl font-medium hover:bg-red-50 transition-colors flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+            Cancel Payment
           </button>
         </div>
 
-        <p class="text-xs text-gray-500 text-center mt-4">
-          This is a demo environment. No real payment will be processed.
-        </p>
+        <div class="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+          <div class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-yellow-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <div>
+              <p class="text-sm font-medium text-yellow-800">Demo Mode Active</p>
+              <p class="text-xs text-yellow-700 mt-1">This is a demonstration. No real payment will be processed.</p>
+            </div>
+          </div>
+        </div>
       </div>
     `;
 

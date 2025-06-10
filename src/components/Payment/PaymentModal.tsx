@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, CreditCard, Shield, CheckCircle } from 'lucide-react';
+import { X, CreditCard, Shield, CheckCircle, AlertCircle } from 'lucide-react';
 import { razorpayService, PaymentData, PRICING } from '../../lib/razorpay';
 import { useAuth } from '../../lib/auth';
 import toast from 'react-hot-toast';
@@ -26,31 +26,45 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
     setLoading(true);
     
     try {
+      // Validate user data
+      if (!user) {
+        toast.error('Please log in to continue with payment');
+        setLoading(false);
+        return;
+      }
+
       const paymentOptions = {
         amount: razorpayService.formatAmount(paymentData.amount),
         currency: 'INR',
-        name: 'upLern',
-        description: paymentData.itemName,
+        name: paymentData.itemName,
+        description: `Purchase of ${paymentData.itemName} from upLern`,
         prefill: {
-          name: paymentData.userName || user?.first_name || '',
-          email: paymentData.userEmail || user?.email || '',
-          contact: paymentData.userPhone || user?.phone || ''
+          name: paymentData.userName || `${user.first_name} ${user.last_name}`.trim() || 'User',
+          email: paymentData.userEmail || user.email || '',
+          contact: paymentData.userPhone || user.phone || ''
         },
         theme: {
           color: '#8b5cf6'
         }
       };
 
+      console.log('Initiating payment with options:', paymentOptions);
+
       const result = await razorpayService.createPayment(paymentOptions);
 
+      console.log('Payment result:', result);
+
       if (result.success && result.data) {
-        toast.success('Payment successful! 🎉');
+        toast.success('🎉 Payment successful! Welcome to upLern!');
         onSuccess?.(result.data);
         onClose();
       } else {
-        toast.error(result.error || 'Payment failed');
+        const errorMessage = result.error || 'Payment failed. Please try again.';
+        toast.error(errorMessage);
+        console.error('Payment failed:', result.error);
       }
     } catch (error) {
+      console.error('Payment error:', error);
       toast.error('Payment failed. Please try again.');
     } finally {
       setLoading(false);
@@ -75,14 +89,19 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
     return paymentData.amount;
   };
 
+  const getSavings = () => {
+    return getOriginalPrice() - paymentData.amount;
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full relative overflow-hidden">
+      <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full relative overflow-hidden animate-in fade-in zoom-in duration-300">
         {/* Header */}
         <div className="bg-gradient-to-r from-violet-500 to-fuchsia-500 p-6 text-white relative">
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 text-white/80 hover:text-white transition-colors"
+            disabled={loading}
+            className="absolute top-4 right-4 text-white/80 hover:text-white transition-colors disabled:opacity-50"
           >
             <X size={24} />
           </button>
@@ -99,6 +118,19 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
 
         {/* Content */}
         <div className="p-6">
+          {/* Demo Notice */}
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5" />
+              <div>
+                <p className="text-sm font-medium text-blue-800">Demo Payment Mode</p>
+                <p className="text-xs text-blue-700 mt-1">
+                  This is a demonstration. Click "Pay" to see the demo payment gateway.
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Order Summary */}
           <div className="bg-gray-50 rounded-2xl p-4 mb-6">
             <h3 className="font-semibold text-gray-900 mb-3">Order Summary</h3>
@@ -108,7 +140,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                 <div>
                   <p className="font-medium text-gray-900">{paymentData.itemName}</p>
                   <p className="text-sm text-gray-600">
-                    {paymentData.type === 'course' ? 'Individual Course' : 'Premium Pass - All Courses'}
+                    {paymentData.type === 'course' ? 'Individual Course Access' : 'Premium Pass - All Courses Access'}
                   </p>
                 </div>
                 <div className="text-right">
@@ -121,8 +153,10 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
 
               {getDiscountPercentage() > 0 && (
                 <div className="flex justify-between items-center pt-2 border-t border-gray-200">
-                  <span className="text-green-600 font-medium">Discount ({getDiscountPercentage()}% OFF)</span>
-                  <span className="text-green-600 font-medium">-₹{getOriginalPrice() - paymentData.amount}</span>
+                  <span className="text-green-600 font-medium">
+                    Discount ({getDiscountPercentage()}% OFF)
+                  </span>
+                  <span className="text-green-600 font-medium">-₹{getSavings()}</span>
                 </div>
               )}
 
@@ -149,7 +183,11 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                   </div>
                   <div className="flex items-center gap-2 text-sm text-gray-700">
                     <CheckCircle className="w-4 h-4 text-green-500" />
-                    <span>Access to course materials</span>
+                    <span>Access to course materials & resources</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-700">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    <span>30-day money-back guarantee</span>
                   </div>
                 </>
               ) : (
@@ -160,7 +198,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                   </div>
                   <div className="flex items-center gap-2 text-sm text-gray-700">
                     <CheckCircle className="w-4 h-4 text-green-500" />
-                    <span>Lifetime Access</span>
+                    <span>Lifetime Access to all content</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-gray-700">
                     <CheckCircle className="w-4 h-4 text-green-500" />
@@ -168,7 +206,11 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                   </div>
                   <div className="flex items-center gap-2 text-sm text-gray-700">
                     <CheckCircle className="w-4 h-4 text-green-500" />
-                    <span>Exclusive eBook</span>
+                    <span>Exclusive eBooks & resources</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-700">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    <span>Priority support & community access</span>
                   </div>
                 </>
               )}
@@ -190,7 +232,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
             {loading ? (
               <>
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                Processing...
+                Processing Payment...
               </>
             ) : (
               <>
