@@ -107,10 +107,14 @@ export const usePayment = () => {
         console.log('Premium pass enrollment created:', enrollment);
       }
 
-      // Trigger a page reload to update the UI with new enrollment status
+      // Close the payment modal first
+      closePaymentModal();
+
+      // Show success message and reload after a delay to ensure data persistence
       setTimeout(() => {
+        toast.success('🔄 Refreshing page to update your enrollment status...');
         window.location.reload();
-      }, 2000);
+      }, 1500);
 
     } catch (error) {
       console.error('Post-payment processing error:', error);

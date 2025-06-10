@@ -132,12 +132,22 @@ class LocalDatabase {
   }
 
   private getTable<T>(tableName: string): T[] {
-    const data = localStorage.getItem(this.getStorageKey(tableName));
-    return data ? JSON.parse(data) : [];
+    try {
+      const data = localStorage.getItem(this.getStorageKey(tableName));
+      return data ? JSON.parse(data) : [];
+    } catch (error) {
+      console.error(`Error reading table ${tableName}:`, error);
+      return [];
+    }
   }
 
   private setTable<T>(tableName: string, data: T[]): void {
-    localStorage.setItem(this.getStorageKey(tableName), JSON.stringify(data));
+    try {
+      localStorage.setItem(this.getStorageKey(tableName), JSON.stringify(data));
+      console.log(`Successfully saved ${data.length} records to ${tableName}`);
+    } catch (error) {
+      console.error(`Error saving table ${tableName}:`, error);
+    }
   }
 
   // User authentication methods
@@ -301,6 +311,8 @@ class LocalDatabase {
     amount_paid: number;
   }): Promise<{ enrollment: Enrollment | null; error: string | null }> {
     try {
+      console.log('Creating enrollment with data:', enrollmentData);
+      
       const enrollments = this.getTable<Enrollment>('enrollments');
       
       // Check if user is already enrolled in this course
@@ -309,6 +321,7 @@ class LocalDatabase {
       );
 
       if (existingEnrollment) {
+        console.log('User already enrolled, returning existing enrollment:', existingEnrollment);
         return { enrollment: existingEnrollment, error: null };
       }
 
@@ -320,11 +333,24 @@ class LocalDatabase {
         progress: 0
       };
 
+      console.log('Creating new enrollment:', newEnrollment);
+
       enrollments.push(newEnrollment);
       this.setTable('enrollments', enrollments);
 
+      // Verify the enrollment was saved
+      const savedEnrollments = this.getTable<Enrollment>('enrollments');
+      const savedEnrollment = savedEnrollments.find(e => e.id === newEnrollment.id);
+      
+      if (!savedEnrollment) {
+        console.error('Failed to save enrollment to localStorage');
+        return { enrollment: null, error: 'Failed to save enrollment' };
+      }
+
+      console.log('Enrollment successfully saved:', savedEnrollment);
       return { enrollment: newEnrollment, error: null };
     } catch (error) {
+      console.error('Error creating enrollment:', error);
       return { enrollment: null, error: 'Failed to create enrollment' };
     }
   }
@@ -333,9 +359,11 @@ class LocalDatabase {
     try {
       const enrollments = this.getTable<Enrollment>('enrollments');
       const userEnrollments = enrollments.filter(e => e.user_id === userId);
+      console.log(`Found ${userEnrollments.length} enrollments for user ${userId}:`, userEnrollments);
 
       return { enrollments: userEnrollments, error: null };
     } catch (error) {
+      console.error('Error getting user enrollments:', error);
       return { enrollments: [], error: 'Failed to get enrollments' };
     }
   }
@@ -347,12 +375,15 @@ class LocalDatabase {
         e => e.user_id === userId && (e.course_id === courseId || e.enrollment_type === 'premium_pass')
       );
 
+      console.log(`Checking enrollment for user ${userId} in course ${courseId}:`, !!enrollment);
+
       return { 
         enrolled: !!enrollment, 
         enrollment: enrollment || undefined, 
         error: null 
       };
     } catch (error) {
+      console.error('Error checking enrollment:', error);
       return { enrolled: false, error: 'Failed to check enrollment' };
     }
   }
@@ -374,6 +405,7 @@ class LocalDatabase {
       this.setTable('enrollments', enrollments);
       return { error: null };
     } catch (error) {
+      console.error('Error updating progress:', error);
       return { error: 'Failed to update progress' };
     }
   }
@@ -385,8 +417,11 @@ class LocalDatabase {
         e => e.user_id === userId && e.enrollment_type === 'premium_pass'
       );
 
+      console.log(`Checking premium pass for user ${userId}:`, !!premiumEnrollment);
+
       return { hasPremium: !!premiumEnrollment, error: null };
     } catch (error) {
+      console.error('Error checking premium status:', error);
       return { hasPremium: false, error: 'Failed to check premium status' };
     }
   }

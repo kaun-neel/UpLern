@@ -36,11 +36,16 @@ export const useEnrollment = () => {
     if (!user) return;
 
     try {
+      setLoading(true);
+      console.log('Loading enrollments for user:', user.id);
+      
       const { enrollments: userEnrollments, error } = await localDB.getUserEnrollments(user.id);
       if (error) {
         console.error('Failed to load enrollments:', error);
         return;
       }
+      
+      console.log('Loaded enrollments:', userEnrollments);
       setEnrollments(userEnrollments);
     } catch (error) {
       console.error('Error loading enrollments:', error);
@@ -54,6 +59,7 @@ export const useEnrollment = () => {
 
     try {
       const { hasPremium } = await localDB.hasPremiumPass(user.id);
+      console.log('Premium status for user:', user.id, hasPremium);
       setHasPremiumPass(hasPremium);
     } catch (error) {
       console.error('Error checking premium status:', error);
@@ -73,7 +79,9 @@ export const useEnrollment = () => {
   };
 
   const getCourseEnrollment = (courseId: string): Enrollment | undefined => {
-    return enrollments.find(e => e.course_id === courseId);
+    const enrollment = enrollments.find(e => e.course_id === courseId);
+    console.log(`Getting enrollment for course ${courseId}:`, enrollment);
+    return enrollment;
   };
 
   const updateProgress = async (enrollmentId: string, progress: number) => {
