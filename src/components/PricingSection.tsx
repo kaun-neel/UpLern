@@ -46,7 +46,7 @@ const PricingSection = () => {
 
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {plans.map((plan, index) => (
-            <div key={index} className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+            <div key={index} className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-shadow flex flex-col h-full">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
                   {plan.icon}
@@ -57,23 +57,38 @@ const PricingSection = () => {
                 </span>
               </div>
 
-              <ul className="space-y-4 mb-8">
-                {plan.features.map((feature, i) => (
-                  <li key={i} className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-violet-500 rounded-full"></span>
-                    <span className="text-gray-700">{feature}</span>
-                  </li>
-                ))}
-              </ul>
+              <div className="flex-1 flex flex-col">
+                <ul className="space-y-4 mb-8 flex-1">
+                  {plan.features.map((feature, i) => (
+                    <li key={i} className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-violet-500 rounded-full"></span>
+                      <span className="text-gray-700">{feature}</span>
+                    </li>
+                  ))}
+                  {/* Add extra spacing for Basic plan to align buttons */}
+                  {index === 0 && (
+                    <li className="flex items-center gap-2 opacity-0 pointer-events-none">
+                      <span className="w-1.5 h-1.5 bg-violet-500 rounded-full"></span>
+                      <span className="text-gray-700">Spacer item</span>
+                    </li>
+                  )}
+                  {index === 0 && (
+                    <li className="flex items-center gap-2 opacity-0 pointer-events-none">
+                      <span className="w-1.5 h-1.5 bg-violet-500 rounded-full"></span>
+                      <span className="text-gray-700">Spacer item</span>
+                    </li>
+                  )}
+                </ul>
 
-              <div className="text-center">
-                <Link
-                  to="/premium-pass"
-                  className={`w-full py-3 px-6 rounded-full font-medium transition-all duration-300 block text-center ${plan.buttonStyle}`}
-                >
-                  Enroll now
-                </Link>
-                <p className="mt-4 text-sm text-gray-500">upLern Lifetime Membership</p>
+                <div className="text-center mt-auto">
+                  <Link
+                    to="/premium-pass"
+                    className={`w-full py-3 px-6 rounded-full font-medium transition-all duration-300 block text-center ${plan.buttonStyle}`}
+                  >
+                    Enroll now
+                  </Link>
+                  <p className="mt-4 text-sm text-gray-500">upLern Lifetime Membership</p>
+                </div>
               </div>
             </div>
           ))}
