@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Mail, Phone, BookOpen, GraduationCap, Settings, CreditCard } from 'lucide-react';
+import { User, BookOpen } from 'lucide-react';
 import { useAuth } from '../../lib/auth.tsx';
 import { localDB } from '../../lib/database';
 import toast from 'react-hot-toast';
+import MyCoursesPage from './MyCoursesPage';
 
 const AccountPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [activeTab, setActiveTab] = useState('profile');
   const [profile, setProfile] = useState({
     first_name: '',
     middle_name: '',
@@ -54,11 +56,8 @@ const AccountPage = () => {
   }, [user, navigate]);
 
   const menuItems = [
-    { icon: <User size={20} />, label: 'Profile', active: true },
-    { icon: <BookOpen size={20} />, label: 'My Courses' },
-    { icon: <GraduationCap size={20} />, label: 'Certificates' },
-    { icon: <CreditCard size={20} />, label: 'Billing' },
-    { icon: <Settings size={20} />, label: 'Settings' }
+    { icon: <User size={20} />, label: 'Profile', key: 'profile' },
+    { icon: <BookOpen size={20} />, label: 'My Courses', key: 'courses' }
   ];
 
   if (loading) {
@@ -89,8 +88,9 @@ const AccountPage = () => {
                 {menuItems.map((item, index) => (
                   <li key={index}>
                     <button
+                      onClick={() => setActiveTab(item.key)}
                       className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                        item.active
+                        activeTab === item.key
                           ? 'bg-violet-50 text-violet-600'
                           : 'hover:bg-gray-50 text-gray-700'
                       }`}
@@ -106,80 +106,84 @@ const AccountPage = () => {
 
           {/* Main Content */}
           <div className="md:col-span-3">
-            <div className="bg-white rounded-2xl shadow-sm p-8">
-              <h2 className="text-2xl font-semibold mb-6">Profile Information</h2>
-              
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    First Name
-                  </label>
-                  <input
-                    type="text"
-                    value={profile.first_name}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                    readOnly
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Middle Name
-                  </label>
-                  <input
-                    type="text"
-                    value={profile.middle_name}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                    readOnly
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Last Name
-                  </label>
-                  <input
-                    type="text"
-                    value={profile.last_name}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                    readOnly
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Phone Number
-                  </label>
-                  <div className="flex gap-2">
-                    <span className="px-3 py-2 bg-gray-100 rounded-lg">+91</span>
+            {activeTab === 'profile' && (
+              <div className="bg-white rounded-2xl shadow-sm p-8">
+                <h2 className="text-2xl font-semibold mb-6">Profile Information</h2>
+                
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      First Name
+                    </label>
                     <input
-                      type="tel"
-                      value={profile.phone}
-                      className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                      type="text"
+                      value={profile.first_name}
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                      readOnly
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Middle Name
+                    </label>
+                    <input
+                      type="text"
+                      value={profile.middle_name}
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                      readOnly
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Last Name
+                    </label>
+                    <input
+                      type="text"
+                      value={profile.last_name}
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                      readOnly
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Phone Number
+                    </label>
+                    <div className="flex gap-2">
+                      <span className="px-3 py-2 bg-gray-100 rounded-lg">+91</span>
+                      <input
+                        type="tel"
+                        value={profile.phone}
+                        className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                        readOnly
+                      />
+                    </div>
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      value={profile.email}
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
                       readOnly
                     />
                   </div>
                 </div>
 
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    value={profile.email}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                    readOnly
-                  />
+                <div className="mt-8">
+                  <button className="px-6 py-3 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white hover:shadow-lg transition-all duration-300">
+                    Edit Profile
+                  </button>
                 </div>
               </div>
+            )}
 
-              <div className="mt-8">
-                <button className="px-6 py-3 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white hover:shadow-lg transition-all duration-300">
-                  Edit Profile
-                </button>
-              </div>
-            </div>
+            {activeTab === 'courses' && <MyCoursesPage />}
           </div>
         </div>
       </div>
