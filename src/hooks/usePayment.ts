@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { PaymentData, PaymentType, PRICING } from '../lib/razorpay';
 import { useAuth } from '../lib/auth';
+import { localDB } from '../lib/database';
 import toast from 'react-hot-toast';
 
 export const usePayment = () => {
@@ -56,35 +57,65 @@ export const usePayment = () => {
     setCurrentPaymentData(null);
   };
 
-  const handlePaymentSuccess = (paymentResponse: any) => {
+  const handlePaymentSuccess = async (paymentResponse: any) => {
     console.log('Payment successful:', paymentResponse);
     
-    // Show success message based on payment type
-    if (currentPaymentData?.type === PaymentType.COURSE) {
-      toast.success(`🎉 Successfully enrolled in ${currentPaymentData.itemName}!`);
-      console.log('Enrolling user in course:', currentPaymentData.itemId);
-      
-      // Here you can add logic to:
-      // - Add course to user's enrolled courses
-      // - Send enrollment confirmation email
-      // - Redirect to course content
-      
-    } else if (currentPaymentData?.type === PaymentType.PREMIUM_PASS) {
-      toast.success('🚀 Premium Pass activated! You now have access to all courses!');
-      console.log('Activating premium pass for user');
-      
-      // Here you can add logic to:
-      // - Activate premium pass for user
-      // - Grant access to all courses
-      // - Send welcome email with premium benefits
-      // - Redirect to premium dashboard
+    if (!user || !currentPaymentData) {
+      toast.error('Payment processing error. Please contact support.');
+      return;
     }
 
-    // Additional post-payment actions
-    setTimeout(() => {
-      // You can redirect user or update UI state here
-      console.log('Post-payment actions completed');
-    }, 2000);
+    try {
+      // Create enrollment record in database
+      if (currentPaymentData.type === PaymentType.COURSE && currentPaymentData.itemId) {
+        const { enrollment, error } = await localDB.createEnrollment({
+          user_id: user.id,
+          course_id: currentPaymentData.itemId,
+          course_name: currentPaymentData.itemName,
+          payment_id: paymentResponse.razorpay_payment_id,
+          enrollment_type: 'course',
+          amount_paid: currentPaymentData.amount
+        });
+
+        if (error) {
+          console.error('Failed to create enrollment:', error);
+          toast.error('Payment successful but enrollment failed. Please contact support.');
+          return;
+        }
+
+        toast.success(`🎉 Successfully enrolled in ${currentPaymentData.itemName}!`);
+        console.log('Course enrollment created:', enrollment);
+        
+      } else if (currentPaymentData.type === PaymentType.PREMIUM_PASS) {
+        // For premium pass, create a special enrollment record
+        const { enrollment, error } = await localDB.createEnrollment({
+          user_id: user.id,
+          course_id: 'premium-pass',
+          course_name: 'upLern Premium Pass',
+          payment_id: paymentResponse.razorpay_payment_id,
+          enrollment_type: 'premium_pass',
+          amount_paid: currentPaymentData.amount
+        });
+
+        if (error) {
+          console.error('Failed to create premium enrollment:', error);
+          toast.error('Payment successful but premium activation failed. Please contact support.');
+          return;
+        }
+
+        toast.success('🚀 Premium Pass activated! You now have access to all courses!');
+        console.log('Premium pass enrollment created:', enrollment);
+      }
+
+      // Trigger a page reload to update the UI with new enrollment status
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+
+    } catch (error) {
+      console.error('Post-payment processing error:', error);
+      toast.error('Payment successful but there was an issue processing your enrollment. Please contact support.');
+    }
   };
 
   return {

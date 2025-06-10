@@ -28,6 +28,19 @@ interface Profile {
   phone: string;
 }
 
+interface Enrollment {
+  id: string;
+  user_id: string;
+  course_id: string;
+  course_name: string;
+  payment_id: string;
+  enrollment_type: 'course' | 'premium_pass';
+  amount_paid: number;
+  enrolled_at: string;
+  status: 'active' | 'completed';
+  progress: number;
+}
+
 class LocalDatabase {
   constructor() {
     this.initializeDemoData();
@@ -65,6 +78,48 @@ class LocalDatabase {
 
       users.push(...demoUsers);
       this.setTable('users', users);
+
+      // Create demo enrollments for demo user
+      const demoEnrollments: Enrollment[] = [
+        {
+          id: 'enrollment-1',
+          user_id: 'demo-user-1',
+          course_id: 'web-development',
+          course_name: 'Web Development',
+          payment_id: 'pay_demo_12345',
+          enrollment_type: 'course',
+          amount_paid: 599,
+          enrolled_at: '2024-01-15T10:30:00Z',
+          status: 'active',
+          progress: 75
+        },
+        {
+          id: 'enrollment-2',
+          user_id: 'demo-user-1',
+          course_id: 'ui-ux-design',
+          course_name: 'UI/UX Design',
+          payment_id: 'pay_demo_12346',
+          enrollment_type: 'course',
+          amount_paid: 599,
+          enrolled_at: '2024-01-10T09:15:00Z',
+          status: 'completed',
+          progress: 100
+        },
+        {
+          id: 'enrollment-3',
+          user_id: 'demo-user-1',
+          course_id: 'digital-marketing',
+          course_name: 'Digital Marketing',
+          payment_id: 'pay_demo_12347',
+          enrollment_type: 'course',
+          amount_paid: 599,
+          enrolled_at: '2024-01-22T14:20:00Z',
+          status: 'active',
+          progress: 30
+        }
+      ];
+
+      this.setTable('enrollments', demoEnrollments);
     }
   }
 
@@ -233,6 +288,106 @@ class LocalDatabase {
       return { error: null };
     } catch (error) {
       return { error: 'Failed to send message' };
+    }
+  }
+
+  // Enrollment methods
+  async createEnrollment(enrollmentData: {
+    user_id: string;
+    course_id: string;
+    course_name: string;
+    payment_id: string;
+    enrollment_type: 'course' | 'premium_pass';
+    amount_paid: number;
+  }): Promise<{ enrollment: Enrollment | null; error: string | null }> {
+    try {
+      const enrollments = this.getTable<Enrollment>('enrollments');
+      
+      // Check if user is already enrolled in this course
+      const existingEnrollment = enrollments.find(
+        e => e.user_id === enrollmentData.user_id && e.course_id === enrollmentData.course_id
+      );
+
+      if (existingEnrollment) {
+        return { enrollment: existingEnrollment, error: null };
+      }
+
+      const newEnrollment: Enrollment = {
+        id: this.generateId(),
+        ...enrollmentData,
+        enrolled_at: new Date().toISOString(),
+        status: 'active',
+        progress: 0
+      };
+
+      enrollments.push(newEnrollment);
+      this.setTable('enrollments', enrollments);
+
+      return { enrollment: newEnrollment, error: null };
+    } catch (error) {
+      return { enrollment: null, error: 'Failed to create enrollment' };
+    }
+  }
+
+  async getUserEnrollments(userId: string): Promise<{ enrollments: Enrollment[]; error: string | null }> {
+    try {
+      const enrollments = this.getTable<Enrollment>('enrollments');
+      const userEnrollments = enrollments.filter(e => e.user_id === userId);
+
+      return { enrollments: userEnrollments, error: null };
+    } catch (error) {
+      return { enrollments: [], error: 'Failed to get enrollments' };
+    }
+  }
+
+  async isUserEnrolledInCourse(userId: string, courseId: string): Promise<{ enrolled: boolean; enrollment?: Enrollment; error: string | null }> {
+    try {
+      const enrollments = this.getTable<Enrollment>('enrollments');
+      const enrollment = enrollments.find(
+        e => e.user_id === userId && (e.course_id === courseId || e.enrollment_type === 'premium_pass')
+      );
+
+      return { 
+        enrolled: !!enrollment, 
+        enrollment: enrollment || undefined, 
+        error: null 
+      };
+    } catch (error) {
+      return { enrolled: false, error: 'Failed to check enrollment' };
+    }
+  }
+
+  async updateEnrollmentProgress(enrollmentId: string, progress: number): Promise<{ error: string | null }> {
+    try {
+      const enrollments = this.getTable<Enrollment>('enrollments');
+      const enrollmentIndex = enrollments.findIndex(e => e.id === enrollmentId);
+
+      if (enrollmentIndex === -1) {
+        return { error: 'Enrollment not found' };
+      }
+
+      enrollments[enrollmentIndex].progress = Math.min(100, Math.max(0, progress));
+      if (enrollments[enrollmentIndex].progress === 100) {
+        enrollments[enrollmentIndex].status = 'completed';
+      }
+
+      this.setTable('enrollments', enrollments);
+      return { error: null };
+    } catch (error) {
+      return { error: 'Failed to update progress' };
+    }
+  }
+
+  async hasPremiumPass(userId: string): Promise<{ hasPremium: boolean; error: string | null }> {
+    try {
+      const enrollments = this.getTable<Enrollment>('enrollments');
+      const premiumEnrollment = enrollments.find(
+        e => e.user_id === userId && e.enrollment_type === 'premium_pass'
+      );
+
+      return { hasPremium: !!premiumEnrollment, error: null };
+    } catch (error) {
+      return { hasPremium: false, error: 'Failed to check premium status' };
     }
   }
 }

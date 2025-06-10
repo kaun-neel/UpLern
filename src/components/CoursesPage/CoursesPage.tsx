@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Clock, BookOpen, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Clock, BookOpen, ChevronLeft, ChevronRight, CheckCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import PaymentModal from '../Payment/PaymentModal';
 import { usePayment } from '../../hooks/usePayment';
+import { useEnrollment } from '../../hooks/useEnrollment';
+import { useAuth } from '../../lib/auth';
 
 const topCourses = [
   {
@@ -150,6 +152,7 @@ const allCourses = [
 
 const CoursesPage = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   
@@ -162,6 +165,14 @@ const CoursesPage = () => {
     closePaymentModal,
     handlePaymentSuccess
   } = usePayment();
+
+  // Enrollment integration
+  const {
+    enrollments,
+    loading: enrollmentLoading,
+    hasPremiumPass,
+    getCourseEnrollment
+  } = useEnrollment();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -185,7 +196,16 @@ const CoursesPage = () => {
 
   const handleEnrollClick = (e: React.MouseEvent, courseId: string, courseName: string) => {
     e.stopPropagation();
+    if (!user) {
+      navigate('/login');
+      return;
+    }
     initiateCoursePayment(courseId, courseName);
+  };
+
+  const isEnrolledInCourse = (courseId: string): boolean => {
+    if (hasPremiumPass) return true;
+    return !!getCourseEnrollment(courseId);
   };
 
   const nextSlide = () => {
@@ -338,47 +358,72 @@ const CoursesPage = () => {
           <h2 className="text-3xl font-bold mb-8 text-gray-800">All Courses</h2>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {allCourses.map((course, index) => (
-              <div 
-                key={index} 
-                className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 hover:shadow-xl hover:border-violet-200 transition-all duration-300 cursor-pointer group"
-                onClick={() => handleCourseClick(course.id)}
-              >
-                <div className="aspect-video bg-gray-50 rounded-2xl mb-4 overflow-hidden">
-                  <img
-                    src={course.image}
-                    alt={course.title}
-                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <h3 className="text-xl font-semibold mb-3 group-hover:text-violet-600 transition-colors">{course.title}</h3>
-                <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
-                  <div className="flex items-center gap-1">
-                    <BookOpen size={16} />
-                    <span>{course.lectures}</span>
+            {allCourses.map((course, index) => {
+              const enrolled = isEnrolledInCourse(course.id);
+              
+              return (
+                <div 
+                  key={index} 
+                  className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 hover:shadow-xl hover:border-violet-200 transition-all duration-300 cursor-pointer group relative"
+                  onClick={() => handleCourseClick(course.id)}
+                >
+                  {enrolled && (
+                    <div className="absolute top-4 right-4 z-10">
+                      <div className="flex items-center gap-1 bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
+                        <CheckCircle size={12} />
+                        Enrolled
+                      </div>
+                    </div>
+                  )}
+                  
+                  <div className="aspect-video bg-gray-50 rounded-2xl mb-4 overflow-hidden">
+                    <img
+                      src={course.image}
+                      alt={course.title}
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                    />
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Clock size={16} />
-                    <span>{course.hours}</span>
+                  <h3 className="text-xl font-semibold mb-3 group-hover:text-violet-600 transition-colors">{course.title}</h3>
+                  <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
+                    <div className="flex items-center gap-1">
+                      <BookOpen size={16} />
+                      <span>{course.lectures}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Clock size={16} />
+                      <span>{course.hours}</span>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-6 line-clamp-2">
+                    {course.description}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-lg font-bold text-gray-900">₹{course.price}</span>
+                      <span className="text-sm text-gray-400 line-through ml-2">₹{course.originalPrice}</span>
+                    </div>
+                    {enrolled ? (
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleCourseClick(course.id);
+                        }}
+                        className="px-4 py-2 bg-green-500 text-white rounded-full text-sm font-medium hover:bg-green-600 transition-colors"
+                      >
+                        Continue Learning
+                      </button>
+                    ) : (
+                      <button 
+                        onClick={(e) => handleEnrollClick(e, course.id, course.title)}
+                        className="px-4 py-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white rounded-full text-sm font-medium hover:shadow-lg hover:scale-105 transition-all duration-300"
+                      >
+                        Enroll Now
+                      </button>
+                    )}
                   </div>
                 </div>
-                <p className="text-sm text-gray-600 mb-6 line-clamp-2">
-                  {course.description}
-                </p>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="text-lg font-bold text-gray-900">₹{course.price}</span>
-                    <span className="text-sm text-gray-400 line-through ml-2">₹{course.originalPrice}</span>
-                  </div>
-                  <button 
-                    onClick={(e) => handleEnrollClick(e, course.id, course.title)}
-                    className="px-4 py-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white rounded-full text-sm font-medium hover:shadow-lg hover:scale-105 transition-all duration-300"
-                  >
-                    Enroll Now
-                  </button>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Premium Pass Banner - Updated Design */}

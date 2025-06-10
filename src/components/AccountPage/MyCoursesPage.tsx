@@ -1,65 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Clock, BookOpen, Play, Award, Calendar, TrendingUp } from 'lucide-react';
-import { useAuth } from '../../lib/auth';
+import { useEnrollment } from '../../hooks/useEnrollment';
 
 const MyCoursesPage = () => {
-  const { user } = useAuth();
-
-  // Demo courses data - only shown for demo account
-  const demoCoursesData = [
-    {
-      id: 'web-development',
-      title: 'Web Development',
-      image: 'https://cdn3d.iconscout.com/3d/premium/thumb/web-development-5977974-4995252.png',
-      progress: 75,
-      totalLessons: 100,
-      completedLessons: 75,
-      duration: '4+ Hours',
-      enrolledDate: '2024-01-15',
-      lastAccessed: '2024-01-20',
-      status: 'In Progress',
-      instructor: 'John Smith'
-    },
-    {
-      id: 'ui-ux-design',
-      title: 'UI/UX Design',
-      image: 'https://cdn3d.iconscout.com/3d/premium/thumb/ui-ux-design-5977973-4995251.png',
-      progress: 100,
-      totalLessons: 50,
-      completedLessons: 50,
-      duration: '3+ Hours',
-      enrolledDate: '2024-01-10',
-      lastAccessed: '2024-01-18',
-      status: 'Completed',
-      instructor: 'Sarah Johnson'
-    },
-    {
-      id: 'digital-marketing',
-      title: 'Digital Marketing',
-      image: 'https://cdn3d.iconscout.com/3d/premium/thumb/digital-marketing-5706074-4755623.png',
-      progress: 30,
-      totalLessons: 60,
-      completedLessons: 18,
-      duration: '2+ Hours',
-      enrolledDate: '2024-01-22',
-      lastAccessed: '2024-01-23',
-      status: 'In Progress',
-      instructor: 'Mike Davis'
-    }
-  ];
-
-  // Check if current user is demo account
-  const isDemoAccount = user?.email === 'demo@uplern.com';
-  
-  // For demo account, show demo data. For other users, show empty array (no enrolled courses)
-  const enrolledCourses = isDemoAccount ? demoCoursesData : [];
+  const { enrollments, loading, hasPremiumPass } = useEnrollment();
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Completed':
+      case 'completed':
         return 'bg-green-100 text-green-800 border-green-200';
-      case 'In Progress':
+      case 'active':
         return 'bg-blue-100 text-blue-800 border-blue-200';
       default:
         return 'bg-gray-100 text-gray-800 border-gray-200';
@@ -73,6 +24,57 @@ const MyCoursesPage = () => {
       day: 'numeric'
     });
   };
+
+  const getCourseImage = (courseId: string) => {
+    const images: { [key: string]: string } = {
+      'web-development': 'https://cdn3d.iconscout.com/3d/premium/thumb/web-development-5977974-4995252.png',
+      'ui-ux-design': 'https://cdn3d.iconscout.com/3d/premium/thumb/ui-ux-design-5977973-4995251.png',
+      'digital-marketing': 'https://cdn3d.iconscout.com/3d/premium/thumb/digital-marketing-5706074-4755623.png',
+      'javascript': 'https://cdn3d.iconscout.com/3d/premium/thumb/javascript-5977895-4995173.png',
+      'angular': 'https://cdn3d.iconscout.com/3d/premium/thumb/angular-5977872-4995150.png',
+      'premium-pass': 'https://cdn3d.iconscout.com/3d/premium/thumb/graduation-cap-5856337-4892699.png'
+    };
+    return images[courseId] || images['web-development'];
+  };
+
+  const getCourseDuration = (courseId: string) => {
+    const durations: { [key: string]: string } = {
+      'web-development': '4+ Hours',
+      'ui-ux-design': '3+ Hours',
+      'digital-marketing': '2+ Hours',
+      'javascript': '4+ Hours',
+      'angular': '2+ Hours',
+      'premium-pass': 'Unlimited'
+    };
+    return durations[courseId] || '2+ Hours';
+  };
+
+  const getCourseLessons = (courseId: string) => {
+    const lessons: { [key: string]: string } = {
+      'web-development': '100 lessons',
+      'ui-ux-design': '50 lessons',
+      'digital-marketing': '60 lessons',
+      'javascript': '80 lessons',
+      'angular': '40 lessons',
+      'premium-pass': 'All courses'
+    };
+    return lessons[courseId] || '50 lessons';
+  };
+
+  if (loading) {
+    return (
+      <div className="bg-white rounded-2xl shadow-sm p-8">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>
+          <div className="space-y-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-32 bg-gray-200 rounded"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-2xl shadow-sm p-8">
@@ -90,7 +92,7 @@ const MyCoursesPage = () => {
         </Link>
       </div>
 
-      {enrolledCourses.length === 0 ? (
+      {enrollments.length === 0 ? (
         <div className="text-center py-16">
           <div className="w-24 h-24 bg-gradient-to-br from-violet-100 to-fuchsia-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <BookOpen className="w-12 h-12 text-violet-500" />
@@ -125,7 +127,7 @@ const MyCoursesPage = () => {
                 <BookOpen className="w-8 h-8 text-violet-600" />
                 <TrendingUp className="w-5 h-5 text-violet-500" />
               </div>
-              <div className="text-2xl font-bold text-violet-900">{enrolledCourses.length}</div>
+              <div className="text-2xl font-bold text-violet-900">{enrollments.length}</div>
               <div className="text-sm text-violet-700 font-medium">Total Courses</div>
             </div>
             
@@ -135,7 +137,7 @@ const MyCoursesPage = () => {
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
               </div>
               <div className="text-2xl font-bold text-green-900">
-                {enrolledCourses.filter(c => c.status === 'Completed').length}
+                {enrollments.filter(c => c.status === 'completed').length}
               </div>
               <div className="text-sm text-green-700 font-medium">Completed</div>
             </div>
@@ -146,7 +148,7 @@ const MyCoursesPage = () => {
                 <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
               </div>
               <div className="text-2xl font-bold text-blue-900">
-                {enrolledCourses.filter(c => c.status === 'In Progress').length}
+                {enrollments.filter(c => c.status === 'active').length}
               </div>
               <div className="text-sm text-blue-700 font-medium">In Progress</div>
             </div>
@@ -157,15 +159,30 @@ const MyCoursesPage = () => {
                 <div className="text-xs text-orange-600 font-semibold">AVG</div>
               </div>
               <div className="text-2xl font-bold text-orange-900">
-                {Math.round(enrolledCourses.reduce((acc, course) => acc + course.progress, 0) / enrolledCourses.length)}%
+                {enrollments.length > 0 ? Math.round(enrollments.reduce((acc, course) => acc + course.progress, 0) / enrollments.length) : 0}%
               </div>
               <div className="text-sm text-orange-700 font-medium">Progress</div>
             </div>
           </div>
 
+          {/* Premium Pass Status */}
+          {hasPremiumPass && (
+            <div className="mb-8 p-6 bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl border border-purple-200">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                  <Award className="w-8 h-8 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-purple-900">Premium Pass Active</h3>
+                  <p className="text-purple-700">You have unlimited access to all courses and future content!</p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Courses List */}
           <div className="space-y-6">
-            {enrolledCourses.map((course) => (
+            {enrollments.map((course) => (
               <div key={course.id} className="border border-gray-200 rounded-2xl p-6 hover:shadow-lg hover:border-violet-200 transition-all duration-300 bg-gradient-to-r from-white to-gray-50">
                 <div className="grid lg:grid-cols-12 gap-6 items-center">
                   {/* Course Image and Basic Info */}
@@ -173,27 +190,29 @@ const MyCoursesPage = () => {
                     <div className="flex items-center gap-4">
                       <div className="relative">
                         <img
-                          src={course.image}
-                          alt={course.title}
+                          src={getCourseImage(course.course_id)}
+                          alt={course.course_name}
                           className="w-20 h-20 object-contain rounded-xl bg-white p-2 shadow-sm"
                         />
-                        {course.status === 'Completed' && (
+                        {course.status === 'completed' && (
                           <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
                             <Award className="w-3 h-3 text-white" />
                           </div>
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-xl font-semibold text-gray-900 mb-1 truncate">{course.title}</h3>
-                        <p className="text-gray-600 text-sm mb-3">by {course.instructor}</p>
+                        <h3 className="text-xl font-semibold text-gray-900 mb-1 truncate">{course.course_name}</h3>
+                        <p className="text-gray-600 text-sm mb-3">
+                          {course.enrollment_type === 'premium_pass' ? 'Premium Pass Access' : 'Individual Course'}
+                        </p>
                         <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
                           <div className="flex items-center gap-1">
                             <BookOpen size={14} />
-                            <span>{course.completedLessons}/{course.totalLessons} lessons</span>
+                            <span>{getCourseLessons(course.course_id)}</span>
                           </div>
                           <div className="flex items-center gap-1">
                             <Clock size={14} />
-                            <span>{course.duration}</span>
+                            <span>{getCourseDuration(course.course_id)}</span>
                           </div>
                         </div>
                       </div>
@@ -215,7 +234,7 @@ const MyCoursesPage = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(course.status)}`}>
-                          {course.status}
+                          {course.status === 'completed' ? 'Completed' : 'In Progress'}
                         </span>
                       </div>
                     </div>
@@ -227,23 +246,22 @@ const MyCoursesPage = () => {
                       <div className="text-sm text-gray-500 space-y-1">
                         <div className="flex items-center gap-2">
                           <Calendar size={14} />
-                          <span>Enrolled: {formatDate(course.enrolledDate)}</span>
+                          <span>Enrolled: {formatDate(course.enrolled_at)}</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Clock size={14} />
-                          <span>Last accessed: {formatDate(course.lastAccessed)}</span>
+                          <span className="text-green-600">₹{course.amount_paid} paid</span>
                         </div>
                       </div>
                       
                       <div className="flex gap-3">
                         <Link
-                          to={`/courses/${course.id}`}
+                          to={`/courses/${course.course_id}`}
                           className="flex-1 px-4 py-2.5 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
                         >
                           <Play size={14} />
-                          {course.status === 'Completed' ? 'Review' : 'Continue'}
+                          {course.status === 'completed' ? 'Review' : 'Continue'}
                         </Link>
-                        {course.status === 'Completed' && (
+                        {course.status === 'completed' && (
                           <button className="px-4 py-2.5 border-2 border-violet-300 text-violet-600 rounded-lg text-sm font-medium hover:bg-violet-50 transition-colors flex items-center gap-2">
                             <Award size={14} />
                             Certificate

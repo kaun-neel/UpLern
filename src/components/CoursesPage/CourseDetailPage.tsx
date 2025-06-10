@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Clock, BookOpen, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Clock, BookOpen, ChevronLeft, ChevronRight, CheckCircle } from 'lucide-react';
 import PaymentModal from '../Payment/PaymentModal';
+import CourseContent from './CourseContent';
 import { usePayment } from '../../hooks/usePayment';
+import { useEnrollment } from '../../hooks/useEnrollment';
+import { useAuth } from '../../lib/auth';
 
 interface CourseDetailProps {
   courseId?: string;
@@ -10,6 +13,9 @@ interface CourseDetailProps {
 
 const CourseDetailPage: React.FC<CourseDetailProps> = ({ courseId }) => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [isEnrolled, setIsEnrolled] = useState(false);
+  const [enrollment, setEnrollment] = useState<any>(null);
   
   // Payment integration
   const {
@@ -19,6 +25,15 @@ const CourseDetailPage: React.FC<CourseDetailProps> = ({ courseId }) => {
     closePaymentModal,
     handlePaymentSuccess
   } = usePayment();
+
+  // Enrollment integration
+  const {
+    enrollments,
+    loading: enrollmentLoading,
+    hasPremiumPass,
+    getCourseEnrollment,
+    updateProgress
+  } = useEnrollment();
 
   const courseDetails = {
     title: 'Web Development Course',
@@ -64,9 +79,42 @@ const CourseDetailPage: React.FC<CourseDetailProps> = ({ courseId }) => {
     }
   ];
 
+  // Check enrollment status
+  useEffect(() => {
+    if (user && courseId && !enrollmentLoading) {
+      const courseEnrollment = getCourseEnrollment(courseId);
+      if (courseEnrollment || hasPremiumPass) {
+        setIsEnrolled(true);
+        setEnrollment(courseEnrollment);
+      } else {
+        setIsEnrolled(false);
+        setEnrollment(null);
+      }
+    }
+  }, [user, courseId, enrollments, hasPremiumPass, enrollmentLoading]);
+
   const handleEnrollClick = () => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
     initiateCoursePayment(courseId || 'web-development', courseDetails.title);
   };
+
+  const handleProgressUpdate = async (progress: number) => {
+    if (enrollment?.id) {
+      await updateProgress(enrollment.id, progress);
+      setEnrollment(prev => ({ ...prev, progress }));
+    }
+  };
+
+  if (enrollmentLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-violet-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
@@ -83,7 +131,15 @@ const CourseDetailPage: React.FC<CourseDetailProps> = ({ courseId }) => {
           
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
-              <h1 className="text-4xl font-bold mb-6">{courseDetails.title}</h1>
+              <div className="flex items-center gap-3 mb-4">
+                <h1 className="text-4xl font-bold">{courseDetails.title}</h1>
+                {isEnrolled && (
+                  <div className="flex items-center gap-2 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                    <CheckCircle size={16} />
+                    Enrolled
+                  </div>
+                )}
+              </div>
               <p className="text-gray-600 mb-6">{courseDetails.description}</p>
               
               <div className="flex flex-wrap gap-4">
@@ -107,13 +163,15 @@ const CourseDetailPage: React.FC<CourseDetailProps> = ({ courseId }) => {
                 className="w-full max-w-md mx-auto"
               />
               
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <div className="w-24 h-24 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-white transition-colors">
-                  <div className="w-16 h-16 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full flex items-center justify-center">
-                    <div className="w-0 h-0 border-t-8 border-t-transparent border-l-12 border-l-white border-b-8 border-b-transparent ml-1"></div>
+              {!isEnrolled && (
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                  <div className="w-24 h-24 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-white transition-colors">
+                    <div className="w-16 h-16 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full flex items-center justify-center">
+                      <div className="w-0 h-0 border-t-8 border-t-transparent border-l-12 border-l-white border-b-8 border-b-transparent ml-1"></div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
@@ -121,98 +179,113 @@ const CourseDetailPage: React.FC<CourseDetailProps> = ({ courseId }) => {
 
       {/* Course Content */}
       <div className="max-w-6xl mx-auto px-6 py-12">
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="md:col-span-2">
-            <h2 className="text-2xl font-bold mb-6">What you'll learn</h2>
-            <div className="grid grid-cols-2 gap-4">
-              {courseDetails.features.map((feature, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-violet-500 rounded-full"></div>
-                  <span className="text-gray-700">{feature}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <div className="bg-white rounded-3xl shadow-sm p-6">
-              <div className="aspect-video bg-gray-100 rounded-xl mb-6">
-                <img
-                  src={courseDetails.image}
-                  alt={courseDetails.title}
-                  className="w-full h-full object-cover rounded-xl"
-                />
-              </div>
-              
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <span className="text-2xl font-bold">₹{courseDetails.price}</span>
-                  <span className="text-gray-400 line-through ml-2">₹{courseDetails.originalPrice}</span>
-                </div>
-                <span className="text-green-500 font-medium">75% OFF</span>
-              </div>
-
-              <button 
-                onClick={handleEnrollClick}
-                className="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 rounded-full font-medium hover:shadow-lg transition-all duration-300 mb-4"
-              >
-                Enroll Now
-              </button>
-
-              <p className="text-center text-sm text-gray-500">30-Day Money-Back Guarantee</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Certificate Section */}
-      <div className="max-w-6xl mx-auto px-6 py-12">
-        <div className="grid md:grid-cols-2 gap-8 items-center bg-gray-50 rounded-3xl p-8">
-          <img
-            src="https://cdn3d.iconscout.com/3d/premium/thumb/certificate-5856337-4892699.png"
-            alt="Certificate"
-            className="w-full max-w-md mx-auto"
+        {isEnrolled ? (
+          // Show course content for enrolled users
+          <CourseContent
+            courseId={courseId || 'web-development'}
+            courseName={courseDetails.title}
+            enrollment={enrollment}
+            onProgressUpdate={handleProgressUpdate}
           />
-          <div>
-            <h2 className="text-3xl font-bold mb-4">
-              Earn a carrier <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-pink-500">certificate</span>
-            </h2>
-            <p className="text-gray-600">
-              You are encouraged to add this credential to your LinkedIn profile, résumé, or CV, and
-              share it on professional networks or during performance evaluations
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Testimonials */}
-      <div className="max-w-6xl mx-auto px-6 py-12">
-        <h2 className="text-2xl font-bold mb-8">Featured review</h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <div key={index} className="bg-white rounded-3xl p-6 shadow-sm">
-              <h3 className="text-lg font-bold mb-4">"{testimonial.quote}"</h3>
-              <p className="text-gray-600 mb-6">"{testimonial.text}"</p>
-              <div className="flex items-center gap-3">
-                <img
-                  src={testimonial.avatar}
-                  alt={testimonial.name}
-                  className="w-12 h-12 rounded-full"
-                />
-                <span className="text-gray-700">-{testimonial.name}</span>
+        ) : (
+          // Show course preview for non-enrolled users
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="md:col-span-2">
+              <h2 className="text-2xl font-bold mb-6">What you'll learn</h2>
+              <div className="grid grid-cols-2 gap-4">
+                {courseDetails.features.map((feature, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-violet-500 rounded-full"></div>
+                    <span className="text-gray-700">{feature}</span>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
-        <div className="flex justify-center gap-4 mt-8">
-          <button className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center">
-            <ChevronLeft size={20} />
-          </button>
-          <button className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center">
-            <ChevronRight size={20} />
-          </button>
-        </div>
+
+            <div>
+              <div className="bg-white rounded-3xl shadow-sm p-6 sticky top-6">
+                <div className="aspect-video bg-gray-100 rounded-xl mb-6">
+                  <img
+                    src={courseDetails.image}
+                    alt={courseDetails.title}
+                    className="w-full h-full object-cover rounded-xl"
+                  />
+                </div>
+                
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <span className="text-2xl font-bold">₹{courseDetails.price}</span>
+                    <span className="text-gray-400 line-through ml-2">₹{courseDetails.originalPrice}</span>
+                  </div>
+                  <span className="text-green-500 font-medium">75% OFF</span>
+                </div>
+
+                <button 
+                  onClick={handleEnrollClick}
+                  className="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 rounded-full font-medium hover:shadow-lg transition-all duration-300 mb-4"
+                >
+                  {user ? 'Enroll Now' : 'Login to Enroll'}
+                </button>
+
+                <p className="text-center text-sm text-gray-500">30-Day Money-Back Guarantee</p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* Certificate Section - Only show if not enrolled */}
+      {!isEnrolled && (
+        <div className="max-w-6xl mx-auto px-6 py-12">
+          <div className="grid md:grid-cols-2 gap-8 items-center bg-gray-50 rounded-3xl p-8">
+            <img
+              src="https://cdn3d.iconscout.com/3d/premium/thumb/certificate-5856337-4892699.png"
+              alt="Certificate"
+              className="w-full max-w-md mx-auto"
+            />
+            <div>
+              <h2 className="text-3xl font-bold mb-4">
+                Earn a carrier <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-pink-500">certificate</span>
+              </h2>
+              <p className="text-gray-600">
+                You are encouraged to add this credential to your LinkedIn profile, résumé, or CV, and
+                share it on professional networks or during performance evaluations
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Testimonials - Only show if not enrolled */}
+      {!isEnrolled && (
+        <div className="max-w-6xl mx-auto px-6 py-12">
+          <h2 className="text-2xl font-bold mb-8">Featured review</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <div key={index} className="bg-white rounded-3xl p-6 shadow-sm">
+                <h3 className="text-lg font-bold mb-4">"{testimonial.quote}"</h3>
+                <p className="text-gray-600 mb-6">"{testimonial.text}"</p>
+                <div className="flex items-center gap-3">
+                  <img
+                    src={testimonial.avatar}
+                    alt={testimonial.name}
+                    className="w-12 h-12 rounded-full"
+                  />
+                  <span className="text-gray-700">-{testimonial.name}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="flex justify-center gap-4 mt-8">
+            <button className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center">
+              <ChevronLeft size={20} />
+            </button>
+            <button className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center">
+              <ChevronRight size={20} />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Footer Banner */}
       <div className="bg-black text-white py-12 px-6">
