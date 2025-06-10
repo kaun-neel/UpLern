@@ -29,6 +29,45 @@ interface Profile {
 }
 
 class LocalDatabase {
+  constructor() {
+    this.initializeDemoData();
+  }
+
+  private initializeDemoData(): void {
+    // Check if demo users already exist
+    const users = this.getTable<User>('users');
+    const demoUserExists = users.find(user => user.email === 'demo@uplern.com');
+    
+    if (!demoUserExists) {
+      // Create demo users
+      const demoUsers: User[] = [
+        {
+          id: 'demo-user-1',
+          email: 'demo@uplern.com',
+          password: 'demo123',
+          first_name: 'Demo',
+          middle_name: '',
+          last_name: 'User',
+          phone: '9876543210',
+          created_at: new Date().toISOString()
+        },
+        {
+          id: 'demo-user-2',
+          email: 'john@uplern.com',
+          password: 'password123',
+          first_name: 'John',
+          middle_name: 'M',
+          last_name: 'Doe',
+          phone: '9876543211',
+          created_at: new Date().toISOString()
+        }
+      ];
+
+      users.push(...demoUsers);
+      this.setTable('users', users);
+    }
+  }
+
   private getStorageKey(table: string): string {
     return `uplern_${table}`;
   }
