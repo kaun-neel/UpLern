@@ -15,7 +15,7 @@ const PricingSection = () => {
         'Access to 100+ upcoming courses in 2025',
         'E-books worth ₹9,999'
       ],
-      buttonStyle: 'border-2 border-black hover:bg-black hover:text-white'
+      buttonStyle: 'border-2 border-black text-black hover:bg-black hover:text-white'
     },
     {
       name: 'Premium Plans',
@@ -30,7 +30,7 @@ const PricingSection = () => {
         'Access to 100+ upcoming courses in 2025',
         'E-books worth ₹9,999'
       ],
-      buttonStyle: 'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white'
+      buttonStyle: 'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white hover:shadow-lg'
     }
   ];
 
@@ -69,7 +69,7 @@ const PricingSection = () => {
               <div className="text-center">
                 <Link
                   to="/premium-pass"
-                  className={`w-full py-3 px-6 rounded-full font-medium transition-all duration-300 block ${plan.buttonStyle}`}
+                  className={`w-full py-3 px-6 rounded-full font-medium transition-all duration-300 block text-center ${plan.buttonStyle}`}
                 >
                   Enroll now
                 </Link>
