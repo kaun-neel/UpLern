@@ -361,58 +361,103 @@ const CoursesPage = () => {
             ))}
           </div>
 
-          {/* Premium Pass Banner */}
-          <div className="mt-16 bg-gradient-to-r from-purple-900 via-violet-900 to-purple-900 text-white rounded-3xl p-8 relative overflow-hidden">
-            {/* Background pattern */}
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute top-4 left-4 w-32 h-32 border border-white/20 rounded-full"></div>
-              <div className="absolute bottom-4 right-4 w-24 h-24 border border-white/20 rounded-full"></div>
-              <div className="absolute top-1/2 left-1/3 w-16 h-16 border border-white/20 rounded-full"></div>
-            </div>
-            
-            <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center">
-              <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="text-2xl font-bold">uplern</span>
-                  <span className="bg-violet-500 text-xs px-3 py-1 rounded-full font-medium">Premium</span>
+          {/* Premium Pass Banner - Updated Design */}
+          <div className="mt-16 relative overflow-hidden rounded-3xl">
+            {/* Purple gradient background */}
+            <div className="bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900 relative">
+              {/* Organic shapes background */}
+              <div className="absolute inset-0 overflow-hidden">
+                {/* Large organic shapes */}
+                <div className="absolute -top-20 -right-20 w-80 h-80 bg-purple-600/30 rounded-full"></div>
+                <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-purple-600/20 rounded-full"></div>
+                <div className="absolute top-1/2 right-1/4 w-40 h-40 bg-purple-500/25 rounded-full"></div>
+                
+                {/* Smaller decorative shapes */}
+                <div className="absolute top-20 left-1/4 w-16 h-16 bg-purple-400/30 rounded-2xl transform rotate-45"></div>
+                <div className="absolute bottom-20 right-1/3 w-12 h-12 bg-purple-300/40 rounded-full"></div>
+                <div className="absolute top-1/3 left-1/6 w-8 h-8 bg-purple-200/50 rounded-lg"></div>
+                
+                {/* Curved organic elements */}
+                <div className="absolute top-0 right-0 w-64 h-64">
+                  <svg viewBox="0 0 200 200" className="w-full h-full text-purple-500/20 fill-current">
+                    <path d="M50,100 Q100,50 150,100 Q100,150 50,100 Z" />
+                  </svg>
                 </div>
-                <h2 className="text-3xl font-bold mb-6">Premium Pass</h2>
-                <ul className="space-y-3 mb-8">
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-violet-400 rounded-full"></div>
-                    <span>Access to 13+ In-Depth Courses</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-violet-400 rounded-full"></div>
-                    <span>Lifetime Access</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-violet-400 rounded-full"></div>
-                    <span>Free access to all future courses</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-violet-400 rounded-full"></div>
-                    <span>Exclusive eBook</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-violet-400 rounded-full"></div>
-                    <span>And lot more</span>
-                  </li>
-                </ul>
-                <Link 
-                  to="/premium-pass"
-                  onClick={() => window.scrollTo(0, 0)}
-                  className="inline-block px-8 py-3 bg-violet-500 rounded-full hover:bg-violet-600 transition-colors font-medium"
-                >
-                  Explore Premium
-                </Link>
+                <div className="absolute bottom-0 left-0 w-48 h-48">
+                  <svg viewBox="0 0 200 200" className="w-full h-full text-purple-400/15 fill-current">
+                    <path d="M20,100 Q100,20 180,100 Q100,180 20,100 Z" />
+                  </svg>
+                </div>
               </div>
-              <div className="flex justify-center">
-                <img
-                  src="https://cdn3d.iconscout.com/3d/premium/thumb/rocket-launch-5856337-4892699.png"
-                  alt="Premium"
-                  className="w-64 h-64 object-contain"
-                />
+              
+              <div className="relative z-10 p-8 md:p-12">
+                <div className="grid md:grid-cols-2 gap-8 items-center">
+                  {/* Left Content */}
+                  <div className="text-white">
+                    <div className="flex items-center gap-3 mb-6">
+                      <span className="text-3xl font-bold">upLern</span>
+                      <div className="flex items-center gap-2 bg-purple-600/50 backdrop-blur-sm px-3 py-1 rounded-full">
+                        <div className="w-2 h-2 bg-white rounded-full"></div>
+                        <span className="text-sm font-medium">Premium Pass</span>
+                      </div>
+                    </div>
+                    
+                    <ul className="space-y-3 mb-8 text-lg">
+                      <li className="flex items-center gap-3">
+                        <div className="w-2 h-2 bg-purple-300 rounded-full"></div>
+                        <span>Access to 13+ In-Depth Courses</span>
+                      </li>
+                      <li className="flex items-center gap-3">
+                        <div className="w-2 h-2 bg-purple-300 rounded-full"></div>
+                        <span>Lifetime Access</span>
+                      </li>
+                      <li className="flex items-center gap-3">
+                        <div className="w-2 h-2 bg-purple-300 rounded-full"></div>
+                        <span>free access to all future course</span>
+                      </li>
+                      <li className="flex items-center gap-3">
+                        <div className="w-2 h-2 bg-purple-300 rounded-full"></div>
+                        <span>Exclusive eBook</span>
+                      </li>
+                      <li className="flex items-center gap-3">
+                        <div className="w-2 h-2 bg-purple-300 rounded-full"></div>
+                        <span>and lot <span className="font-semibold">more</span></span>
+                      </li>
+                    </ul>
+                    
+                    <Link 
+                      to="/premium-pass"
+                      onClick={() => window.scrollTo(0, 0)}
+                      className="inline-flex items-center gap-2 px-8 py-3 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full hover:bg-white/30 transition-all duration-300 font-medium"
+                    >
+                      <span>Explore</span>
+                      <div className="w-5 h-5 bg-white/30 rounded-full flex items-center justify-center">
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    </Link>
+                  </div>
+                  
+                  {/* Right Illustration */}
+                  <div className="flex justify-center relative">
+                    {/* Circular background for illustration */}
+                    <div className="w-80 h-80 bg-gradient-to-br from-purple-300/20 to-pink-300/20 rounded-full flex items-center justify-center relative">
+                      {/* Graduation cap illustration */}
+                      <div className="relative">
+                        <img
+                          src="https://cdn3d.iconscout.com/3d/premium/thumb/graduation-cap-5856337-4892699.png"
+                          alt="Graduation Cap"
+                          className="w-48 h-48 object-contain"
+                        />
+                        {/* Additional decorative elements around the cap */}
+                        <div className="absolute -top-4 -right-4 w-8 h-8 bg-yellow-400 rounded-full opacity-80"></div>
+                        <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-orange-400 rounded-full opacity-70"></div>
+                        <div className="absolute top-1/2 -right-8 w-4 h-4 bg-red-400 rounded-full opacity-60"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
