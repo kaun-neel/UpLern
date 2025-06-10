@@ -96,10 +96,21 @@ const LoginPage = () => {
           <button
             onClick={handleGoogleLogin}
             disabled={googleLoading}
-            className="w-full flex items-center justify-center gap-2 border border-gray-300 py-3 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-3 border border-gray-300 py-3 rounded-lg hover:bg-gray-50 hover:border-gray-400 hover:shadow-md transition-all duration-300 disabled:opacity-50 group"
           >
-            <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
-            {googleLoading ? 'Signing in...' : 'Continue with Google'}
+            <div className="relative">
+              <img 
+                src="https://www.google.com/favicon.ico" 
+                alt="Google" 
+                className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" 
+              />
+              {googleLoading && (
+                <div className="absolute inset-0 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+              )}
+            </div>
+            <span className="font-medium text-gray-700">
+              {googleLoading ? 'Connecting to Google...' : 'Continue with Google'}
+            </span>
           </button>
         </div>
 

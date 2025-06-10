@@ -97,10 +97,20 @@ class LocalDatabase {
     try {
       const users = this.getTable<User>('users');
       
-      // Check if user already exists
+      // Check if user already exists (but allow OAuth users to be recreated)
       const existingUser = users.find(user => user.email === userData.email);
-      if (existingUser) {
+      if (existingUser && userData.password !== 'google-oauth') {
         return { user: null, error: 'User already exists with this email' };
+      }
+
+      // If it's a Google OAuth user and they already exist, return the existing user
+      if (existingUser && userData.password === 'google-oauth') {
+        // Set current session
+        localStorage.setItem('uplern_current_user', JSON.stringify({
+          id: existingUser.id,
+          email: existingUser.email
+        }));
+        return { user: existingUser, error: null };
       }
 
       const newUser: User = {
