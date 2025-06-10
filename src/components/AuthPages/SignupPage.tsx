@@ -78,18 +78,6 @@ const SignupPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl w-full">
-        {/* Logo */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-3 mb-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-2xl flex items-center justify-center shadow-lg">
-              <span className="text-white font-bold text-2xl">U</span>
-            </div>
-            <span className="text-4xl font-bold bg-gradient-to-r from-violet-500 to-fuchsia-500 text-transparent bg-clip-text">
-              uplern
-            </span>
-          </div>
-        </div>
-
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left Side - Form */}
           <div className="order-2 lg:order-1 flex justify-center">
