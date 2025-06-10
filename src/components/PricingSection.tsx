@@ -44,7 +44,7 @@ const PricingSection = () => {
           <p className="text-gray-600">Precision pricing, powerful results.</p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {plans.map((plan, index) => (
             <div key={index} className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-shadow">
               <div className="flex items-center justify-between mb-6">

@@ -20,7 +20,7 @@ const CoursesSection = () => {
     },
     {
       title: 'UI/UX Designing',
-      icon: <Figma className="text-black\" size={32} />,
+      icon: <Figma className="text-black" size={32} />,
       topics: [
         'Introduction to UI/UX Design',
         'User Research and Analysis',
@@ -67,18 +67,30 @@ const CoursesSection = () => {
               
               <h3 className="text-xl font-bold text-center mb-4">{course.title}</h3>
               
-              <ul className="space-y-2 mb-6">
-                {course.topics.map((topic, i) => (
-                  <li key={i} className="flex items-start">
-                    <span className="text-gray-500 mr-2">•</span>
-                    <span className="text-sm">{topic}</span>
-                  </li>
-                ))}
-              </ul>
-              
-              <p className="text-sm text-gray-700 mt-auto mb-6">
-                {course.description}
-              </p>
+              <div className="flex-1 flex flex-col justify-start">
+                {course.topics.length > 0 ? (
+                  <ul className="space-y-2 mb-6">
+                    {course.topics.map((topic, i) => (
+                      <li key={i} className="flex items-start">
+                        <span className="text-gray-500 mr-2">•</span>
+                        <span className="text-sm">{topic}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <div className="mb-6 flex-1 flex items-start">
+                    <p className="text-sm text-gray-700">
+                      {course.description}
+                    </p>
+                  </div>
+                )}
+                
+                {course.topics.length > 0 && (
+                  <p className="text-sm text-gray-700 mb-6">
+                    {course.description}
+                  </p>
+                )}
+              </div>
               
               <Link 
                 to={course.path}
