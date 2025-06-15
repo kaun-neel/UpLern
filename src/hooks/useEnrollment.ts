@@ -58,19 +58,6 @@ export const useEnrollment = () => {
     loadUserEnrollments();
   }, [loadUserEnrollments]);
 
-  // Listen for storage changes to update enrollments in real-time
-  useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'uplern_enrollments' && user) {
-        console.log('Enrollment data changed, reloading...');
-        loadUserEnrollments();
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, [user, loadUserEnrollments]);
-
   const isEnrolledInCourse = async (courseId: string): Promise<boolean> => {
     if (!user) return false;
 
