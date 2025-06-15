@@ -115,12 +115,6 @@ const LoginPage = () => {
         </div>
 
         <div className="mt-6 text-center text-sm">
-          <span className="text-gray-600">Demo credentials:</span>
-          <br />
-          <span className="text-gray-500">Email: demo@uplern.com | Password: demo123</span>
-        </div>
-
-        <div className="mt-4 text-center text-sm">
           <span className="text-gray-600">You don't have an account? </span>
           <Link to="/signup" className="text-violet-600 hover:text-violet-700 font-medium">
             Sign Up
