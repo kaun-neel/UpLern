@@ -54,8 +54,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         const { data: { session } } = await supabase.auth.getSession();
         
         if (session?.user) {
-          const { user: userData } = await localDB.getCurrentUser();
-          setUser(userData);
+          await handleUserSession(session.user);
         }
       } catch (error) {
         console.log('Supabase not configured, using fallback auth');
@@ -72,8 +71,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         console.log('Auth state changed:', event, session?.user?.id);
         
         if (session?.user) {
-          const { user: userData } = await localDB.getCurrentUser();
-          setUser(userData);
+          await handleUserSession(session.user);
         } else {
           setUser(null);
         }
@@ -85,6 +83,62 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return () => subscription.unsubscribe();
   }, []);
 
+  const handleUserSession = async (authUser: any) => {
+    try {
+      // Try to get user data from our custom users table
+      const { data: userData, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', authUser.id)
+        .single();
+
+      if (error && error.code === 'PGRST116') {
+        // User doesn't exist in our custom table, create them
+        console.log('Creating new user profile for OAuth user');
+        
+        // Extract name parts from user metadata
+        const fullName = authUser.user_metadata?.full_name || authUser.email.split('@')[0];
+        const nameParts = fullName.split(' ');
+        const firstName = nameParts[0] || 'User';
+        const lastName = nameParts.slice(1).join(' ') || '';
+
+        const newUserData = {
+          id: authUser.id,
+          email: authUser.email,
+          first_name: firstName,
+          middle_name: '',
+          last_name: lastName,
+          phone: authUser.user_metadata?.phone || '0000000000'
+        };
+
+        const { data: createdUser, error: createError } = await supabase
+          .from('users')
+          .insert([newUserData])
+          .select()
+          .single();
+
+        if (createError) {
+          console.error('Error creating user profile:', createError);
+          return;
+        }
+
+        setUser(createdUser);
+      } else if (userData) {
+        // User exists, set the user data
+        setUser(userData);
+      }
+    } catch (error) {
+      console.error('Error handling user session:', error);
+      // Fallback to local database
+      try {
+        const { user: userData } = await localDB.getCurrentUser();
+        setUser(userData);
+      } catch (fallbackError) {
+        console.error('Fallback auth also failed:', fallbackError);
+      }
+    }
+  };
+
   const signUp = async (userData: {
     email: string;
     password: string;
@@ -93,19 +147,93 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     last_name: string;
     phone: string;
   }) => {
-    const { user: newUser, error } = await localDB.signUp(userData);
-    if (newUser) {
-      setUser(newUser);
+    try {
+      // Check if Supabase is properly configured
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+      
+      if (!supabaseUrl || !supabaseKey || supabaseUrl.includes('your-project') || supabaseKey.includes('your-anon-key')) {
+        // Use local database fallback
+        const { user: newUser, error } = await localDB.signUp(userData);
+        if (newUser) {
+          setUser(newUser);
+        }
+        return { error };
+      }
+
+      // Use Supabase auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: userData.email,
+        password: userData.password,
+      });
+
+      if (authError) {
+        return { error: authError.message };
+      }
+
+      if (authData.user) {
+        // Create user profile in our custom table
+        const userProfile = {
+          id: authData.user.id,
+          email: userData.email,
+          first_name: userData.first_name,
+          middle_name: userData.middle_name || '',
+          last_name: userData.last_name,
+          phone: userData.phone
+        };
+
+        const { data: createdUser, error: profileError } = await supabase
+          .from('users')
+          .insert([userProfile])
+          .select()
+          .single();
+
+        if (profileError) {
+          console.error('Error creating user profile:', profileError);
+          return { error: 'Failed to create user profile' };
+        }
+
+        setUser(createdUser);
+      }
+
+      return { error: null };
+    } catch (error) {
+      console.error('Sign up error:', error);
+      return { error: 'Sign up failed. Please try again.' };
     }
-    return { error };
   };
 
   const signIn = async (email: string, password: string) => {
-    const { user: signedInUser, error } = await localDB.signIn(email, password);
-    if (signedInUser) {
-      setUser(signedInUser);
+    try {
+      // Check if Supabase is properly configured
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+      
+      if (!supabaseUrl || !supabaseKey || supabaseUrl.includes('your-project') || supabaseKey.includes('your-anon-key')) {
+        // Use local database fallback
+        const { user: signedInUser, error } = await localDB.signIn(email, password);
+        if (signedInUser) {
+          setUser(signedInUser);
+        }
+        return { error };
+      }
+
+      // Use Supabase auth
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (authError) {
+        return { error: authError.message };
+      }
+
+      // The auth state change listener will handle setting the user
+      return { error: null };
+    } catch (error) {
+      console.error('Sign in error:', error);
+      return { error: 'Sign in failed. Please try again.' };
     }
-    return { error };
   };
 
   const signInWithGoogle = async () => {
@@ -177,11 +305,30 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const signOut = async () => {
-    const { error } = await localDB.signOut();
-    if (!error) {
-      setUser(null);
+    try {
+      // Check if Supabase is properly configured
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+      
+      if (!supabaseUrl || !supabaseKey || supabaseUrl.includes('your-project') || supabaseKey.includes('your-anon-key')) {
+        // Use local database fallback
+        const { error } = await localDB.signOut();
+        if (!error) {
+          setUser(null);
+        }
+        return { error };
+      }
+
+      // Use Supabase auth
+      const { error } = await supabase.auth.signOut();
+      if (!error) {
+        setUser(null);
+      }
+      return { error: error?.message || null };
+    } catch (error) {
+      console.error('Sign out error:', error);
+      return { error: 'Sign out failed. Please try again.' };
     }
-    return { error };
   };
 
   const value = {
