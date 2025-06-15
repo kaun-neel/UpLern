@@ -50,11 +50,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     // Get initial session
     const getInitialSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (session?.user) {
-        const { user: userData } = await localDB.getCurrentUser();
-        setUser(userData);
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session?.user) {
+          const { user: userData } = await localDB.getCurrentUser();
+          setUser(userData);
+        }
+      } catch (error) {
+        console.log('Supabase not configured, using fallback auth');
       }
       
       setLoading(false);
@@ -106,6 +110,52 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signInWithGoogle = async () => {
     try {
+      // Check if Supabase is properly configured
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+      
+      if (!supabaseUrl || !supabaseKey || supabaseUrl.includes('your-project') || supabaseKey.includes('your-anon-key')) {
+        // Fallback to demo Google auth
+        console.log('Using demo Google auth');
+        const { user: googleUser, error } = await googleAuth.signIn();
+        
+        if (error || !googleUser) {
+          return { error: error || 'Google sign-in failed' };
+        }
+
+        // Check if user already exists in our database
+        const existingUserResult = await localDB.signIn(googleUser.email, 'google-oauth');
+        
+        if (existingUserResult.user) {
+          // User exists, sign them in
+          setUser(existingUserResult.user);
+          return { error: null };
+        }
+
+        // User doesn't exist, create new account
+        const googleUserData = {
+          email: googleUser.email,
+          password: 'google-oauth', // Special password for OAuth users
+          first_name: googleUser.given_name || googleUser.name.split(' ')[0] || 'User',
+          middle_name: '',
+          last_name: googleUser.family_name || googleUser.name.split(' ').slice(1).join(' ') || '',
+          phone: '0000000000' // Default phone for OAuth users
+        };
+
+        const { user: newUser, error: signUpError } = await localDB.signUp(googleUserData);
+        
+        if (signUpError) {
+          return { error: signUpError };
+        }
+
+        if (newUser) {
+          setUser(newUser);
+        }
+
+        return { error: null };
+      }
+
+      // Use real Supabase OAuth
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
