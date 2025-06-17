@@ -292,10 +292,19 @@ class SupabaseDatabase {
     phone: string;
   }): Promise<{ user: User | null; error: string | null }> {
     try {
-      // First, sign up with Supabase Auth
+      // Sign up with Supabase Auth - the user profile will be created automatically
+      // by the AuthProvider's onAuthStateChange listener after successful authentication
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: userData.email,
         password: userData.password,
+        options: {
+          data: {
+            first_name: userData.first_name,
+            middle_name: userData.middle_name || '',
+            last_name: userData.last_name,
+            phone: userData.phone,
+          }
+        }
       });
 
       if (authError) {
@@ -306,26 +315,20 @@ class SupabaseDatabase {
         return { user: null, error: 'Failed to create user account' };
       }
 
-      // Create user record in our custom users table
-      const { data: user, error: userError } = await supabase
-        .from('users')
-        .insert({
-          id: authData.user.id,
-          email: userData.email,
-          first_name: userData.first_name,
-          middle_name: userData.middle_name || '',
-          last_name: userData.last_name,
-          phone: userData.phone,
-        })
-        .select()
-        .single();
+      // Return a temporary user object - the actual user record will be created
+      // by the auth state change handler once the session is established
+      const tempUser: User = {
+        id: authData.user.id,
+        email: userData.email,
+        first_name: userData.first_name,
+        middle_name: userData.middle_name || '',
+        last_name: userData.last_name,
+        phone: userData.phone,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
 
-      if (userError) {
-        console.error('Error creating user record:', userError);
-        return { user: null, error: 'Failed to create user profile' };
-      }
-
-      return { user, error: null };
+      return { user: tempUser, error: null };
     } catch (error) {
       console.error('Sign up error:', error);
       return { user: null, error: 'Failed to create account' };
