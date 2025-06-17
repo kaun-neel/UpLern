@@ -5,10 +5,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --primary: #6d28d9;
+  --primary: #7c3aed;
   --secondary: #8b5cf6;
-  --accent: #ec4899;
-  --background: #f5f3ff;
+  --accent: #a855f7;
+  --background: #f3f4f6;
 }
 
 body {
@@ -19,11 +19,11 @@ body {
 }
 
 .gradient-text {
-  @apply bg-gradient-to-r from-violet-500 to-pink-500 text-transparent bg-clip-text;
+  @apply bg-gradient-to-r from-purple-600 to-indigo-600 text-transparent bg-clip-text;
 }
 
 .gradient-button {
-  @apply bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white;
+  @apply bg-gradient-to-r from-purple-500 to-indigo-500 text-white;
 }
 
 .floating {
@@ -69,7 +69,7 @@ body {
   left: 0;
   width: 100%;
   height: 60px;
-  background: linear-gradient(to right, #f9e1e7, #e6e6ff);
+  background: linear-gradient(to right, #e0e7ff, #ddd6fe);
   border-radius: 0 0 24px 24px;
   z-index: 0;
 }
@@ -92,7 +92,7 @@ body {
 }
 
 .enroll-button {
-  @apply bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-6 rounded-full transition-all duration-300;
+  @apply bg-purple-500 hover:bg-purple-600 text-white font-medium py-2 px-6 rounded-full transition-all duration-300;
 }
 
 /* Enhanced floating animation for signup page */

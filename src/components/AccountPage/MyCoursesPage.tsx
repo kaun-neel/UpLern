@@ -85,7 +85,7 @@ const MyCoursesPage = () => {
         </div>
         <Link
           to="/courses"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white rounded-full text-sm font-medium hover:shadow-lg transition-all duration-300"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-full text-sm font-medium hover:shadow-lg transition-all duration-300"
         >
           <BookOpen size={16} />
           Browse Courses
@@ -94,8 +94,8 @@ const MyCoursesPage = () => {
 
       {enrollments.length === 0 ? (
         <div className="text-center py-16">
-          <div className="w-24 h-24 bg-gradient-to-br from-violet-100 to-fuchsia-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <BookOpen className="w-12 h-12 text-violet-500" />
+          <div className="w-24 h-24 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <BookOpen className="w-12 h-12 text-purple-500" />
           </div>
           <h3 className="text-2xl font-semibold text-gray-900 mb-3">Start Your Learning Journey</h3>
           <p className="text-gray-600 mb-8 max-w-md mx-auto">
@@ -104,14 +104,14 @@ const MyCoursesPage = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/courses"
-              className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white rounded-full font-medium hover:shadow-lg transition-all duration-300"
+              className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-full font-medium hover:shadow-lg transition-all duration-300"
             >
               <Play size={16} />
               Explore Courses
             </Link>
             <Link
               to="/premium-pass"
-              className="inline-flex items-center gap-2 px-8 py-3 border-2 border-violet-300 text-violet-600 rounded-full font-medium hover:bg-violet-50 transition-colors"
+              className="inline-flex items-center gap-2 px-8 py-3 border-2 border-purple-300 text-purple-600 rounded-full font-medium hover:bg-purple-50 transition-colors"
             >
               <Award size={16} />
               Premium Pass
@@ -122,13 +122,13 @@ const MyCoursesPage = () => {
         <>
           {/* Learning Stats */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <div className="bg-gradient-to-br from-violet-50 to-violet-100 rounded-xl p-6 border border-violet-200">
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200">
               <div className="flex items-center justify-between mb-2">
-                <BookOpen className="w-8 h-8 text-violet-600" />
-                <TrendingUp className="w-5 h-5 text-violet-500" />
+                <BookOpen className="w-8 h-8 text-purple-600" />
+                <TrendingUp className="w-5 h-5 text-purple-500" />
               </div>
-              <div className="text-2xl font-bold text-violet-900">{enrollments.length}</div>
-              <div className="text-sm text-violet-700 font-medium">Total Courses</div>
+              <div className="text-2xl font-bold text-purple-900">{enrollments.length}</div>
+              <div className="text-sm text-purple-700 font-medium">Total Courses</div>
             </div>
             
             <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border border-green-200">
@@ -167,9 +167,9 @@ const MyCoursesPage = () => {
 
           {/* Premium Pass Status */}
           {hasPremiumPass && (
-            <div className="mb-8 p-6 bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl border border-purple-200">
+            <div className="mb-8 p-6 bg-gradient-to-r from-purple-100 to-indigo-100 rounded-2xl border border-purple-200">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center">
                   <Award className="w-8 h-8 text-white" />
                 </div>
                 <div>
@@ -183,7 +183,7 @@ const MyCoursesPage = () => {
           {/* Courses List */}
           <div className="space-y-6">
             {enrollments.map((course) => (
-              <div key={course.id} className="border border-gray-200 rounded-2xl p-6 hover:shadow-lg hover:border-violet-200 transition-all duration-300 bg-gradient-to-r from-white to-gray-50">
+              <div key={course.id} className="border border-gray-200 rounded-2xl p-6 hover:shadow-lg hover:border-purple-200 transition-all duration-300 bg-gradient-to-r from-white to-gray-50">
                 <div className="grid lg:grid-cols-12 gap-6 items-center">
                   {/* Course Image and Basic Info */}
                   <div className="lg:col-span-5">
@@ -228,7 +228,7 @@ const MyCoursesPage = () => {
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
                         <div
-                          className="bg-gradient-to-r from-violet-500 to-fuchsia-500 h-3 rounded-full transition-all duration-500 ease-out"
+                          className="bg-gradient-to-r from-purple-500 to-indigo-500 h-3 rounded-full transition-all duration-500 ease-out"
                           style={{ width: `${course.progress}%` }}
                         ></div>
                       </div>
@@ -256,13 +256,13 @@ const MyCoursesPage = () => {
                       <div className="flex gap-3">
                         <Link
                           to={`/courses/${course.course_id}`}
-                          className="flex-1 px-4 py-2.5 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
+                          className="flex-1 px-4 py-2.5 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
                         >
                           <Play size={14} />
                           {course.status === 'completed' ? 'Review' : 'Continue'}
                         </Link>
                         {course.status === 'completed' && (
-                          <button className="px-4 py-2.5 border-2 border-violet-300 text-violet-600 rounded-lg text-sm font-medium hover:bg-violet-50 transition-colors flex items-center gap-2">
+                          <button className="px-4 py-2.5 border-2 border-purple-300 text-purple-600 rounded-lg text-sm font-medium hover:bg-purple-50 transition-colors flex items-center gap-2">
                             <Award size={14} />
                             Certificate
                           </button>

@@ -91,7 +91,7 @@ const AccountPage = () => {
                       onClick={() => setActiveTab(item.key)}
                       className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                         activeTab === item.key
-                          ? 'bg-violet-50 text-violet-600'
+                          ? 'bg-purple-50 text-purple-600'
                           : 'hover:bg-gray-50 text-gray-700'
                       }`}
                     >
@@ -118,7 +118,7 @@ const AccountPage = () => {
                     <input
                       type="text"
                       value={profile.first_name}
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       readOnly
                     />
                   </div>
@@ -130,7 +130,7 @@ const AccountPage = () => {
                     <input
                       type="text"
                       value={profile.middle_name}
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       readOnly
                     />
                   </div>
@@ -142,7 +142,7 @@ const AccountPage = () => {
                     <input
                       type="text"
                       value={profile.last_name}
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       readOnly
                     />
                   </div>
@@ -156,7 +156,7 @@ const AccountPage = () => {
                       <input
                         type="tel"
                         value={profile.phone}
-                        className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                        className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                         readOnly
                       />
                     </div>
@@ -169,14 +169,14 @@ const AccountPage = () => {
                     <input
                       type="email"
                       value={profile.email}
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       readOnly
                     />
                   </div>
                 </div>
 
                 <div className="mt-8">
-                  <button className="px-6 py-3 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white hover:shadow-lg transition-all duration-300">
+                  <button className="px-6 py-3 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 text-white hover:shadow-lg transition-all duration-300">
                     Edit Profile
                   </button>
                 </div>

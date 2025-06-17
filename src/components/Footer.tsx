@@ -26,10 +26,10 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-md bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-md bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center">
                 <GraduationCap className="text-white" size={24} />
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-violet-500 to-fuchsia-500 text-transparent bg-clip-text">
+              <span className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-indigo-500 text-transparent bg-clip-text">
                 uplern
               </span>
             </div>
@@ -37,16 +37,16 @@ const Footer = () => {
               Uplern is an online education platform dedicated to helping professionals acquire new skills and advance their careers.
             </p>
             <div className="flex gap-3">
-              <a href="#" className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-violet-100 transition-colors">
+              <a href="#" className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-purple-100 transition-colors">
                 <Facebook size={16} className="text-gray-700" />
               </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-violet-100 transition-colors">
+              <a href="#" className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-purple-100 transition-colors">
                 <Twitter size={16} className="text-gray-700" />
               </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-violet-100 transition-colors">
+              <a href="#" className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-purple-100 transition-colors">
                 <Instagram size={16} className="text-gray-700" />
               </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-violet-100 transition-colors">
+              <a href="#" className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-purple-100 transition-colors">
                 <Linkedin size={16} className="text-gray-700" />
               </a>
             </div>
@@ -59,7 +59,7 @@ const Footer = () => {
                 <li key={link.name}>
                   <Link 
                     to={link.path}
-                    className="text-gray-600 hover:text-violet-600 transition-colors"
+                    className="text-gray-600 hover:text-purple-600 transition-colors"
                     onClick={() => window.scrollTo(0, 0)}
                   >
                     {link.name}
@@ -76,7 +76,7 @@ const Footer = () => {
                 <li key={category.name}>
                   <Link 
                     to={category.path}
-                    className="text-gray-600 hover:text-violet-600 transition-colors"
+                    className="text-gray-600 hover:text-purple-600 transition-colors"
                     onClick={() => window.scrollTo(0, 0)}
                   >
                     {category.name}
@@ -90,18 +90,18 @@ const Footer = () => {
             <h3 className="text-lg font-bold mb-4">Contact Info</h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
-                <MapPin className="text-violet-500 mt-1" size={18} />
+                <MapPin className="text-purple-500 mt-1" size={18} />
                 <span className="text-gray-600">123 Education Ave, Learning City, ED 54321</span>
               </li>
               <li className="flex items-center gap-3">
-                <Mail className="text-violet-500" size={18} />
-                <a href="mailto:info@uplern.com" className="text-gray-600 hover:text-violet-600 transition-colors">
+                <Mail className="text-purple-500" size={18} />
+                <a href="mailto:info@uplern.com" className="text-gray-600 hover:text-purple-600 transition-colors">
                   info@uplern.com
                 </a>
               </li>
               <li className="flex items-center gap-3">
-                <Phone className="text-violet-500" size={18} />
-                <a href="tel:+11234567890" className="text-gray-600 hover:text-violet-600 transition-colors">
+                <Phone className="text-purple-500" size={18} />
+                <a href="tel:+11234567890" className="text-gray-600 hover:text-purple-600 transition-colors">
                   +1 (123) 456-7890
                 </a>
               </li>

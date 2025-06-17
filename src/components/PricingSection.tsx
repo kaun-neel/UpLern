@@ -15,7 +15,8 @@ const PricingSection = () => {
         'Access to 100+ upcoming courses in 2025',
         'E-books worth ₹9,999'
       ],
-      buttonStyle: 'border-2 border-black text-black hover:bg-black hover:text-white'
+      buttonStyle: 'border-2 border-black text-black hover:bg-black hover:text-white',
+      link: '/premium-pass'
     },
     {
       name: 'Premium Plans',
@@ -30,7 +31,8 @@ const PricingSection = () => {
         'Access to 100+ upcoming courses in 2025',
         'E-books worth ₹9,999'
       ],
-      buttonStyle: 'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white hover:shadow-lg'
+      buttonStyle: 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white hover:shadow-lg',
+      link: '/premium-pass'
     }
   ];
 
@@ -61,20 +63,20 @@ const PricingSection = () => {
                 <ul className="space-y-4 mb-8 flex-1">
                   {plan.features.map((feature, i) => (
                     <li key={i} className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 bg-violet-500 rounded-full"></span>
+                      <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
                       <span className="text-gray-700">{feature}</span>
                     </li>
                   ))}
                   {/* Add extra spacing for Basic plan to align buttons */}
                   {index === 0 && (
                     <li className="flex items-center gap-2 opacity-0 pointer-events-none">
-                      <span className="w-1.5 h-1.5 bg-violet-500 rounded-full"></span>
+                      <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
                       <span className="text-gray-700">Spacer item</span>
                     </li>
                   )}
                   {index === 0 && (
                     <li className="flex items-center gap-2 opacity-0 pointer-events-none">
-                      <span className="w-1.5 h-1.5 bg-violet-500 rounded-full"></span>
+                      <span className="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
                       <span className="text-gray-700">Spacer item</span>
                     </li>
                   )}
@@ -82,7 +84,7 @@ const PricingSection = () => {
 
                 <div className="text-center mt-auto">
                   <Link
-                    to="/courses"
+                    to={plan.link}
                     onClick={() => window.scrollTo(0, 0)}
                     className={`w-full py-3 px-6 rounded-full font-medium transition-all duration-300 block text-center ${plan.buttonStyle}`}
                   >

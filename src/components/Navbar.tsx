@@ -25,10 +25,10 @@ const Navbar = () => {
   return (
     <header className="py-4 px-6 md:px-12 flex justify-between items-center">
       <Link to="/" className="flex items-center gap-2">
-        <div className="w-10 h-10 rounded-md bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center">
+        <div className="w-10 h-10 rounded-md bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center">
           <GraduationCap className="text-white" size={24} />
         </div>
-        <span className="text-2xl font-bold bg-gradient-to-r from-violet-500 to-fuchsia-500 text-transparent bg-clip-text">
+        <span className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-indigo-500 text-transparent bg-clip-text">
           uplern
         </span>
       </Link>
@@ -45,7 +45,7 @@ const Navbar = () => {
             <li key={item.name}>
               <Link
                 to={item.path}
-                className="text-gray-800 hover:text-violet-600 transition-colors duration-300"
+                className="text-gray-800 hover:text-purple-600 transition-colors duration-300"
               >
                 {item.name}
               </Link>
@@ -59,7 +59,7 @@ const Navbar = () => {
           <>
             <Link
               to="/account"
-              className="w-10 h-10 flex items-center justify-center rounded-full border border-violet-300 text-gray-700 hover:bg-gray-50 transition-colors duration-300"
+              className="w-10 h-10 flex items-center justify-center rounded-full border border-purple-300 text-gray-700 hover:bg-gray-50 transition-colors duration-300"
             >
               <User size={20} />
             </Link>
@@ -74,13 +74,13 @@ const Navbar = () => {
           <>
             <Link 
               to="/login"
-              className="px-5 py-2 rounded-full border border-violet-300 text-gray-700 hover:bg-gray-50 transition-colors duration-300"
+              className="px-5 py-2 rounded-full border border-purple-300 text-gray-700 hover:bg-gray-50 transition-colors duration-300"
             >
               Log in
             </Link>
             <Link
               to="/signup"
-              className="px-5 py-2 rounded-full bg-gradient-to-r from-cyan-400 to-teal-500 text-white hover:shadow-md transition-all duration-300"
+              className="px-5 py-2 rounded-full bg-gradient-to-r from-purple-400 to-indigo-500 text-white hover:shadow-md transition-all duration-300"
             >
               Sign up
             </Link>

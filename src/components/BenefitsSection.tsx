@@ -6,22 +6,22 @@ const BenefitsSection = () => {
     {
       title: 'LEARN AT YOUR PACE',
       description: 'Flexible courses designed to fit your schedule anytime, anywhere.',
-      icon: <Clock className="text-indigo-600" size={32} />
+      icon: <Clock className="text-purple-600" size={32} />
     },
     {
       title: 'LIFETIME ACCESS',
       description: 'Revisit your courses anytime because learning never stop.',
-      icon: <Infinity className="text-indigo-600" size={32} />
+      icon: <Infinity className="text-purple-600" size={32} />
     },
     {
       title: 'AFFORDABLE',
       description: "High quality education that is accessible anytime.",
-      icon: <DollarSign className="text-indigo-600" size={32} />
+      icon: <DollarSign className="text-purple-600" size={32} />
     },
     {
       title: 'CERTIFICATION',
       description: 'Earn credible certificates to boost your resume and career.',
-      icon: <Award className="text-indigo-600" size={32} />
+      icon: <Award className="text-purple-600" size={32} />
     }
   ];
 
@@ -42,7 +42,7 @@ const BenefitsSection = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {benefits.map((benefit, index) => (
             <div key={index} className="benefit-card">
-              <div className="w-16 h-16 rounded-full bg-pink-50 flex items-center justify-center mb-4 z-10 relative">
+              <div className="w-16 h-16 rounded-full bg-purple-50 flex items-center justify-center mb-4 z-10 relative">
                 {benefit.icon}
               </div>
               <h3 className="font-bold text-lg mb-3 z-10 relative text-center">{benefit.title}</h3>

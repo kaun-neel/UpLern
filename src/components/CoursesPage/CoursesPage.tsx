@@ -17,7 +17,7 @@ const topCourses = [
     price: 599,
     originalPrice: 2450,
     badge: 'EXCLUSIVE LECTURES',
-    color: 'from-blue-500 to-blue-700'
+    color: 'from-purple-500 to-indigo-700'
   },
   {
     id: 'javascript',
@@ -29,7 +29,7 @@ const topCourses = [
     price: 599,
     originalPrice: 2450,
     badge: 'DEVELOP YOUR TECHNICAL DISTINCT',
-    color: 'from-yellow-500 to-orange-600'
+    color: 'from-indigo-500 to-purple-600'
   },
   {
     id: 'angular',
@@ -41,7 +41,7 @@ const topCourses = [
     price: 599,
     originalPrice: 2450,
     badge: 'CREATIVE COURSE',
-    color: 'from-red-500 to-red-700'
+    color: 'from-purple-500 to-pink-600'
   },
   {
     id: 'chat-gpt',
@@ -53,7 +53,7 @@ const topCourses = [
     price: 599,
     originalPrice: 2450,
     badge: 'ARTIFICIAL INTELLIGENCE COURSE',
-    color: 'from-gray-600 to-gray-800'
+    color: 'from-indigo-600 to-purple-800'
   }
 ];
 
@@ -239,7 +239,7 @@ const CoursesPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
       {/* Hero Section with Welcome Background */}
       <div className="relative overflow-hidden">
         {/* Welcome Background Text */}
@@ -250,14 +250,14 @@ const CoursesPage = () => {
         </div>
 
         {/* Floating decorative elements */}
-        <div className="absolute top-20 right-20 w-16 h-16 bg-pink-200 rounded-2xl opacity-60"></div>
-        <div className="absolute bottom-40 left-20 w-20 h-20 bg-blue-200 rounded-full opacity-40"></div>
-        <div className="absolute top-1/2 right-1/3 w-12 h-12 bg-green-200 rounded-xl opacity-50"></div>
+        <div className="absolute top-20 right-20 w-16 h-16 bg-purple-200 rounded-2xl opacity-60"></div>
+        <div className="absolute bottom-40 left-20 w-20 h-20 bg-indigo-200 rounded-full opacity-40"></div>
+        <div className="absolute top-1/2 right-1/3 w-12 h-12 bg-purple-300 rounded-xl opacity-50"></div>
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 py-16">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-sm text-gray-600 mb-8">
-            <Link to="/" onClick={() => window.scrollTo(0, 0)} className="hover:text-violet-600 transition-colors">Home</Link>
+            <Link to="/" onClick={() => window.scrollTo(0, 0)} className="hover:text-purple-600 transition-colors">Home</Link>
             <span>•</span>
             <span>All Courses</span>
           </div>
@@ -353,7 +353,7 @@ const CoursesPage = () => {
                     onClick={() => goToSlide(index)}
                     className={`h-3 rounded-full transition-all duration-300 ${
                       index === currentSlide 
-                        ? 'bg-violet-600 w-8' 
+                        ? 'bg-purple-600 w-8' 
                         : 'bg-gray-300 hover:bg-gray-400 w-3'
                     }`}
                   />
@@ -376,7 +376,7 @@ const CoursesPage = () => {
               return (
                 <div 
                   key={index} 
-                  className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 hover:shadow-xl hover:border-violet-200 transition-all duration-300 cursor-pointer group relative"
+                  className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 hover:shadow-xl hover:border-purple-200 transition-all duration-300 cursor-pointer group relative"
                   onClick={() => handleCourseClick(course.id)}
                 >
                   {enrolled && (
@@ -395,7 +395,7 @@ const CoursesPage = () => {
                       className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
-                  <h3 className="text-xl font-semibold mb-3 group-hover:text-violet-600 transition-colors">{course.title}</h3>
+                  <h3 className="text-xl font-semibold mb-3 group-hover:text-purple-600 transition-colors">{course.title}</h3>
                   <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
                     <div className="flex items-center gap-1">
                       <BookOpen size={16} />
@@ -427,7 +427,7 @@ const CoursesPage = () => {
                     ) : (
                       <button 
                         onClick={(e) => handleEnrollClick(e, course.id, course.title)}
-                        className="px-4 py-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white rounded-full text-sm font-medium hover:shadow-lg hover:scale-105 transition-all duration-300"
+                        className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-full text-sm font-medium hover:shadow-lg hover:scale-105 transition-all duration-300"
                       >
                         Enroll Now
                       </button>
@@ -441,7 +441,7 @@ const CoursesPage = () => {
           {/* Premium Pass Banner - Updated Design */}
           <div className="mt-16 relative overflow-hidden rounded-3xl">
             {/* Purple gradient background */}
-            <div className="bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900 relative">
+            <div className="bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 relative">
               {/* Organic shapes background */}
               <div className="absolute inset-0 overflow-hidden">
                 {/* Large organic shapes */}
@@ -518,7 +518,7 @@ const CoursesPage = () => {
                   {/* Right Illustration */}
                   <div className="flex justify-center relative">
                     {/* Circular background for illustration */}
-                    <div className="w-80 h-80 bg-gradient-to-br from-purple-300/20 to-pink-300/20 rounded-full flex items-center justify-center relative">
+                    <div className="w-80 h-80 bg-gradient-to-br from-purple-300/20 to-indigo-300/20 rounded-full flex items-center justify-center relative">
                       {/* Graduation cap illustration */}
                       <div className="relative">
                         <img
@@ -546,13 +546,13 @@ const CoursesPage = () => {
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <h2 className="text-3xl md:text-4xl font-bold text-center md:text-left">
               Embrace Education,<br />
-              Reach <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">New</span>{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">Elevation</span>
+              Reach <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-400">New</span>{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">Elevation</span>
             </h2>
             <Link 
               to="/courses"
               onClick={() => window.scrollTo(0, 0)}
-              className="px-8 py-3 bg-blue-500 rounded-full hover:bg-blue-600 transition-colors font-medium flex items-center gap-2"
+              className="px-8 py-3 bg-purple-500 rounded-full hover:bg-purple-600 transition-colors font-medium flex items-center gap-2"
             >
               Start Learning
               <span className="text-xl">→</span>

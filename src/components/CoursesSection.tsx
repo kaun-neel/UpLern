@@ -114,7 +114,7 @@ const CoursesSection = () => {
           <Link
             to="/courses"
             onClick={handleNavigation}
-            className="px-6 py-3 rounded-full border border-indigo-300 text-indigo-600 hover:bg-indigo-50 transition-colors"
+            className="px-6 py-3 rounded-full border border-purple-300 text-purple-600 hover:bg-purple-50 transition-colors"
           >
             Browse courses
           </Link>
