@@ -59,8 +59,7 @@ const isSupabaseConfigured = () => {
 // Check if Google Auth is available (not in WebContainer environment)
 const isGoogleAuthAvailable = () => {
   return !window.location.hostname.includes('webcontainer-api.io') && 
-         !window.location.hostname.includes('local-credentialless') &&
-         !window.location.hostname.includes('localhost');
+         !window.location.hostname.includes('local-credentialless');
 };
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {

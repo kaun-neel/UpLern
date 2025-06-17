@@ -1,4 +1,4 @@
-// Google OAuth integration - disabled in WebContainer environment
+// Google OAuth integration
 declare global {
   interface Window {
     google: any;
@@ -26,14 +26,13 @@ class GoogleAuthService {
   // Check if we're in a WebContainer environment where Google OAuth won't work
   private isWebContainer(): boolean {
     return window.location.hostname.includes('webcontainer-api.io') || 
-           window.location.hostname.includes('local-credentialless') ||
-           window.location.hostname.includes('localhost');
+           window.location.hostname.includes('local-credentialless');
   }
 
   async initialize(): Promise<void> {
     if (this.isInitialized) return;
     
-    // Skip initialization in WebContainer environment
+    // Skip initialization in WebContainer environment (but allow localhost)
     if (this.isWebContainer()) {
       console.log('Google OAuth disabled in WebContainer environment');
       this.isInitialized = true;
@@ -88,7 +87,7 @@ class GoogleAuthService {
   }
 
   async signIn(): Promise<{ user: GoogleUser | null; error: string | null }> {
-    // Return error immediately in WebContainer environment
+    // Return error immediately in WebContainer environment (but allow localhost)
     if (this.isWebContainer()) {
       return { 
         user: null, 

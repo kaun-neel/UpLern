@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 
 const SignupPage = () => {
   const navigate = useNavigate();
-  const { signUp, signInWithGoogle } = useAuth();
+  const { signUp, signInWithGoogle, isGoogleAuthAvailable } = useAuth();
   const [formData, setFormData] = useState({
     firstName: '',
     middleName: '',
@@ -59,6 +59,11 @@ const SignupPage = () => {
   };
 
   const handleGoogleSignup = async () => {
+    if (!isGoogleAuthAvailable) {
+      toast.error('Google Sign-In is not available in this environment');
+      return;
+    }
+
     setGoogleLoading(true);
     try {
       const { error } = await signInWithGoogle();
@@ -200,27 +205,37 @@ const SignupPage = () => {
               </div>
 
               {/* Google Sign-in Button - Outside the main form card */}
-              <div className="mt-6 flex justify-center">
-                <button
-                  onClick={handleGoogleSignup}
-                  disabled={googleLoading}
-                  className="flex items-center justify-center gap-3 bg-white border-2 border-gray-200 py-3 px-8 rounded-xl hover:bg-gray-50 hover:border-gray-300 hover:shadow-lg transition-all duration-300 disabled:opacity-50 shadow-lg group"
-                >
-                  <div className="relative">
-                    <img 
-                      src="https://www.google.com/favicon.ico" 
-                      alt="Google" 
-                      className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" 
-                    />
-                    {googleLoading && (
-                      <div className="absolute inset-0 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                    )}
-                  </div>
-                  <span className="font-medium text-gray-700">
-                    {googleLoading ? 'Connecting to Google...' : 'Continue With Google'}
-                  </span>
-                </button>
-              </div>
+              {isGoogleAuthAvailable && (
+                <div className="mt-6 flex justify-center">
+                  <button
+                    onClick={handleGoogleSignup}
+                    disabled={googleLoading}
+                    className="flex items-center justify-center gap-3 bg-white border-2 border-gray-200 py-3 px-8 rounded-xl hover:bg-gray-50 hover:border-gray-300 hover:shadow-lg transition-all duration-300 disabled:opacity-50 shadow-lg group"
+                  >
+                    <div className="relative">
+                      <img 
+                        src="https://www.google.com/favicon.ico" 
+                        alt="Google" 
+                        className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" 
+                      />
+                      {googleLoading && (
+                        <div className="absolute inset-0 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                      )}
+                    </div>
+                    <span className="font-medium text-gray-700">
+                      {googleLoading ? 'Connecting to Google...' : 'Continue With Google'}
+                    </span>
+                  </button>
+                </div>
+              )}
+
+              {!isGoogleAuthAvailable && (
+                <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                  <p className="text-sm text-blue-800 text-center">
+                    Google Sign-In is not available in this environment. Please use email/password authentication.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 

@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { signIn, signInWithGoogle } = useAuth();
+  const { signIn, signInWithGoogle, isGoogleAuthAvailable } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -35,6 +35,11 @@ const LoginPage = () => {
   };
 
   const handleGoogleLogin = async () => {
+    if (!isGoogleAuthAvailable) {
+      toast.error('Google Sign-In is not available in this environment');
+      return;
+    }
+
     setGoogleLoading(true);
     try {
       const { error } = await signInWithGoogle();
@@ -92,27 +97,37 @@ const LoginPage = () => {
           </button>
         </form>
 
-        <div className="mt-6">
-          <button
-            onClick={handleGoogleLogin}
-            disabled={googleLoading}
-            className="w-full flex items-center justify-center gap-3 border border-gray-300 py-3 rounded-lg hover:bg-gray-50 hover:border-gray-400 hover:shadow-md transition-all duration-300 disabled:opacity-50 group"
-          >
-            <div className="relative">
-              <img 
-                src="https://www.google.com/favicon.ico" 
-                alt="Google" 
-                className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" 
-              />
-              {googleLoading && (
-                <div className="absolute inset-0 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-              )}
-            </div>
-            <span className="font-medium text-gray-700">
-              {googleLoading ? 'Connecting to Google...' : 'Continue with Google'}
-            </span>
-          </button>
-        </div>
+        {isGoogleAuthAvailable && (
+          <div className="mt-6">
+            <button
+              onClick={handleGoogleLogin}
+              disabled={googleLoading}
+              className="w-full flex items-center justify-center gap-3 border border-gray-300 py-3 rounded-lg hover:bg-gray-50 hover:border-gray-400 hover:shadow-md transition-all duration-300 disabled:opacity-50 group"
+            >
+              <div className="relative">
+                <img 
+                  src="https://www.google.com/favicon.ico" 
+                  alt="Google" 
+                  className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" 
+                />
+                {googleLoading && (
+                  <div className="absolute inset-0 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                )}
+              </div>
+              <span className="font-medium text-gray-700">
+                {googleLoading ? 'Connecting to Google...' : 'Continue with Google'}
+              </span>
+            </button>
+          </div>
+        )}
+
+        {!isGoogleAuthAvailable && (
+          <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <p className="text-sm text-blue-800 text-center">
+              Google Sign-In is not available in this environment. Please use email/password authentication.
+            </p>
+          </div>
+        )}
 
         <div className="mt-6 text-center text-sm">
           <span className="text-gray-600">You don't have an account? </span>
