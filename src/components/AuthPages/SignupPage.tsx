@@ -22,6 +22,32 @@ const SignupPage = () => {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Validate required fields
+    if (!formData.firstName.trim()) {
+      toast.error('First name is required');
+      return;
+    }
+    
+    if (!formData.lastName.trim()) {
+      toast.error('Last name is required');
+      return;
+    }
+    
+    if (!formData.phone.trim()) {
+      toast.error('Phone number is required');
+      return;
+    }
+    
+    if (!formData.email.trim()) {
+      toast.error('Email is required');
+      return;
+    }
+    
+    if (!formData.password) {
+      toast.error('Password is required');
+      return;
+    }
+    
     if (formData.password !== formData.confirmPassword) {
       toast.error('Passwords do not match');
       return;
@@ -36,12 +62,12 @@ const SignupPage = () => {
 
     try {
       const { error } = await signUp({
-        email: formData.email,
+        email: formData.email.trim(),
         password: formData.password,
-        first_name: formData.firstName,
-        middle_name: formData.middleName,
-        last_name: formData.lastName,
-        phone: formData.phone
+        first_name: formData.firstName.trim(),
+        middle_name: formData.middleName.trim(),
+        last_name: formData.lastName.trim(),
+        phone: formData.phone.trim()
       });
 
       if (error) {
@@ -49,8 +75,8 @@ const SignupPage = () => {
         return;
       }
 
-      toast.success('Account created successfully!');
-      navigate('/');
+      toast.success('Account created successfully! Please log in with your credentials.');
+      navigate('/login');
     } catch (error) {
       toast.error('Failed to create account. Please try again.');
     } finally {
@@ -99,7 +125,7 @@ const SignupPage = () => {
                   <div className="grid grid-cols-3 gap-3">
                     <input
                       type="text"
-                      placeholder="First Name"
+                      placeholder="First Name*"
                       value={formData.firstName}
                       onChange={(e) => setFormData({...formData, firstName: e.target.value})}
                       className="col-span-1 px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-violet-500 focus:border-transparent bg-white/80 backdrop-blur-sm text-sm"
@@ -116,7 +142,7 @@ const SignupPage = () => {
                     />
                     <input
                       type="text"
-                      placeholder="Last Name"
+                      placeholder="Last Name*"
                       value={formData.lastName}
                       onChange={(e) => setFormData({...formData, lastName: e.target.value})}
                       className="col-span-1 px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-violet-500 focus:border-transparent bg-white/80 backdrop-blur-sm text-sm"
@@ -129,7 +155,7 @@ const SignupPage = () => {
                     <span className="px-4 py-3 bg-gradient-to-r from-violet-100 to-pink-100 rounded-xl text-violet-700 font-medium text-sm">+91</span>
                     <input
                       type="tel"
-                      placeholder="9636xxx744"
+                      placeholder="Phone Number*"
                       value={formData.phone}
                       onChange={(e) => setFormData({...formData, phone: e.target.value})}
                       className="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-violet-500 focus:border-transparent bg-white/80 backdrop-blur-sm text-sm"
@@ -140,7 +166,7 @@ const SignupPage = () => {
 
                   <input
                     type="email"
-                    placeholder="Email address"
+                    placeholder="Email address*"
                     value={formData.email}
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-violet-500 focus:border-transparent bg-white/80 backdrop-blur-sm text-sm"
@@ -151,21 +177,23 @@ const SignupPage = () => {
                   <div className="grid grid-cols-2 gap-3">
                     <input
                       type="password"
-                      placeholder="Password"
+                      placeholder="Password*"
                       value={formData.password}
                       onChange={(e) => setFormData({...formData, password: e.target.value})}
                       className="px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-violet-500 focus:border-transparent bg-white/80 backdrop-blur-sm text-sm"
                       required
                       disabled={loading}
+                      minLength={6}
                     />
                     <input
                       type="password"
-                      placeholder="Confirm Password"
+                      placeholder="Confirm Password*"
                       value={formData.confirmPassword}
                       onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
                       className="px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-violet-500 focus:border-transparent bg-white/80 backdrop-blur-sm text-sm"
                       required
                       disabled={loading}
+                      minLength={6}
                     />
                   </div>
 

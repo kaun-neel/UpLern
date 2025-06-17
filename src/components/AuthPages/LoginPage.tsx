@@ -15,10 +15,22 @@ const LoginPage = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate required fields
+    if (!formData.email.trim()) {
+      toast.error('Email is required');
+      return;
+    }
+    
+    if (!formData.password) {
+      toast.error('Password is required');
+      return;
+    }
+    
     setLoading(true);
     
     try {
-      const { error } = await signIn(formData.email, formData.password);
+      const { error } = await signIn(formData.email.trim(), formData.password);
 
       if (error) {
         toast.error(error);
@@ -61,6 +73,11 @@ const LoginPage = () => {
       <div className="max-w-md w-full bg-white rounded-2xl shadow-lg p-8">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold">Log into your account</h2>
+          <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <p className="text-sm text-blue-800 font-medium">Demo Accounts:</p>
+            <p className="text-xs text-blue-700 mt-1">Email: demo@uplern.com, Password: demo123</p>
+            <p className="text-xs text-blue-700">Email: john@uplern.com, Password: john123</p>
+          </div>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-6">

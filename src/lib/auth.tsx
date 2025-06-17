@@ -1,6 +1,5 @@
-// Authentication context and hooks for Supabase with Google OAuth
+// Authentication context and hooks for local storage backend
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { supabase } from './supabase';
 import { localDB } from './database';
 import { googleAuth } from './googleAuth';
 
@@ -44,18 +43,6 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-// Check if Supabase is properly configured
-const isSupabaseConfigured = () => {
-  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-  const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-  
-  return supabaseUrl && 
-         supabaseKey && 
-         !supabaseUrl.includes('your-project') && 
-         !supabaseKey.includes('your-anon-key') &&
-         !supabaseUrl.includes('enogayinqluaqmczxchq'); // Exclude the demo URL
-};
-
 // Check if Google Auth is available (not in WebContainer environment)
 const isGoogleAuthAvailable = () => {
   return !window.location.hostname.includes('webcontainer-api.io') && 
@@ -68,109 +55,21 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [googleAuthAvailable] = useState(isGoogleAuthAvailable());
 
   useEffect(() => {
-    // Only set up Supabase auth if properly configured
-    if (!isSupabaseConfigured()) {
-      console.log('Supabase not properly configured, using demo auth system');
-      // Check for existing local session
-      const checkLocalSession = async () => {
-        try {
-          const { user: localUser } = await localDB.getCurrentUser();
-          if (localUser) {
-            setUser(localUser);
-          }
-        } catch (error) {
-          console.log('No local session found');
-        }
-        setLoading(false);
-      };
-      
-      checkLocalSession();
-      return;
-    }
-
-    // Get initial session
-    const getInitialSession = async () => {
+    // Check for existing local session
+    const checkLocalSession = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (session?.user) {
-          await handleUserSession(session.user);
+        const { user: localUser } = await localDB.getCurrentUser();
+        if (localUser) {
+          setUser(localUser);
         }
       } catch (error) {
-        console.log('Error getting initial session:', error);
+        console.log('No local session found');
       }
-      
       setLoading(false);
     };
-
-    getInitialSession();
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        console.log('Auth state changed:', event, session?.user?.id);
-        
-        if (session?.user) {
-          await handleUserSession(session.user);
-        } else {
-          setUser(null);
-        }
-        
-        setLoading(false);
-      }
-    );
-
-    return () => subscription.unsubscribe();
+    
+    checkLocalSession();
   }, []);
-
-  const handleUserSession = async (authUser: any) => {
-    try {
-      // Try to get user data from our custom users table
-      const { data: userData, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', authUser.id)
-        .single();
-
-      if (error && error.code === 'PGRST116') {
-        // User doesn't exist in our custom table, create them
-        console.log('Creating new user profile for OAuth user');
-        
-        // Extract name parts from user metadata
-        const fullName = authUser.user_metadata?.full_name || authUser.email.split('@')[0];
-        const nameParts = fullName.split(' ');
-        const firstName = nameParts[0] || 'User';
-        const lastName = nameParts.slice(1).join(' ') || '';
-
-        const newUserData = {
-          id: authUser.id,
-          email: authUser.email,
-          first_name: firstName,
-          middle_name: '',
-          last_name: lastName,
-          phone: authUser.user_metadata?.phone || '0000000000'
-        };
-
-        const { data: createdUser, error: createError } = await supabase
-          .from('users')
-          .insert([newUserData])
-          .select()
-          .single();
-
-        if (createError) {
-          console.error('Error creating user profile:', createError);
-          return;
-        }
-
-        setUser(createdUser);
-      } else if (userData) {
-        // User exists, set the user data
-        setUser(userData);
-      }
-    } catch (error) {
-      console.error('Error handling user session:', error);
-    }
-  };
 
   const signUp = async (userData: {
     email: string;
@@ -181,48 +80,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     phone: string;
   }) => {
     try {
-      if (!isSupabaseConfigured()) {
-        // Use local database fallback
-        const { user: newUser, error } = await localDB.signUp(userData);
-        if (newUser) {
-          setUser(newUser);
-        }
+      const { user: newUser, error } = await localDB.signUp(userData);
+      
+      if (error) {
         return { error };
       }
 
-      // Use Supabase auth
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: userData.email,
-        password: userData.password,
-      });
-
-      if (authError) {
-        return { error: authError.message };
-      }
-
-      if (authData.user) {
-        // Create user profile in our custom table
-        const userProfile = {
-          id: authData.user.id,
-          email: userData.email,
-          first_name: userData.first_name,
-          middle_name: userData.middle_name || '',
-          last_name: userData.last_name,
-          phone: userData.phone
-        };
-
-        const { data: createdUser, error: profileError } = await supabase
-          .from('users')
-          .insert([userProfile])
-          .select()
-          .single();
-
-        if (profileError) {
-          console.error('Error creating user profile:', profileError);
-          return { error: 'Failed to create user profile' };
-        }
-
-        setUser(createdUser);
+      if (newUser) {
+        // Don't automatically sign in after signup - user must login with credentials
+        console.log('Account created successfully. Please log in with your credentials.');
       }
 
       return { error: null };
@@ -234,26 +100,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signIn = async (email: string, password: string) => {
     try {
-      if (!isSupabaseConfigured()) {
-        // Use local database fallback
-        const { user: signedInUser, error } = await localDB.signIn(email, password);
-        if (signedInUser) {
-          setUser(signedInUser);
-        }
+      const { user: signedInUser, error } = await localDB.signIn(email, password);
+      
+      if (error) {
         return { error };
       }
 
-      // Use Supabase auth
-      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (authError) {
-        return { error: authError.message };
+      if (signedInUser) {
+        setUser(signedInUser);
       }
 
-      // The auth state change listener will handle setting the user
       return { error: null };
     } catch (error) {
       console.error('Sign in error:', error);
@@ -317,21 +173,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signOut = async () => {
     try {
-      if (!isSupabaseConfigured()) {
-        // Use local database fallback
-        const { error } = await localDB.signOut();
-        if (!error) {
-          setUser(null);
-        }
-        return { error };
-      }
-
-      // Use Supabase auth
-      const { error } = await supabase.auth.signOut();
+      const { error } = await localDB.signOut();
       if (!error) {
         setUser(null);
       }
-      return { error: error?.message || null };
+      return { error };
     } catch (error) {
       console.error('Sign out error:', error);
       return { error: 'Sign out failed. Please try again.' };
