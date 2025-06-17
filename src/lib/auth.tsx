@@ -43,11 +43,43 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
+// Check if Supabase is properly configured
+const isSupabaseConfigured = () => {
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+  
+  return supabaseUrl && 
+         supabaseKey && 
+         !supabaseUrl.includes('your-project') && 
+         !supabaseKey.includes('your-anon-key') &&
+         !supabaseUrl.includes('enogayinqluaqmczxchq'); // Exclude the demo URL
+};
+
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Only set up Supabase auth if properly configured
+    if (!isSupabaseConfigured()) {
+      console.log('Supabase not properly configured, using demo auth system');
+      // Check for existing local session
+      const checkLocalSession = async () => {
+        try {
+          const { user: localUser } = await localDB.getCurrentUser();
+          if (localUser) {
+            setUser(localUser);
+          }
+        } catch (error) {
+          console.log('No local session found');
+        }
+        setLoading(false);
+      };
+      
+      checkLocalSession();
+      return;
+    }
+
     // Get initial session
     const getInitialSession = async () => {
       try {
@@ -57,7 +89,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           await handleUserSession(session.user);
         }
       } catch (error) {
-        console.log('Supabase not configured, using fallback auth');
+        console.log('Error getting initial session:', error);
       }
       
       setLoading(false);
@@ -129,13 +161,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       }
     } catch (error) {
       console.error('Error handling user session:', error);
-      // Fallback to local database
-      try {
-        const { user: userData } = await localDB.getCurrentUser();
-        setUser(userData);
-      } catch (fallbackError) {
-        console.error('Fallback auth also failed:', fallbackError);
-      }
     }
   };
 
@@ -148,11 +173,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     phone: string;
   }) => {
     try {
-      // Check if Supabase is properly configured
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-      const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-      
-      if (!supabaseUrl || !supabaseKey || supabaseUrl.includes('your-project') || supabaseKey.includes('your-anon-key')) {
+      if (!isSupabaseConfigured()) {
         // Use local database fallback
         const { user: newUser, error } = await localDB.signUp(userData);
         if (newUser) {
@@ -205,11 +226,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signIn = async (email: string, password: string) => {
     try {
-      // Check if Supabase is properly configured
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-      const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-      
-      if (!supabaseUrl || !supabaseKey || supabaseUrl.includes('your-project') || supabaseKey.includes('your-anon-key')) {
+      if (!isSupabaseConfigured()) {
         // Use local database fallback
         const { user: signedInUser, error } = await localDB.signIn(email, password);
         if (signedInUser) {
@@ -238,65 +255,43 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signInWithGoogle = async () => {
     try {
-      // Check if Supabase is properly configured
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-      const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+      // ALWAYS use demo Google auth to avoid redirect issues
+      console.log('Using demo Google auth to avoid redirect issues');
+      const { user: googleUser, error } = await googleAuth.signIn();
       
-      if (!supabaseUrl || !supabaseKey || supabaseUrl.includes('your-project') || supabaseKey.includes('your-anon-key')) {
-        // Fallback to demo Google auth
-        console.log('Using demo Google auth');
-        const { user: googleUser, error } = await googleAuth.signIn();
-        
-        if (error || !googleUser) {
-          return { error: error || 'Google sign-in failed' };
-        }
+      if (error || !googleUser) {
+        return { error: error || 'Google sign-in failed' };
+      }
 
-        // Check if user already exists in our database
-        const existingUserResult = await localDB.signIn(googleUser.email, 'google-oauth');
-        
-        if (existingUserResult.user) {
-          // User exists, sign them in
-          setUser(existingUserResult.user);
-          return { error: null };
-        }
-
-        // User doesn't exist, create new account
-        const googleUserData = {
-          email: googleUser.email,
-          password: 'google-oauth', // Special password for OAuth users
-          first_name: googleUser.given_name || googleUser.name.split(' ')[0] || 'User',
-          middle_name: '',
-          last_name: googleUser.family_name || googleUser.name.split(' ').slice(1).join(' ') || '',
-          phone: '0000000000' // Default phone for OAuth users
-        };
-
-        const { user: newUser, error: signUpError } = await localDB.signUp(googleUserData);
-        
-        if (signUpError) {
-          return { error: signUpError };
-        }
-
-        if (newUser) {
-          setUser(newUser);
-        }
-
+      // Check if user already exists in our database
+      const existingUserResult = await localDB.signIn(googleUser.email, 'google-oauth');
+      
+      if (existingUserResult.user) {
+        // User exists, sign them in
+        setUser(existingUserResult.user);
         return { error: null };
       }
 
-      // Use real Supabase OAuth
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/`,
-        },
-      });
+      // User doesn't exist, create new account
+      const googleUserData = {
+        email: googleUser.email,
+        password: 'google-oauth', // Special password for OAuth users
+        first_name: googleUser.given_name || googleUser.name.split(' ')[0] || 'User',
+        middle_name: '',
+        last_name: googleUser.family_name || googleUser.name.split(' ').slice(1).join(' ') || '',
+        phone: '0000000000' // Default phone for OAuth users
+      };
 
-      if (error) {
-        console.error('Google OAuth error:', error);
-        return { error: error.message };
+      const { user: newUser, error: signUpError } = await localDB.signUp(googleUserData);
+      
+      if (signUpError) {
+        return { error: signUpError };
       }
 
-      // The auth state change listener will handle setting the user
+      if (newUser) {
+        setUser(newUser);
+      }
+
       return { error: null };
     } catch (error) {
       console.error('Google sign-in error:', error);
@@ -306,11 +301,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signOut = async () => {
     try {
-      // Check if Supabase is properly configured
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-      const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-      
-      if (!supabaseUrl || !supabaseKey || supabaseUrl.includes('your-project') || supabaseKey.includes('your-anon-key')) {
+      if (!isSupabaseConfigured()) {
         // Use local database fallback
         const { error } = await localDB.signOut();
         if (!error) {
