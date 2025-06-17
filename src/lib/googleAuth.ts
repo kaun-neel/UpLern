@@ -1,4 +1,4 @@
-// Google OAuth integration with real Google Client ID
+// Google OAuth integration - disabled in WebContainer environment
 declare global {
   interface Window {
     google: any;
@@ -23,8 +23,22 @@ class GoogleAuthService {
   private clientId = '752086458650-h6kga1ium8n5l8baaadjkfnmti2tsjb3.apps.googleusercontent.com';
   private isInitialized = false;
 
+  // Check if we're in a WebContainer environment where Google OAuth won't work
+  private isWebContainer(): boolean {
+    return window.location.hostname.includes('webcontainer-api.io') || 
+           window.location.hostname.includes('local-credentialless') ||
+           window.location.hostname.includes('localhost');
+  }
+
   async initialize(): Promise<void> {
     if (this.isInitialized) return;
+    
+    // Skip initialization in WebContainer environment
+    if (this.isWebContainer()) {
+      console.log('Google OAuth disabled in WebContainer environment');
+      this.isInitialized = true;
+      return;
+    }
 
     return new Promise((resolve, reject) => {
       const checkGoogleLoaded = () => {
@@ -74,6 +88,14 @@ class GoogleAuthService {
   }
 
   async signIn(): Promise<{ user: GoogleUser | null; error: string | null }> {
+    // Return error immediately in WebContainer environment
+    if (this.isWebContainer()) {
+      return { 
+        user: null, 
+        error: 'Google Sign-In is not available in this environment. Please use email/password authentication.' 
+      };
+    }
+
     try {
       await this.initialize();
 

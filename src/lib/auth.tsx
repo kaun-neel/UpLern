@@ -27,6 +27,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
   signInWithGoogle: () => Promise<{ error: string | null }>;
   signOut: () => Promise<{ error: string | null }>;
+  isGoogleAuthAvailable: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -55,9 +56,17 @@ const isSupabaseConfigured = () => {
          !supabaseUrl.includes('enogayinqluaqmczxchq'); // Exclude the demo URL
 };
 
+// Check if Google Auth is available (not in WebContainer environment)
+const isGoogleAuthAvailable = () => {
+  return !window.location.hostname.includes('webcontainer-api.io') && 
+         !window.location.hostname.includes('local-credentialless') &&
+         !window.location.hostname.includes('localhost');
+};
+
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [googleAuthAvailable] = useState(isGoogleAuthAvailable());
 
   useEffect(() => {
     // Only set up Supabase auth if properly configured
@@ -254,6 +263,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const signInWithGoogle = async () => {
+    // Return error immediately if Google Auth is not available
+    if (!googleAuthAvailable) {
+      return { 
+        error: 'Google Sign-In is not available in this environment. Please use email/password authentication.' 
+      };
+    }
+
     try {
       console.log('Starting Google Sign-In process...');
       const { user: googleUser, error } = await googleAuth.signIn();
@@ -329,7 +345,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     signUp,
     signIn,
     signInWithGoogle,
-    signOut
+    signOut,
+    isGoogleAuthAvailable: googleAuthAvailable
   };
 
   return (
