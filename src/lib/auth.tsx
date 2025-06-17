@@ -255,13 +255,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signInWithGoogle = async () => {
     try {
-      // ALWAYS use demo Google auth to avoid redirect issues
-      console.log('Using demo Google auth to avoid redirect issues');
+      console.log('Starting Google Sign-In process...');
       const { user: googleUser, error } = await googleAuth.signIn();
       
       if (error || !googleUser) {
         return { error: error || 'Google sign-in failed' };
       }
+
+      console.log('Google user received:', googleUser);
 
       // Check if user already exists in our database
       const existingUserResult = await localDB.signIn(googleUser.email, 'google-oauth');

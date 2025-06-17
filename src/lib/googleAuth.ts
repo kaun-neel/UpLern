@@ -1,4 +1,4 @@
-// Google OAuth integration
+// Google OAuth integration with real Google Client ID
 declare global {
   interface Window {
     google: any;
@@ -20,7 +20,7 @@ interface GoogleAuthResponse {
 }
 
 class GoogleAuthService {
-  private clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || 'demo-client-id';
+  private clientId = '752086458650-h6kga1ium8n5l8baaadjkfnmti2tsjb3.apps.googleusercontent.com';
   private isInitialized = false;
 
   async initialize(): Promise<void> {
@@ -87,19 +87,6 @@ class GoogleAuthService {
             resolve({ user: null, error: 'Failed to parse Google user data' });
           }
         };
-
-        // Check if we're in demo mode (no real client ID)
-        if (this.clientId === 'demo-client-id') {
-          // Show demo account selector
-          this.showDemoAccountSelector().then((selectedAccount) => {
-            if (selectedAccount) {
-              resolve({ user: selectedAccount, error: null });
-            } else {
-              resolve({ user: null, error: 'Google sign-in cancelled' });
-            }
-          });
-          return;
-        }
 
         // Trigger Google Sign-In popup
         window.google.accounts.id.prompt((notification: any) => {
@@ -180,108 +167,6 @@ class GoogleAuthService {
         }
         window.googleSignInCallback = originalCallback;
       };
-    });
-  }
-
-  private showDemoAccountSelector(): Promise<GoogleUser | null> {
-    // Demo accounts for development/testing
-    const demoAccounts: GoogleUser[] = [
-      {
-        email: 'john.doe@gmail.com',
-        name: 'John Doe',
-        given_name: 'John',
-        family_name: 'Doe',
-        picture: 'https://randomuser.me/api/portraits/men/32.jpg',
-        sub: 'demo-user-1'
-      },
-      {
-        email: 'sarah.smith@gmail.com',
-        name: 'Sarah Smith',
-        given_name: 'Sarah',
-        family_name: 'Smith',
-        picture: 'https://randomuser.me/api/portraits/women/44.jpg',
-        sub: 'demo-user-2'
-      },
-      {
-        email: 'mike.johnson@gmail.com',
-        name: 'Mike Johnson',
-        given_name: 'Mike',
-        family_name: 'Johnson',
-        picture: 'https://randomuser.me/api/portraits/men/67.jpg',
-        sub: 'demo-user-3'
-      }
-    ];
-
-    return new Promise((resolve) => {
-      const overlay = document.createElement('div');
-      overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
-      
-      const modal = document.createElement('div');
-      modal.className = 'bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full mx-4';
-      modal.innerHTML = `
-        <div class="text-center mb-6">
-          <img src="https://www.google.com/favicon.ico" alt="Google" class="w-8 h-8 mx-auto mb-3">
-          <h2 class="text-xl font-semibold text-gray-900">Choose an account</h2>
-          <p class="text-gray-600 text-sm">to continue to upLern</p>
-        </div>
-        <div class="space-y-3">
-          ${demoAccounts.map((account, index) => `
-            <button 
-              class="google-account-option w-full flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-all duration-200 border border-gray-200 hover:border-blue-300 hover:shadow-md"
-              data-index="${index}"
-            >
-              <img src="${account.picture}" alt="${account.name}" class="w-10 h-10 rounded-full">
-              <div class="text-left flex-1">
-                <div class="font-medium text-gray-900">${account.name}</div>
-                <div class="text-sm text-gray-600">${account.email}</div>
-              </div>
-              <div class="w-2 h-2 bg-green-500 rounded-full opacity-0 transition-opacity duration-200"></div>
-            </button>
-          `).join('')}
-        </div>
-        <div class="mt-6 pt-4 border-t border-gray-200">
-          <button class="cancel-google-signin w-full text-center text-gray-600 hover:text-gray-900 transition-colors py-2">
-            Cancel
-          </button>
-        </div>
-      `;
-      
-      overlay.appendChild(modal);
-      document.body.appendChild(overlay);
-      
-      // Add hover effects
-      const accountOptions = modal.querySelectorAll('.google-account-option');
-      accountOptions.forEach((option) => {
-        option.addEventListener('mouseenter', () => {
-          const indicator = option.querySelector('.bg-green-500');
-          indicator?.classList.remove('opacity-0');
-        });
-        
-        option.addEventListener('mouseleave', () => {
-          const indicator = option.querySelector('.bg-green-500');
-          indicator?.classList.add('opacity-0');
-        });
-        
-        option.addEventListener('click', (e) => {
-          const index = parseInt((e.currentTarget as HTMLElement).dataset.index || '0');
-          const selectedAccount = demoAccounts[index];
-          document.body.removeChild(overlay);
-          resolve(selectedAccount);
-        });
-      });
-      
-      const cancelButton = modal.querySelector('.cancel-google-signin');
-      cancelButton?.addEventListener('click', () => {
-        document.body.removeChild(overlay);
-        resolve(null);
-      });
-      
-      overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-          document.body.removeChild(overlay);
-          resolve(null);
-        }
-      });
     });
   }
 }
