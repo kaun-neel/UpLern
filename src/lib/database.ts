@@ -23,6 +23,13 @@ class LocalStorageDatabase {
   private setTable<T>(tableName: string, data: T[]): void {
     try {
       localStorage.setItem(this.getStorageKey(tableName), JSON.stringify(data));
+      
+      // Trigger storage event for cross-tab communication
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: this.getStorageKey(tableName),
+        newValue: JSON.stringify(data),
+        storageArea: localStorage
+      }));
     } catch (error) {
       console.error(`Error saving table ${tableName}:`, error);
     }
@@ -274,6 +281,8 @@ class LocalStorageDatabase {
       enrollments.push(newEnrollment);
       this.setTable('enrollments', enrollments);
 
+      console.log('Enrollment created and saved to localStorage:', newEnrollment);
+
       return { enrollment: newEnrollment, error: null };
     } catch (error) {
       console.error('Create enrollment error:', error);
@@ -285,6 +294,8 @@ class LocalStorageDatabase {
     try {
       const enrollments = this.getTable<Enrollment>('enrollments');
       const userEnrollments = enrollments.filter(e => e.user_id === userId);
+
+      console.log(`Found ${userEnrollments.length} enrollments for user ${userId}:`, userEnrollments);
 
       return { enrollments: userEnrollments, error: null };
     } catch (error) {

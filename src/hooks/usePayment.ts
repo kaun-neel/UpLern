@@ -112,13 +112,8 @@ export const usePayment = () => {
         // Close the payment modal
         closePaymentModal();
         
-        // Redirect to courses page after a short delay
-        setTimeout(() => {
-          console.log('Redirecting to courses page...');
-          navigate('/courses');
-        }, 2000);
-        
-        // Trigger a custom event to notify components about the enrollment change
+        // Trigger enrollment update event IMMEDIATELY
+        console.log('Dispatching enrollmentUpdated event for premium pass...');
         window.dispatchEvent(new CustomEvent('enrollmentUpdated', {
           detail: {
             type: currentPaymentData.type,
@@ -126,6 +121,12 @@ export const usePayment = () => {
             courseName: currentPaymentData.itemName
           }
         }));
+        
+        // Force a small delay to ensure state updates, then redirect
+        setTimeout(() => {
+          console.log('Redirecting to courses page...');
+          navigate('/courses');
+        }, 1500);
         
         return; // Early return for premium pass to avoid duplicate processing
       }
@@ -139,6 +140,7 @@ export const usePayment = () => {
       }
 
       // Trigger a custom event to notify components about the enrollment change
+      console.log('Dispatching enrollmentUpdated event...');
       window.dispatchEvent(new CustomEvent('enrollmentUpdated', {
         detail: {
           type: currentPaymentData.type,

@@ -44,8 +44,9 @@ export const useEnrollment = () => {
 
       // Check for premium pass
       const premiumEnrollment = userEnrollments.find(e => e.enrollment_type === 'premium_pass');
-      setHasPremiumPass(!!premiumEnrollment);
-      console.log('Premium status:', !!premiumEnrollment);
+      const hasPremium = !!premiumEnrollment;
+      setHasPremiumPass(hasPremium);
+      console.log('Premium status updated:', hasPremium, premiumEnrollment);
       
     } catch (error) {
       console.error('Error loading enrollments:', error);
@@ -56,6 +57,30 @@ export const useEnrollment = () => {
 
   useEffect(() => {
     loadUserEnrollments();
+  }, [loadUserEnrollments]);
+
+  // Listen for enrollment updates
+  useEffect(() => {
+    const handleEnrollmentUpdate = () => {
+      console.log('Enrollment update event received, refreshing enrollments...');
+      loadUserEnrollments();
+    };
+
+    // Listen for custom enrollment update events
+    window.addEventListener('enrollmentUpdated', handleEnrollmentUpdate);
+    
+    // Also listen for storage changes (in case of multiple tabs)
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'uplern_enrollments') {
+        console.log('Storage change detected for enrollments');
+        loadUserEnrollments();
+      }
+    });
+
+    return () => {
+      window.removeEventListener('enrollmentUpdated', handleEnrollmentUpdate);
+      window.removeEventListener('storage', handleEnrollmentUpdate);
+    };
   }, [loadUserEnrollments]);
 
   const isEnrolledInCourse = async (courseId: string): Promise<boolean> => {
