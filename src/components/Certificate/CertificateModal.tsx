@@ -162,3 +162,5 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
     </div>
   );
 };
+
+export default CertificateModal
