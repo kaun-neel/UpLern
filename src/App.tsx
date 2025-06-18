@@ -20,6 +20,7 @@ import AboutPage from './components/AboutPage/AboutPage';
 import PremiumPassPage from './components/PremiumPass/PremiumPassPage';
 import CareersPage from './components/CareersPage/CareersPage';
 import PrivacyPolicyPage from './components/PrivacyPolicyPage/PrivacyPolicyPage';
+import TermsOfServicePage from './components/TermsOfServicePage/TermsOfServicePage';
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
             <Route path="/premium-pass" element={<PremiumPassPage />} />
             <Route path="/careers" element={<CareersPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route path="/terms-of-service" element={<TermsOfServicePage />} />
           </Routes>
           <Footer />
         </div>
