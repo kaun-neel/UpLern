@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, FileText, Scale, Shield, MessageSquare, Globe, Mail, RefreshCw } from 'lucide-react';
+import { ChevronLeft, FileText, Scale, Shield, MessageSquare, Globe, Mail } from 'lucide-react';
 
 const TermsOfServicePage = () => {
   useEffect(() => {
@@ -179,39 +179,6 @@ const TermsOfServicePage = () => {
           </p>
         </div>
 
-        {/* Refund Policy */}
-        <div className="bg-gradient-to-r from-purple-100 to-indigo-100 rounded-3xl p-8 mb-8">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 bg-white/50 rounded-xl flex items-center justify-center">
-              <RefreshCw className="w-5 h-5 text-purple-600" />
-            </div>
-            <h2 className="text-2xl font-bold text-purple-900">Zyntiq Cancellation and Refund Policy</h2>
-          </div>
-          
-          <p className="text-gray-700 leading-relaxed mb-6">
-            Your satisfaction with any product, service, course, or workshop acquired from us is important. Please carefully review the following terms, which outline our policy regarding refunds.
-          </p>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-2xl p-6">
-              <h3 className="text-lg font-semibold text-purple-900 mb-3">Workshops</h3>
-              <p className="text-gray-700">
-                Please be aware that all payments made for workshops are <strong>non-refundable and non-creditable</strong>.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-2xl p-6">
-              <h3 className="text-lg font-semibold text-purple-900 mb-3">Courses</h3>
-              <p className="text-gray-700 mb-3">
-                Courses are not eligible for refunds. We highly recommend that you assess your availability and commitment before finalizing your enrollment.
-              </p>
-              <p className="text-gray-700 text-sm">
-                Should your plans change, you may transfer your enrollment to a future cohort. A small administrative fee will apply for such transfers.
-              </p>
-            </div>
-          </div>
-        </div>
-
         {/* Contact Information */}
         <div className="bg-gradient-to-r from-purple-500 to-indigo-500 rounded-3xl p-8 text-white mb-8">
           <div className="flex items-center gap-3 mb-6">
@@ -220,20 +187,12 @@ const TermsOfServicePage = () => {
             </div>
             <h2 className="text-2xl font-bold">6. Contact Us</h2>
           </div>
-          <div className="space-y-4">
-            <p className="text-white/90 leading-relaxed">
-              For any questions regarding these Terms and Conditions, please reach out to us at{' '}
-              <a href="mailto:info@zyntiq.in" className="text-white font-medium hover:underline">
-                info@zyntiq.in
-              </a>
-            </p>
-            <p className="text-white/90 leading-relaxed">
-              For any inquiries concerning our refund policy, please reach out to us via email at{' '}
-              <a href="mailto:info@zyntiq.in" className="text-white font-medium hover:underline">
-                info@zyntiq.in
-              </a>
-            </p>
-          </div>
+          <p className="text-white/90 leading-relaxed">
+            For any questions regarding these Terms and Conditions, please reach out to us at{' '}
+            <a href="mailto:info@zyntiq.in" className="text-white font-medium hover:underline">
+              info@zyntiq.in
+            </a>
+          </p>
         </div>
 
         {/* Last Updated */}

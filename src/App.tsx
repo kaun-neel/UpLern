@@ -21,6 +21,8 @@ import PremiumPassPage from './components/PremiumPass/PremiumPassPage';
 import CareersPage from './components/CareersPage/CareersPage';
 import PrivacyPolicyPage from './components/PrivacyPolicyPage/PrivacyPolicyPage';
 import TermsOfServicePage from './components/TermsOfServicePage/TermsOfServicePage';
+import RefundPolicyPage from './components/RefundPolicyPage/RefundPolicyPage';
+import SupportPage from './components/SupportPage/SupportPage';
 
 function App() {
   return (
@@ -51,6 +53,8 @@ function App() {
             <Route path="/careers" element={<CareersPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+            <Route path="/refund-policy" element={<RefundPolicyPage />} />
+            <Route path="/support" element={<SupportPage />} />
           </Routes>
           <Footer />
         </div>
