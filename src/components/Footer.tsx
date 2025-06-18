@@ -11,13 +11,13 @@ const Footer = () => {
     { name: 'Contact', path: '/contact' }
   ];
 
-  const courseCategories = [
-    { name: 'Web Development', path: '/courses/web-development' },
-    { name: 'UI/UX Design', path: '/courses/ui-ux-design' },
-    { name: 'Marketing', path: '/courses/marketing' },
-    { name: 'HR Management', path: '/courses/hr-management' },
-    { name: 'Data Science', path: '/courses/data-science' },
-    { name: 'Business', path: '/courses/business' }
+  const legalLinks = [
+    { name: 'Privacy Policy', path: '/privacy-policy' },
+    { name: 'Terms of Service', path: '/terms-of-service' },
+    { name: 'Cookie Policy', path: '/cookie-policy' },
+    { name: 'Refund Policy', path: '/refund-policy' },
+    { name: 'Support', path: '/support' },
+    { name: 'FAQ', path: '/faq' }
   ];
 
   return (
@@ -70,16 +70,16 @@ const Footer = () => {
           </div>
           
           <div>
-            <h3 className="text-lg font-bold mb-4">Course Categories</h3>
+            <h3 className="text-lg font-bold mb-4">Legal & Support</h3>
             <ul className="space-y-2">
-              {courseCategories.map((category) => (
-                <li key={category.name}>
+              {legalLinks.map((link) => (
+                <li key={link.name}>
                   <Link 
-                    to={category.path}
+                    to={link.path}
                     className="text-gray-600 hover:text-purple-600 transition-colors"
                     onClick={() => window.scrollTo(0, 0)}
                   >
-                    {category.name}
+                    {link.name}
                   </Link>
                 </li>
               ))}
