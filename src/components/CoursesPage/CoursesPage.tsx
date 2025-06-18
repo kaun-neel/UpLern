@@ -238,6 +238,11 @@ const CoursesPage = () => {
     setTimeout(() => setIsAutoPlaying(true), 5000);
   };
 
+  const handlePremiumPassExplore = () => {
+    window.scrollTo(0, 0);
+    navigate('/premium-pass');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
       {/* Hero Section with Welcome Background */}
@@ -503,7 +508,7 @@ const CoursesPage = () => {
                     </ul>
                     
                     <button 
-                      onClick={initiatePremiumPassPayment}
+                      onClick={handlePremiumPassExplore}
                       className="inline-flex items-center gap-2 px-8 py-3 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full hover:bg-white/30 transition-all duration-300 font-medium"
                     >
                       <span>Explore</span>
