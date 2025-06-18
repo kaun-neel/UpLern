@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { Play, CheckCircle, Clock, BookOpen, Award, Download, Users } from 'lucide-react';
+import { certificateService } from '../Certificate/CertificateService';
+import CertificateModal from '../Certificate/CertificateModal';
+import { useAuth } from '../../lib/auth';
+import toast from 'react-hot-toast';
 
 interface CourseContentProps {
   courseId: string;
@@ -14,8 +18,10 @@ const CourseContent: React.FC<CourseContentProps> = ({
   enrollment, 
   onProgressUpdate 
 }) => {
+  const { user } = useAuth();
   const [activeLesson, setActiveLesson] = useState(0);
   const [completedLessons, setCompletedLessons] = useState<Set<number>>(new Set());
+  const [showCertificateModal, setShowCertificateModal] = useState(false);
 
   // Course curriculum data
   const curriculum = {
@@ -119,6 +125,34 @@ const CourseContent: React.FC<CourseContentProps> = ({
     // Calculate and update progress
     const progress = Math.round((newCompleted.size / totalLessons) * 100);
     onProgressUpdate(progress);
+
+    // Check if course is completed (100% progress)
+    if (progress === 100) {
+      handleCourseCompletion();
+    }
+  };
+
+  const handleCourseCompletion = async () => {
+    if (!user) return;
+
+    try {
+      // Generate certificate
+      const certificate = await certificateService.generateCertificate(
+        `${user.first_name} ${user.last_name}`.trim(),
+        courseName,
+        courseId
+      );
+
+      toast.success('🎉 Congratulations! You\'ve completed the course and earned your certificate!');
+      
+      // Show certificate modal after a short delay
+      setTimeout(() => {
+        setShowCertificateModal(true);
+      }, 1000);
+    } catch (error) {
+      console.error('Error generating certificate:', error);
+      toast.error('Course completed but there was an issue generating your certificate.');
+    }
   };
 
   const getLessonIcon = (type: string) => {
@@ -275,7 +309,10 @@ const CourseContent: React.FC<CourseContentProps> = ({
               <div className="text-sm text-gray-600">Download PDFs, code files</div>
             </div>
           </button>
-          <button className="flex items-center gap-3 p-3 bg-white rounded-lg hover:shadow-md transition-all">
+          <button 
+            onClick={() => setShowCertificateModal(true)}
+            className="flex items-center gap-3 p-3 bg-white rounded-lg hover:shadow-md transition-all"
+          >
             <Award className="w-5 h-5 text-violet-600" />
             <div className="text-left">
               <div className="font-medium text-gray-900">Certificate</div>
@@ -286,6 +323,18 @@ const CourseContent: React.FC<CourseContentProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Certificate Modal */}
+      {user && (
+        <CertificateModal
+          isOpen={showCertificateModal}
+          onClose={() => setShowCertificateModal(false)}
+          studentName={`${user.first_name} ${user.last_name}`.trim()}
+          courseName={courseName}
+          completionDate={new Date().toISOString()}
+          certificateId={`CERT-${Date.now().toString(36).toUpperCase()}`}
+        />
+      )}
     </div>
   );
 };

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, BookOpen } from 'lucide-react';
+import { User, BookOpen, Award } from 'lucide-react';
 import { useAuth } from '../../lib/auth.tsx';
 import { localDB } from '../../lib/database';
 import toast from 'react-hot-toast';
 import MyCoursesPage from './MyCoursesPage';
+import CertificatesPage from './CertificatesPage';
 
 const AccountPage = () => {
   const navigate = useNavigate();
@@ -57,7 +58,8 @@ const AccountPage = () => {
 
   const menuItems = [
     { icon: <User size={20} />, label: 'Profile', key: 'profile' },
-    { icon: <BookOpen size={20} />, label: 'My Courses', key: 'courses' }
+    { icon: <BookOpen size={20} />, label: 'My Courses', key: 'courses' },
+    { icon: <Award size={20} />, label: 'Certificates', key: 'certificates' }
   ];
 
   if (loading) {
@@ -184,6 +186,7 @@ const AccountPage = () => {
             )}
 
             {activeTab === 'courses' && <MyCoursesPage />}
+            {activeTab === 'certificates' && <CertificatesPage />}
           </div>
         </div>
       </div>
