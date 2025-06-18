@@ -19,6 +19,7 @@ import CourseDetailPage from './components/CoursesPage/CourseDetailPage';
 import AboutPage from './components/AboutPage/AboutPage';
 import PremiumPassPage from './components/PremiumPass/PremiumPassPage';
 import CareersPage from './components/CareersPage/CareersPage';
+import PrivacyPolicyPage from './components/PrivacyPolicyPage/PrivacyPolicyPage';
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/premium-pass" element={<PremiumPassPage />} />
             <Route path="/careers" element={<CareersPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           </Routes>
           <Footer />
         </div>
