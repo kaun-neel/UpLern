@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { PaymentData, PaymentType, PRICING } from '../lib/razorpay';
 import { useAuth } from '../lib/auth';
 import { localDB } from '../lib/database';
@@ -6,6 +7,7 @@ import toast from 'react-hot-toast';
 
 export const usePayment = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [currentPaymentData, setCurrentPaymentData] = useState<PaymentData | null>(null);
 
@@ -103,16 +105,37 @@ export const usePayment = () => {
         }
 
         console.log('Premium pass enrollment created:', enrollment);
+        
+        // Show premium success message
+        toast.success('🚀 Premium Pass activated! You now have access to all courses!');
+        
+        // Close the payment modal
+        closePaymentModal();
+        
+        // Redirect to courses page after a short delay
+        setTimeout(() => {
+          console.log('Redirecting to courses page...');
+          navigate('/courses');
+        }, 2000);
+        
+        // Trigger a custom event to notify components about the enrollment change
+        window.dispatchEvent(new CustomEvent('enrollmentUpdated', {
+          detail: {
+            type: currentPaymentData.type,
+            courseId: currentPaymentData.itemId,
+            courseName: currentPaymentData.itemName
+          }
+        }));
+        
+        return; // Early return for premium pass to avoid duplicate processing
       }
 
       // Close the payment modal
       closePaymentModal();
 
-      // Show success message
+      // Show success message for regular courses
       if (currentPaymentData.type === PaymentType.COURSE) {
         toast.success(`🎉 Successfully enrolled in ${currentPaymentData.itemName}!`);
-      } else {
-        toast.success('🚀 Premium Pass activated! You now have access to all courses!');
       }
 
       // Trigger a custom event to notify components about the enrollment change
