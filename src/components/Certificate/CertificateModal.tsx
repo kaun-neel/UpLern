@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { X, Award, Download, Share2 } from 'lucide-react';
+import { X, Award, Download, Share2, Mail, MessageCircle, Copy } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import toast from 'react-hot-toast';
@@ -70,7 +70,79 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
     }
   };
 
-  const shareCertificate = async () => {
+  const shareViaEmail = () => {
+    const subject = encodeURIComponent(`🎓 ${courseName} Certificate - ${studentName}`);
+    const body = encodeURIComponent(`Hi there!
+
+I'm excited to share that I've successfully completed the ${courseName} course and earned my certificate from upLern!
+
+📅 Completion Date: ${formatDate(completionDate)}
+🆔 Certificate ID: ${certificateId}
+🏫 Issued by: upLern
+
+This course has enhanced my skills and knowledge in ${courseName}. I'm proud to add this achievement to my professional portfolio.
+
+You can verify this certificate at: ${window.location.origin}/verify/${certificateId}
+
+Best regards,
+${studentName}
+
+#upLern #OnlineLearning #Certificate #ProfessionalDevelopment`);
+
+    window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
+  };
+
+  const shareViaWhatsApp = () => {
+    const message = encodeURIComponent(`🎓 I've successfully completed the ${courseName} course and earned my certificate from upLern!
+
+📅 Completed: ${formatDate(completionDate)}
+🆔 Certificate ID: ${certificateId}
+🏫 Issued by: upLern
+
+#upLern #OnlineLearning #Certificate #${courseName.replace(/\s+/g, '')}`);
+
+    window.open(`https://wa.me/?text=${message}`, '_blank');
+  };
+
+  const shareViaLinkedIn = () => {
+    const text = encodeURIComponent(`I'm proud to share that I've completed the ${courseName} course from upLern and earned my certificate! 
+
+This course has enhanced my skills in ${courseName} and I'm excited to apply this knowledge in my professional journey.
+
+#upLern #OnlineLearning #Certificate #ProfessionalDevelopment #${courseName.replace(/\s+/g, '')}`);
+
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}&summary=${text}`, '_blank');
+  };
+
+  const shareViaTwitter = () => {
+    const text = encodeURIComponent(`🎓 Just completed the ${courseName} course from @upLern and earned my certificate! 
+
+Excited to apply these new skills! 💪
+
+#upLern #OnlineLearning #Certificate #${courseName.replace(/\s+/g, '')}`);
+
+    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(window.location.href)}`, '_blank');
+  };
+
+  const copyToClipboard = async () => {
+    const shareText = `🎓 I've successfully completed the ${courseName} course and earned my certificate from upLern!
+
+📅 Completed: ${formatDate(completionDate)}
+🆔 Certificate ID: ${certificateId}
+🏫 Issued by: upLern
+
+#upLern #OnlineLearning #Certificate #${courseName.replace(/\s+/g, '')}`;
+
+    try {
+      await navigator.clipboard.writeText(shareText);
+      toast.success('Certificate details copied to clipboard!');
+    } catch (error) {
+      console.error('Failed to copy to clipboard:', error);
+      toast.error('Failed to copy to clipboard');
+    }
+  };
+
+  const shareViaNativeAPI = async () => {
     const shareText = `🎓 I've successfully completed the ${courseName} course and earned my certificate from upLern!
 
 📅 Completed: ${formatDate(completionDate)}
@@ -82,17 +154,19 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `${courseName} Certificate`,
+          title: `${courseName} Certificate - ${studentName}`,
           text: shareText,
           url: window.location.href
         });
       } catch (error) {
-        console.error('Error sharing certificate:', error);
+        if (error.name !== 'AbortError') {
+          console.error('Error sharing certificate:', error);
+          toast.error('Failed to share certificate');
+        }
       }
     } else {
-      // Fallback: copy to clipboard
-      navigator.clipboard.writeText(shareText);
-      toast.success('Certificate details copied to clipboard!');
+      // Fallback to copy to clipboard
+      copyToClipboard();
     }
   };
 
@@ -120,7 +194,7 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
 
         <div className="p-8">
           {/* Action Buttons */}
-          <div className="flex justify-center gap-4 mb-8">
+          <div className="flex flex-wrap justify-center gap-4 mb-8">
             <button
               onClick={downloadCertificate}
               className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-xl font-medium hover:shadow-lg transition-all duration-300"
@@ -128,13 +202,73 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
               <Download className="w-5 h-5" />
               Download PDF
             </button>
-            <button
-              onClick={shareCertificate}
-              className="flex items-center gap-2 px-6 py-3 border-2 border-purple-300 text-purple-600 rounded-xl font-medium hover:bg-purple-50 transition-colors"
-            >
-              <Share2 className="w-5 h-5" />
-              Share Certificate
-            </button>
+            
+            {/* Share Dropdown */}
+            <div className="relative group">
+              <button className="flex items-center gap-2 px-6 py-3 border-2 border-purple-300 text-purple-600 rounded-xl font-medium hover:bg-purple-50 transition-colors">
+                <Share2 className="w-5 h-5" />
+                Share Certificate
+              </button>
+              
+              {/* Dropdown Menu */}
+              <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-xl shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+                <div className="p-2">
+                  <button
+                    onClick={shareViaEmail}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
+                  >
+                    <Mail className="w-5 h-5 text-blue-600" />
+                    <span>Share via Email</span>
+                  </button>
+                  
+                  <button
+                    onClick={shareViaWhatsApp}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
+                  >
+                    <MessageCircle className="w-5 h-5 text-green-600" />
+                    <span>Share on WhatsApp</span>
+                  </button>
+                  
+                  <button
+                    onClick={shareViaLinkedIn}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
+                  >
+                    <div className="w-5 h-5 bg-blue-700 rounded flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">in</span>
+                    </div>
+                    <span>Share on LinkedIn</span>
+                  </button>
+                  
+                  <button
+                    onClick={shareViaTwitter}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
+                  >
+                    <div className="w-5 h-5 bg-blue-400 rounded flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">𝕏</span>
+                    </div>
+                    <span>Share on Twitter</span>
+                  </button>
+                  
+                  <button
+                    onClick={copyToClipboard}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
+                  >
+                    <Copy className="w-5 h-5 text-gray-600" />
+                    <span>Copy to Clipboard</span>
+                  </button>
+                  
+                  {navigator.share && (
+                    <button
+                      onClick={shareViaNativeAPI}
+                      className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
+                    >
+                      <Share2 className="w-5 h-5 text-purple-600" />
+                      <span>More Options</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Certificate */}

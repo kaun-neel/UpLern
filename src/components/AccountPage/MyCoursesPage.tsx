@@ -2,9 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Clock, BookOpen, Play, Award, Calendar, TrendingUp } from 'lucide-react';
 import { useEnrollment } from '../../hooks/useEnrollment';
+import { useAuth } from '../../lib/auth';
+import { certificateService } from '../Certificate/CertificateService';
+import CertificateModal from '../Certificate/CertificateModal';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 const MyCoursesPage = () => {
+  const { user } = useAuth();
   const { enrollments, loading, hasPremiumPass } = useEnrollment();
+  const [selectedCertificate, setSelectedCertificate] = useState<any>(null);
+  const [showCertificateModal, setShowCertificateModal] = useState(false);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -59,6 +67,43 @@ const MyCoursesPage = () => {
       'premium-pass': 'All courses'
     };
     return lessons[courseId] || '50 lessons';
+  };
+
+  const handleCertificateClick = async (course: any) => {
+    if (!user) {
+      toast.error('Please log in to view your certificate');
+      return;
+    }
+
+    if (course.progress !== 100) {
+      toast.error('Complete the course to unlock your certificate');
+      return;
+    }
+
+    try {
+      // Check if certificate already exists
+      const existingCertificates = certificateService.getCertificatesByCourse(course.course_id);
+      let certificate;
+
+      if (existingCertificates.length > 0) {
+        // Use existing certificate
+        certificate = existingCertificates[0];
+      } else {
+        // Generate new certificate
+        certificate = await certificateService.generateCertificate(
+          `${user.first_name} ${user.last_name}`.trim(),
+          course.course_name,
+          course.course_id
+        );
+        toast.success('Certificate generated successfully!');
+      }
+
+      setSelectedCertificate(certificate);
+      setShowCertificateModal(true);
+    } catch (error) {
+      console.error('Error handling certificate:', error);
+      toast.error('Failed to load certificate. Please try again.');
+    }
   };
 
   if (loading) {
@@ -261,8 +306,11 @@ const MyCoursesPage = () => {
                           <Play size={14} />
                           {course.status === 'completed' ? 'Review' : 'Continue'}
                         </Link>
-                        {course.status === 'completed' && (
-                          <button className="px-4 py-2.5 border-2 border-purple-300 text-purple-600 rounded-lg text-sm font-medium hover:bg-purple-50 transition-colors flex items-center gap-2">
+                        {course.progress === 100 && (
+                          <button 
+                            onClick={() => handleCertificateClick(course)}
+                            className="px-4 py-2.5 border-2 border-purple-300 text-purple-600 rounded-lg text-sm font-medium hover:bg-purple-50 transition-colors flex items-center gap-2"
+                          >
                             <Award size={14} />
                             Certificate
                           </button>
@@ -275,6 +323,21 @@ const MyCoursesPage = () => {
             ))}
           </div>
         </>
+      )}
+
+      {/* Certificate Modal */}
+      {selectedCertificate && (
+        <CertificateModal
+          isOpen={showCertificateModal}
+          onClose={() => {
+            setShowCertificateModal(false);
+            setSelectedCertificate(null);
+          }}
+          studentName={selectedCertificate.studentName}
+          courseName={selectedCertificate.courseName}
+          completionDate={selectedCertificate.completionDate}
+          certificateId={selectedCertificate.id}
+        />
       )}
     </div>
   );
