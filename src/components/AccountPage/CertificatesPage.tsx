@@ -48,37 +48,12 @@ const CertificatesPage = () => {
     }
   };
 
-  const handleDownloadData = async (certificate: CertificateData) => {
-    const blob = await certificateService.downloadCertificateData(certificate.id);
-    if (blob) {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `certificate-${certificate.id}.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-  };
-
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
     });
-  };
-
-  const getTemplateColor = (template: string) => {
-    switch (template) {
-      case 'classic':
-        return 'from-yellow-400 to-yellow-600';
-      case 'elegant':
-        return 'from-gray-400 to-gray-600';
-      default:
-        return 'from-purple-400 to-indigo-600';
-    }
   };
 
   return (
@@ -157,10 +132,10 @@ const CertificatesPage = () => {
                 className="bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-lg hover:border-purple-200 transition-all duration-300"
               >
                 {/* Certificate Preview */}
-                <div className={`h-32 bg-gradient-to-br ${getTemplateColor(certificate.template)} rounded-xl mb-4 flex items-center justify-center relative overflow-hidden`}>
+                <div className="h-32 bg-gradient-to-br from-purple-400 to-indigo-600 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden">
                   <Award className="w-12 h-12 text-white" />
                   <div className="absolute top-2 right-2 bg-white/20 backdrop-blur-sm rounded-full px-2 py-1">
-                    <span className="text-xs text-white font-medium capitalize">{certificate.template}</span>
+                    <span className="text-xs text-white font-medium">Certificate</span>
                   </div>
                 </div>
 
@@ -195,12 +170,6 @@ const CertificatesPage = () => {
                     className="px-3 py-2 border border-purple-300 text-purple-600 rounded-lg hover:bg-purple-50 transition-colors"
                   >
                     <Share2 className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => handleDownloadData(certificate)}
-                    className="px-3 py-2 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors"
-                  >
-                    <Download className="w-4 h-4" />
                   </button>
                 </div>
               </div>

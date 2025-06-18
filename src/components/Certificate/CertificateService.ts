@@ -6,7 +6,6 @@ export interface CertificateData {
   courseName: string;
   courseId: string;
   completionDate: string;
-  template: 'modern' | 'classic' | 'elegant';
   issuedAt: string;
 }
 
@@ -20,8 +19,7 @@ class CertificateService {
   async generateCertificate(
     studentName: string,
     courseName: string,
-    courseId: string,
-    template: 'modern' | 'classic' | 'elegant' = 'modern'
+    courseId: string
   ): Promise<CertificateData> {
     const certificateData: CertificateData = {
       id: this.generateCertificateId(),
@@ -29,7 +27,6 @@ class CertificateService {
       courseName,
       courseId,
       completionDate: new Date().toISOString(),
-      template,
       issuedAt: new Date().toISOString()
     };
 
@@ -72,15 +69,6 @@ class CertificateService {
   verifyCertificate(certificateId: string): boolean {
     const certificate = this.getCertificateById(certificateId);
     return certificate !== null;
-  }
-
-  async downloadCertificateData(certificateId: string): Promise<Blob | null> {
-    const certificate = this.getCertificateById(certificateId);
-    if (!certificate) return null;
-
-    // Create a JSON blob with certificate data
-    const dataStr = JSON.stringify(certificate, null, 2);
-    return new Blob([dataStr], { type: 'application/json' });
   }
 
   formatCertificateForSharing(certificate: CertificateData): string {
