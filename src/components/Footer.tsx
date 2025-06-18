@@ -41,10 +41,20 @@ const Footer = () => {
               <a href="#" className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-purple-100 transition-colors">
                 <Twitter size={16} className="text-gray-700" />
               </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-purple-100 transition-colors">
+              <a 
+                href="https://www.instagram.com/zyntiq_official?utm_source=qr&igsh=a3d3cGFtb3hudWpi" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-purple-100 transition-colors"
+              >
                 <Instagram size={16} className="text-gray-700" />
               </a>
-              <a href="#" className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-purple-100 transition-colors">
+              <a 
+                href="https://www.linkedin.com/company/zyntiq/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-purple-100 transition-colors"
+              >
                 <Linkedin size={16} className="text-gray-700" />
               </a>
             </div>
