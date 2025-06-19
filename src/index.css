@@ -82,8 +82,15 @@ body {
 }
 
 .testimonial-card {
-  @apply bg-white rounded-3xl shadow-sm p-8 relative;
-  min-height: 220px;
+  @apply bg-white rounded-3xl shadow-lg p-8 relative border border-gray-100 hover:border-purple-200;
+  min-height: 280px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.testimonial-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(139, 92, 246, 0.15);
 }
 
 .course-card {
@@ -164,6 +171,10 @@ body {
   animation: zoomIn 0.3s ease-out;
 }
 
+.slide-in-from-bottom {
+  animation: slideInFromBottom 0.5s ease-out;
+}
+
 .slide-in-from-bottom-2 {
   animation: slideInFromBottom 0.3s ease-out;
 }
@@ -217,6 +228,36 @@ body {
 
 .whatsapp-pulse {
   animation: whatsappPulse 2s infinite;
+}
+
+/* Testimonials specific animations */
+@keyframes testimonialSlide {
+  from {
+    opacity: 0;
+    transform: translateX(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.testimonial-slide-in {
+  animation: testimonialSlide 0.5s ease-out;
+}
+
+/* Pulse animation for active elements */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 ::-webkit-scrollbar {
