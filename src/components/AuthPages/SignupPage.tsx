@@ -278,7 +278,7 @@ const SignupPage = () => {
               {/* Main illustration */}
               <div className="relative z-10 max-w-lg">
                 <img
-                  src="https://cdn3d.iconscout.com/3d/premium/thumb/sign-up-5706095-4755644.png"
+                  src="/create-account.png"
                   alt="Create Account Illustration"
                   className="w-full h-auto drop-shadow-2xl"
                 />
