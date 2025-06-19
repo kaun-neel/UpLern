@@ -184,7 +184,6 @@ const TestimonialsSection = () => {
                           alt={testimonial.name} 
                           className="w-12 h-12 rounded-full mr-4 border-2 border-white shadow-lg group-hover:border-purple-300 transition-colors"
                         />
-                        <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
                       </div>
                       <div>
                         <p className="font-semibold text-gray-900">-{testimonial.name}</p>
