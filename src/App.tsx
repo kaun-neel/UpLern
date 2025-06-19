@@ -23,6 +23,7 @@ import PrivacyPolicyPage from './components/PrivacyPolicyPage/PrivacyPolicyPage'
 import TermsOfServicePage from './components/TermsOfServicePage/TermsOfServicePage';
 import RefundPolicyPage from './components/RefundPolicyPage/RefundPolicyPage';
 import SupportPage from './components/SupportPage/SupportPage';
+import WhatsAppFloat from './components/WhatsAppFloat';
 
 function App() {
   return (
@@ -57,6 +58,9 @@ function App() {
             <Route path="/support" element={<SupportPage />} />
           </Routes>
           <Footer />
+          
+          {/* WhatsApp Float Button - Available on all pages */}
+          <WhatsAppFloat />
         </div>
       </Router>
     </AuthProvider>
