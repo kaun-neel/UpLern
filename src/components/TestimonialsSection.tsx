@@ -71,13 +71,16 @@ const TestimonialsSection = () => {
     }
   ];
 
+  // Calculate total number of slides (showing 3 at a time)
+  const totalSlides = testimonials.length - 2; // 9 testimonials, showing 3 at a time = 7 possible positions
+
   // Auto-slide functionality
   useEffect(() => {
     const interval = setInterval(() => {
       if (!isAnimating) {
         nextTestimonial();
       }
-    }, 5000); // Auto-slide every 5 seconds
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [activeIndex, isAnimating]);
@@ -85,42 +88,47 @@ const TestimonialsSection = () => {
   const nextTestimonial = () => {
     if (isAnimating) return;
     setIsAnimating(true);
-    setActiveIndex((prevIndex) => 
-      prevIndex === testimonials.length - 3 ? 0 : prevIndex + 1
-    );
+    
+    // When we reach the last possible position (showing testimonials 7,8,9), go back to start
+    setActiveIndex((prevIndex) => {
+      const nextIndex = prevIndex + 1;
+      return nextIndex >= totalSlides ? 0 : nextIndex;
+    });
+    
     setTimeout(() => setIsAnimating(false), 500);
   };
 
   const prevTestimonial = () => {
     if (isAnimating) return;
     setIsAnimating(true);
-    setActiveIndex((prevIndex) => 
-      prevIndex === 0 ? testimonials.length - 3 : prevIndex - 1
-    );
+    
+    setActiveIndex((prevIndex) => {
+      return prevIndex === 0 ? totalSlides - 1 : prevIndex - 1;
+    });
+    
     setTimeout(() => setIsAnimating(false), 500);
   };
 
   const goToSlide = (index: number) => {
-    if (isAnimating || index === activeIndex) return;
+    if (isAnimating || index === activeIndex || index >= totalSlides) return;
     setIsAnimating(true);
     setActiveIndex(index);
     setTimeout(() => setIsAnimating(false), 500);
   };
 
-  // Calculate visible testimonials (3 at a time)
+  // Get exactly 3 testimonials starting from activeIndex
   const getVisibleTestimonials = () => {
     const visible = [];
     for (let i = 0; i < 3; i++) {
-      const index = (activeIndex + i) % testimonials.length;
-      visible.push(testimonials[index]);
+      const index = activeIndex + i;
+      if (index < testimonials.length) {
+        visible.push(testimonials[index]);
+      }
     }
     return visible;
   };
 
   const visibleTestimonials = getVisibleTestimonials();
-
-  // Calculate dots for pagination
-  const totalSlides = Math.max(0, testimonials.length - 2);
 
   return (
     <section className="py-16 md:py-24 px-6 md:px-16 bg-gradient-to-br from-blue-50 via-purple-50 to-indigo-50 relative overflow-hidden">
@@ -141,9 +149,9 @@ const TestimonialsSection = () => {
         
         {/* Testimonials Container */}
         <div className="relative">
-          <div className="overflow-hidden rounded-3xl">
+          <div className="overflow-hidden">
             <div 
-              className={`grid md:grid-cols-3 gap-8 transition-all duration-500 ease-in-out ${
+              className={`grid grid-cols-1 md:grid-cols-3 gap-8 transition-all duration-500 ease-in-out ${
                 isAnimating ? 'transform scale-95 opacity-80' : 'transform scale-100 opacity-100'
               }`}
             >
@@ -197,7 +205,7 @@ const TestimonialsSection = () => {
         <div className="flex justify-between items-center mt-12">
           {/* Pagination Dots */}
           <div className="flex-grow flex justify-center gap-3">
-            {Array.from({ length: Math.min(totalSlides, 5) }, (_, index) => (
+            {Array.from({ length: totalSlides }, (_, index) => (
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
