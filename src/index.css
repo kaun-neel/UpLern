@@ -57,23 +57,6 @@ body {
   }
 }
 
-/* Enhanced floating animation for hero elements */
-.animate-float {
-  animation: heroFloat 8s ease-in-out infinite;
-}
-
-@keyframes heroFloat {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  33% {
-    transform: translateY(-15px) rotate(2deg);
-  }
-  66% {
-    transform: translateY(10px) rotate(-1deg);
-  }
-}
-
 .benefit-card {
   @apply relative overflow-hidden rounded-3xl p-8 flex flex-col items-center justify-start bg-white min-h-[280px];
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
@@ -117,6 +100,18 @@ body {
 
 .enroll-button {
   @apply bg-purple-500 hover:bg-purple-600 text-white font-medium py-2 px-6 rounded-full transition-all duration-300;
+}
+
+/* Enhanced floating animation for signup page */
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Google Account Selector Styles */
+.google-account-option:hover {
+  background-color: #f9fafb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Course slider animations */
@@ -264,45 +259,6 @@ body {
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
-
-/* Hero section specific animations */
-@keyframes heroGlow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(139, 92, 246, 0.6);
-  }
-}
-
-.hero-glow {
-  animation: heroGlow 3s ease-in-out infinite;
-}
-
-/* Geometric shapes animations */
-@keyframes geometricFloat {
-  0%, 100% {
-    transform: translateY(0) rotateX(0deg) rotateY(0deg);
-  }
-  33% {
-    transform: translateY(-20px) rotateX(15deg) rotateY(15deg);
-  }
-  66% {
-    transform: translateY(10px) rotateX(-10deg) rotateY(-10deg);
-  }
-}
-
-.geometric-float {
-  animation: geometricFloat 6s ease-in-out infinite;
-}
-
-/* Staggered animations */
-.stagger-1 { animation-delay: 0.1s; }
-.stagger-2 { animation-delay: 0.2s; }
-.stagger-3 { animation-delay: 0.3s; }
-.stagger-4 { animation-delay: 0.4s; }
-.stagger-5 { animation-delay: 0.5s; }
-.stagger-6 { animation-delay: 0.6s; }
 
 ::-webkit-scrollbar {
   width: 8px;
