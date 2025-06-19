@@ -477,7 +477,11 @@ const CoursesPage = () => {
                   {/* Left Content */}
                   <div className="text-white">
                     <div className="flex items-center gap-3 mb-6">
-                      <span className="text-3xl font-bold">upLern</span>
+                      <img 
+                        src="/logo.png" 
+                        alt="upLern Logo" 
+                        className="h-8 w-auto object-contain"
+                      />
                       <div className="flex items-center gap-2 bg-purple-600/50 backdrop-blur-sm px-3 py-1 rounded-full">
                         <div className="w-2 h-2 bg-white rounded-full"></div>
                         <span className="text-sm font-medium">Premium Pass</span>

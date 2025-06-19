@@ -52,7 +52,13 @@ const PremiumPassPage = () => {
 
         {/* Logo and Title */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold mb-2">upLern</h1>
+          <div className="flex justify-center mb-4">
+            <img 
+              src="/logo.png" 
+              alt="upLern Logo" 
+              className="h-12 w-auto object-contain"
+            />
+          </div>
           <div className="flex items-center justify-center gap-2">
             <h2 className="text-3xl font-bold">Premium Pass</h2>
             <Crown className="w-8 h-8 text-yellow-400" />

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { GraduationCap, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 
 const Footer = () => {
   const quickLinks = [
@@ -23,13 +23,12 @@ const Footer = () => {
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-md bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center">
-                <GraduationCap className="text-white" size={24} />
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-indigo-500 text-transparent bg-clip-text">
-                uplern
-              </span>
+            <div className="flex items-center gap-3 mb-4">
+              <img 
+                src="/logo.png" 
+                alt="upLern Logo" 
+                className="h-10 w-auto object-contain"
+              />
             </div>
             <p className="text-gray-600 mb-4">
               Uplern is an online education platform dedicated to helping professionals acquire new skills and advance their careers.
