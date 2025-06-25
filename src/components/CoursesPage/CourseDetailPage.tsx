@@ -7,6 +7,208 @@ import { usePayment } from '../../hooks/usePayment';
 import { useEnrollment } from '../../hooks/useEnrollment';
 import { useAuth } from '../../lib/auth';
 
+// Course data for all courses
+const courseData = {
+  'web-development': {
+    title: 'Web Development Course',
+    description: 'The Web Development course from upLern is designed to provide students with comprehensive training in building dynamic and responsive websites. Covering both front-end and back-end development, this course equips students with the skills and knowledge needed to create modern web applications that meet industry standards and user expectations.',
+    image: '/WebD.png',
+    lectures: '100+ Lectures',
+    price: 599,
+    originalPrice: 2450,
+    language: 'English',
+    enrolled: '1,200+ Enrolled',
+    features: [
+      'Introduction to Web Development',
+      'HTML and CSS Fundamentals',
+      'JavaScript Programming',
+      'Front-End Frameworks and Libraries',
+      'Responsive Web Design',
+      'Back-End Development',
+      'Database Management',
+      'Web Application Development',
+      'Version Control and Deployment',
+      'Web Performance Optimization'
+    ]
+  },
+  'ui-ux-design': {
+    title: 'UI/UX Design Course',
+    description: 'Master the art of creating intuitive and visually appealing user interfaces. This comprehensive UI/UX Design course covers design principles, user research, wireframing, prototyping, and modern design tools to help you create exceptional user experiences.',
+    image: '/UIUX.png',
+    lectures: '50+ Lectures',
+    price: 599,
+    originalPrice: 2450,
+    language: 'English',
+    enrolled: '800+ Enrolled',
+    features: [
+      'Design Thinking Process',
+      'User Research and Analysis',
+      'Information Architecture',
+      'Wireframing and Prototyping',
+      'Visual Design Principles',
+      'Color Theory and Typography',
+      'Figma and Adobe XD',
+      'Usability Testing',
+      'Mobile-First Design',
+      'Design Systems and Style Guides'
+    ]
+  },
+  'digital-marketing': {
+    title: 'Digital Marketing Course',
+    description: 'Transform your business with comprehensive digital marketing strategies. Learn SEO, social media marketing, content marketing, email campaigns, and analytics to drive growth and reach your target audience effectively in the digital landscape.',
+    image: '/DigitalM.png',
+    lectures: '60+ Lectures',
+    price: 599,
+    originalPrice: 2450,
+    language: 'English',
+    enrolled: '950+ Enrolled',
+    features: [
+      'Digital Marketing Fundamentals',
+      'Search Engine Optimization (SEO)',
+      'Social Media Marketing',
+      'Content Marketing Strategy',
+      'Email Marketing Campaigns',
+      'Google Ads and PPC',
+      'Analytics and Data Tracking',
+      'Conversion Rate Optimization',
+      'Influencer Marketing',
+      'Marketing Automation'
+    ]
+  },
+  'javascript': {
+    title: 'JavaScript Programming Course',
+    description: 'Dive deep into JavaScript programming and become proficient in one of the most popular programming languages. Learn modern JavaScript features, DOM manipulation, asynchronous programming, and build interactive web applications.',
+    image: '/JS.png',
+    lectures: '80+ Lectures',
+    price: 599,
+    originalPrice: 2450,
+    language: 'English',
+    enrolled: '1,100+ Enrolled',
+    features: [
+      'JavaScript Fundamentals',
+      'ES6+ Modern Features',
+      'DOM Manipulation',
+      'Event Handling',
+      'Asynchronous Programming',
+      'Promises and Async/Await',
+      'Object-Oriented Programming',
+      'Functional Programming',
+      'Error Handling',
+      'JavaScript Testing'
+    ]
+  },
+  'angular': {
+    title: 'Angular Framework Course',
+    description: 'Master Angular, the powerful TypeScript-based framework for building dynamic web applications. Learn components, services, routing, forms, and advanced Angular concepts to create scalable enterprise applications.',
+    image: '/Angular.png',
+    lectures: '40+ Lectures',
+    price: 599,
+    originalPrice: 2450,
+    language: 'English',
+    enrolled: '650+ Enrolled',
+    features: [
+      'Angular Architecture',
+      'Components and Templates',
+      'Services and Dependency Injection',
+      'Routing and Navigation',
+      'Forms and Validation',
+      'HTTP Client and APIs',
+      'State Management',
+      'Angular CLI',
+      'Testing Angular Apps',
+      'Deployment Strategies'
+    ]
+  },
+  'chat-gpt': {
+    title: 'Chat GPT & AI Course',
+    description: 'Explore the world of artificial intelligence and learn how to leverage ChatGPT and other AI tools effectively. Understand AI fundamentals, prompt engineering, and practical applications in various industries.',
+    image: '/AI.png',
+    lectures: '25+ Lectures',
+    price: 599,
+    originalPrice: 2450,
+    language: 'English',
+    enrolled: '750+ Enrolled',
+    features: [
+      'AI and Machine Learning Basics',
+      'Understanding ChatGPT',
+      'Prompt Engineering',
+      'AI Content Creation',
+      'Business Applications',
+      'AI Ethics and Limitations',
+      'Integration with Workflows',
+      'Future of AI Technology',
+      'Practical Use Cases',
+      'AI Tool Comparison'
+    ]
+  },
+  'motion-design': {
+    title: 'Motion Design Course',
+    description: 'Learn the art of motion graphics and animation. Master industry-standard tools and techniques to create engaging animations, motion graphics, and visual effects for digital media and marketing.',
+    image: '/MotionD.png',
+    lectures: '45+ Lectures',
+    price: 599,
+    originalPrice: 2450,
+    language: 'English',
+    enrolled: '520+ Enrolled',
+    features: [
+      'Animation Principles',
+      'After Effects Mastery',
+      'Motion Graphics Design',
+      'Character Animation',
+      'Visual Effects',
+      'Typography Animation',
+      'Color and Composition',
+      'Audio Synchronization',
+      'Export and Optimization',
+      'Portfolio Development'
+    ]
+  },
+  'excel-fundamental': {
+    title: 'Excel Fundamentals Course',
+    description: 'Master Microsoft Excel from basics to advanced features. Learn formulas, functions, data analysis, pivot tables, and automation to boost your productivity and analytical skills in any profession.',
+    image: '/Excel.png',
+    lectures: '35+ Lectures',
+    price: 599,
+    originalPrice: 2450,
+    language: 'English',
+    enrolled: '900+ Enrolled',
+    features: [
+      'Excel Interface and Navigation',
+      'Formulas and Functions',
+      'Data Formatting and Validation',
+      'Charts and Graphs',
+      'Pivot Tables and Analysis',
+      'Conditional Formatting',
+      'Data Import and Export',
+      'Macros and Automation',
+      'Advanced Functions',
+      'Business Applications'
+    ]
+  },
+  'cyber-security': {
+    title: 'Cyber Security Course',
+    description: 'Protect digital assets and learn cybersecurity fundamentals. Understand threats, vulnerabilities, security protocols, and best practices to safeguard systems and data in today\'s digital world.',
+    image: '/Cyber.png',
+    lectures: '55+ Lectures',
+    price: 599,
+    originalPrice: 2450,
+    language: 'English',
+    enrolled: '680+ Enrolled',
+    features: [
+      'Cybersecurity Fundamentals',
+      'Network Security',
+      'Threat Assessment',
+      'Incident Response',
+      'Cryptography Basics',
+      'Security Protocols',
+      'Ethical Hacking',
+      'Risk Management',
+      'Compliance and Regulations',
+      'Security Tools and Software'
+    ]
+  }
+};
+
 const CourseDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const { courseId } = useParams<{ courseId: string }>();
@@ -34,32 +236,19 @@ const CourseDetailPage: React.FC = () => {
     refreshEnrollments
   } = useEnrollment();
 
-  const courseDetails = {
-    title: 'Web Development Course',
-    description: 'The Web Development course from upLern is designed to provide students with comprehensive training in building dynamic and responsive websites. Covering both front-end and back-end development, this course equips students with the skills and knowledge needed to create modern web applications that meet industry standards and user expectations. Through a combination of theoretical lectures, hands-on coding exercises, and practical projects, students will learn essential web technologies, frameworks, and best practices to design, develop, and deploy fully functional websites.',
-    image: '/WebD.png',
-    lectures: '80+ Lecture',
-    price: 599,
-    originalPrice: 2450,
-    language: 'English',
-    enrolled: '100+ Enrolled',
-    features: [
-      'Introduction to Web Development',
-      'HTML and CSS Fundamentals',
-      'JavaScript Programming',
-      'Front-End Frameworks and Libraries',
-      'Responsive Web Design',
-      'Back-End Development',
-      'Database Management',
-      'Web Application Development',
-      'Version Control and Deployment',
-      'Web Performance Optimization'
-    ]
-  };
+  // Get course details based on courseId
+  const courseDetails = courseId ? courseData[courseId as keyof typeof courseData] : null;
+
+  // Redirect to 404 or courses page if course not found
+  useEffect(() => {
+    if (courseId && !courseDetails) {
+      navigate('/courses');
+    }
+  }, [courseId, courseDetails, navigate]);
 
   const testimonials = [
     {
-      quote: "Transformed my web design skills completely",
+      quote: "Transformed my skills completely",
       text: "The online courses on this platform have been a game-changer for me. The content is engaging, the instructors are knowledgeable",
       name: "James",
       avatar: "https://randomuser.me/api/portraits/men/32.jpg"
@@ -110,7 +299,9 @@ const CourseDetailPage: React.FC = () => {
       navigate('/login');
       return;
     }
-    initiateCoursePayment(courseId || 'web-development', courseDetails.title);
+    if (courseId && courseDetails) {
+      initiateCoursePayment(courseId, courseDetails.title);
+    }
   };
 
   const handleProgressUpdate = async (progress: number) => {
@@ -124,6 +315,24 @@ const CourseDetailPage: React.FC = () => {
     return (
       <div className="min-h-screen yellow-gradient-bg flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-violet-500"></div>
+      </div>
+    );
+  }
+
+  if (!courseDetails) {
+    return (
+      <div className="min-h-screen yellow-gradient-bg flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">Course Not Found</h1>
+          <p className="text-gray-600 mb-8">The course you're looking for doesn't exist.</p>
+          <Link
+            to="/courses"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-full font-medium hover:shadow-lg transition-all duration-300"
+          >
+            <ChevronLeft size={16} />
+            Back to Courses
+          </Link>
+        </div>
       </div>
     );
   }
