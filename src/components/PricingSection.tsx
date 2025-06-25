@@ -37,15 +37,6 @@ const PricingSection = () => {
   ];
 
   return (
-<<<<<<< HEAD
-    <section className="py-16 md:py-24 px-6 md:px-16 bg-gray-50">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Pricing Plans <span className="gradient-text">For You</span>
-          </h2>
-          <p className="text-gray-600">Precision pricing, powerful results.</p>
-=======
     <section className="py-16 md:py-24 px-6 md:px-16 yellow-gradient-bg">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
@@ -53,20 +44,10 @@ const PricingSection = () => {
             Pricing Plans <span className="gradient-text">For You</span>
           </h2>
           <p className="text-gray-700">Precision pricing, powerful results.</p>
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {plans.map((plan, index) => (
-<<<<<<< HEAD
-            <div key={index} className="bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-shadow flex flex-col h-full">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                  {plan.icon}
-                  <h3 className="text-xl font-bold">{plan.name}</h3>
-                </div>
-                <span className="text-sm bg-gray-100 px-4 py-1 rounded-full">
-=======
             <div key={index} className="glass-card-dark rounded-3xl p-8 hover:shadow-xl transition-shadow flex flex-col h-full">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
@@ -74,7 +55,6 @@ const PricingSection = () => {
                   <h3 className="text-xl font-bold text-gray-800">{plan.name}</h3>
                 </div>
                 <span className="text-sm bg-gray-100/80 backdrop-blur-sm px-4 py-1 rounded-full border border-gray-200/50">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                   Started from {plan.price}
                 </span>
               </div>
@@ -110,11 +90,7 @@ const PricingSection = () => {
                   >
                     Enroll now
                   </Link>
-<<<<<<< HEAD
-                  <p className="mt-4 text-sm text-gray-500">upLern Lifetime Membership</p>
-=======
                   <p className="mt-4 text-sm text-gray-600">upLern Lifetime Membership</p>
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                 </div>
               </div>
             </div>

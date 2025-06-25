@@ -69,19 +69,11 @@ const LoginPage = () => {
   };
 
   return (
-<<<<<<< HEAD
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-purple-50 to-white py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-lg p-8">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold">Log into your account</h2>
-          <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-=======
     <div className="min-h-screen yellow-gradient-bg flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full glass-card-dark rounded-2xl p-8">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold">Log into your account</h2>
           <div className="mt-4 p-4 bg-blue-50/80 backdrop-blur-sm border border-blue-200 rounded-lg">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
             <p className="text-sm text-blue-800 font-medium">Demo Accounts:</p>
             <p className="text-xs text-blue-700 mt-1">Email: demo@uplern.com, Password: demo123</p>
             <p className="text-xs text-blue-700">Email: john@uplern.com, Password: john123</p>
@@ -95,11 +87,7 @@ const LoginPage = () => {
               placeholder="Enter your email address"
               value={formData.email}
               onChange={(e) => setFormData({...formData, email: e.target.value})}
-<<<<<<< HEAD
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-=======
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent bg-white/90 backdrop-blur-sm"
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
               required
               disabled={loading}
             />
@@ -111,11 +99,7 @@ const LoginPage = () => {
               placeholder="Enter your password"
               value={formData.password}
               onChange={(e) => setFormData({...formData, password: e.target.value})}
-<<<<<<< HEAD
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-=======
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent bg-white/90 backdrop-blur-sm"
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
               required
               disabled={loading}
             />
@@ -135,11 +119,7 @@ const LoginPage = () => {
             <button
               onClick={handleGoogleLogin}
               disabled={googleLoading}
-<<<<<<< HEAD
-              className="w-full flex items-center justify-center gap-3 border border-gray-300 py-3 rounded-lg hover:bg-gray-50 hover:border-gray-400 hover:shadow-md transition-all duration-300 disabled:opacity-50 group"
-=======
               className="w-full flex items-center justify-center gap-3 border border-gray-300 py-3 rounded-lg hover:bg-gray-50 hover:border-gray-400 hover:shadow-md transition-all duration-300 disabled:opacity-50 group bg-white/90 backdrop-blur-sm"
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
             >
               <div className="relative">
                 <img 
@@ -159,11 +139,7 @@ const LoginPage = () => {
         )}
 
         {!isGoogleAuthAvailable && (
-<<<<<<< HEAD
-          <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-=======
           <div className="mt-6 p-4 bg-blue-50/80 backdrop-blur-sm border border-blue-200 rounded-lg">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
             <p className="text-sm text-blue-800 text-center">
               Google Sign-In is not available in this environment. Please use email/password authentication.
             </p>

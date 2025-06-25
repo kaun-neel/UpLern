@@ -1,10 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-<<<<<<< HEAD
-import { GraduationCap, User, LogOut, Crown } from 'lucide-react';
-=======
 import { User, LogOut, Crown } from 'lucide-react';
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
 import { useAuth } from '../lib/auth';
 import { useEnrollment } from '../hooks/useEnrollment';
 import toast from 'react-hot-toast';
@@ -30,22 +26,12 @@ const Navbar = () => {
 
   return (
     <header className="py-4 px-6 md:px-12 flex justify-between items-center">
-<<<<<<< HEAD
-      <Link to="/" className="flex items-center gap-2">
-        <div className="w-10 h-10 rounded-md bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center">
-          <GraduationCap className="text-white" size={24} />
-        </div>
-        <span className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-indigo-500 text-transparent bg-clip-text">
-          uplern
-        </span>
-=======
       <Link to="/" className="flex items-center gap-3">
         <img 
           src="/logo.png" 
           alt="upLern Logo" 
           className="h-10 w-auto object-contain"
         />
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
       </Link>
       
       <nav className="hidden md:block">

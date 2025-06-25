@@ -37,11 +37,7 @@ const CourseDetailPage: React.FC = () => {
   const courseDetails = {
     title: 'Web Development Course',
     description: 'The Web Development course from upLern is designed to provide students with comprehensive training in building dynamic and responsive websites. Covering both front-end and back-end development, this course equips students with the skills and knowledge needed to create modern web applications that meet industry standards and user expectations. Through a combination of theoretical lectures, hands-on coding exercises, and practical projects, students will learn essential web technologies, frameworks, and best practices to design, develop, and deploy fully functional websites.',
-<<<<<<< HEAD
-    image: 'https://cdn3d.iconscout.com/3d/premium/thumb/web-development-5977974-4995252.png',
-=======
     image: '/WebD.png',
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
     lectures: '80+ Lecture',
     price: 599,
     originalPrice: 2450,
@@ -126,26 +122,16 @@ const CourseDetailPage: React.FC = () => {
 
   if (enrollmentLoading) {
     return (
-<<<<<<< HEAD
-      <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white flex items-center justify-center">
-=======
       <div className="min-h-screen yellow-gradient-bg flex items-center justify-center">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-violet-500"></div>
       </div>
     );
   }
 
   return (
-<<<<<<< HEAD
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-blue-100 to-purple-100 py-8">
-=======
     <div className="min-h-screen yellow-gradient-bg">
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-100/80 to-purple-100/80 backdrop-blur-sm py-8">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
         <div className="max-w-6xl mx-auto px-6">
           <button 
             onClick={() => navigate(-1)}
@@ -169,16 +155,6 @@ const CourseDetailPage: React.FC = () => {
               <p className="text-gray-600 mb-6">{courseDetails.description}</p>
               
               <div className="flex flex-wrap gap-4">
-<<<<<<< HEAD
-                <div className="bg-white px-4 py-2 rounded-full text-sm flex items-center gap-2">
-                  <BookOpen size={16} />
-                  {courseDetails.lectures}
-                </div>
-                <div className="bg-white px-4 py-2 rounded-full text-sm">
-                  {courseDetails.language}
-                </div>
-                <div className="bg-white px-4 py-2 rounded-full text-sm">
-=======
                 <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full text-sm flex items-center gap-2 border border-white/30">
                   <BookOpen size={16} />
                   {courseDetails.lectures}
@@ -187,7 +163,6 @@ const CourseDetailPage: React.FC = () => {
                   {courseDetails.language}
                 </div>
                 <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full text-sm border border-white/30">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                   {courseDetails.enrolled}
                 </div>
               </div>
@@ -202,11 +177,7 @@ const CourseDetailPage: React.FC = () => {
               
               {!isEnrolled && (
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-<<<<<<< HEAD
-                  <div className="w-24 h-24 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-white transition-colors">
-=======
                   <div className="w-24 h-24 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-white transition-colors enhanced-shadow">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                     <div className="w-16 h-16 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full flex items-center justify-center">
                       <div className="w-0 h-0 border-t-8 border-t-transparent border-l-12 border-l-white border-b-8 border-b-transparent ml-1"></div>
                     </div>
@@ -244,11 +215,7 @@ const CourseDetailPage: React.FC = () => {
             </div>
 
             <div>
-<<<<<<< HEAD
-              <div className="bg-white rounded-3xl shadow-sm p-6 sticky top-6">
-=======
               <div className="glass-card-dark rounded-3xl p-6 sticky top-6">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                 <div className="aspect-video bg-gray-100 rounded-xl mb-6">
                   <img
                     src={courseDetails.image}
@@ -282,11 +249,7 @@ const CourseDetailPage: React.FC = () => {
       {/* Certificate Section - Only show if not enrolled */}
       {!isEnrolled && (
         <div className="max-w-6xl mx-auto px-6 py-12">
-<<<<<<< HEAD
-          <div className="grid md:grid-cols-2 gap-8 items-center bg-gray-50 rounded-3xl p-8">
-=======
           <div className="grid md:grid-cols-2 gap-8 items-center glass-card rounded-3xl p-8">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
             <img
               src="https://cdn3d.iconscout.com/3d/premium/thumb/certificate-5856337-4892699.png"
               alt="Certificate"
@@ -311,11 +274,7 @@ const CourseDetailPage: React.FC = () => {
           <h2 className="text-2xl font-bold mb-8">Featured review</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-<<<<<<< HEAD
-              <div key={index} className="bg-white rounded-3xl p-6 shadow-sm">
-=======
               <div key={index} className="glass-card rounded-3xl p-6">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                 <h3 className="text-lg font-bold mb-4">"{testimonial.quote}"</h3>
                 <p className="text-gray-600 mb-6">"{testimonial.text}"</p>
                 <div className="flex items-center gap-3">
@@ -330,17 +289,10 @@ const CourseDetailPage: React.FC = () => {
             ))}
           </div>
           <div className="flex justify-center gap-4 mt-8">
-<<<<<<< HEAD
-            <button className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center">
-              <ChevronLeft size={20} />
-            </button>
-            <button className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center">
-=======
             <button className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center bg-white/80 backdrop-blur-sm">
               <ChevronLeft size={20} />
             </button>
             <button className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center bg-white/80 backdrop-blur-sm">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
               <ChevronRight size={20} />
             </button>
           </div>

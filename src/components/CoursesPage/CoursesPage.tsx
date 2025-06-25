@@ -10,11 +10,7 @@ const topCourses = [
   {
     id: 'web-development',
     title: 'Web Development',
-<<<<<<< HEAD
-    image: 'https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=400&h=250&fit=crop&crop=center',
-=======
     image: '/WebD.png',
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
     lectures: '100+ Lectures',
     hours: '4+ Hours',
     description: 'Build the web, Shape the future - Learn to Code Like a Pro',
@@ -26,11 +22,7 @@ const topCourses = [
   {
     id: 'javascript',
     title: 'Java Script Programming',
-<<<<<<< HEAD
-    image: 'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=400&h=250&fit=crop&crop=center',
-=======
     image: '/JS.png',
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
     lectures: '20+ Lectures',
     hours: '4+ Hours',
     description: 'Build the web, Shape the future - Learn to Code Like a Pro',
@@ -42,11 +34,7 @@ const topCourses = [
   {
     id: 'angular',
     title: 'Angular Framework',
-<<<<<<< HEAD
-    image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=250&fit=crop&crop=center',
-=======
     image: '/Angular.png',
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
     lectures: '12+ Lectures',
     hours: '2+ Hours',
     description: 'Transform Your Business: Digital Marketing Strategies That Work',
@@ -58,11 +46,7 @@ const topCourses = [
   {
     id: 'chat-gpt',
     title: 'Chat GPT',
-<<<<<<< HEAD
-    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=250&fit=crop&crop=center',
-=======
     image: '/AI.png',
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
     lectures: '5+ Lectures',
     hours: '1+ Hours',
     description: 'Build the web, Shape the future - Learn to Code Like a Pro',
@@ -77,11 +61,7 @@ const allCourses = [
   {
     id: 'web-development',
     title: 'Web Development',
-<<<<<<< HEAD
-    image: 'https://cdn3d.iconscout.com/3d/premium/thumb/web-development-5977974-4995252.png',
-=======
     image: '/WebD.png',
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
     lectures: '100+ Lectures',
     hours: '4+ Hours',
     description: 'Build the web, Shape the future - Learn to Code Like a Pro',
@@ -91,11 +71,7 @@ const allCourses = [
   {
     id: 'digital-marketing',
     title: 'Digital Marketing',
-<<<<<<< HEAD
-    image: 'https://cdn3d.iconscout.com/3d/premium/thumb/digital-marketing-5706074-4755623.png',
-=======
     image: '/DigitalM.png',
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
     lectures: '12+ Lectures',
     hours: '2+ Hours',
     description: 'Transform Your Business: Digital Marketing Strategies That Work',
@@ -105,11 +81,7 @@ const allCourses = [
   {
     id: 'chat-gpt',
     title: 'Chat GPT (AI)',
-<<<<<<< HEAD
-    image: 'https://cdn3d.iconscout.com/3d/premium/thumb/ai-robot-8571862-6809009.png',
-=======
     image: '/AI.png',
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
     lectures: '5+ Lectures',
     hours: '1+ Hours',
     description: 'Build the web, Shape the future - Learn to Code Like a Pro',
@@ -119,11 +91,7 @@ const allCourses = [
   {
     id: 'motion-design',
     title: 'Motion Design',
-<<<<<<< HEAD
-    image: 'https://cdn3d.iconscout.com/3d/premium/thumb/motion-graphics-5977947-4995225.png',
-=======
     image: '/MotionD.png',
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
     lectures: '10+ Lectures',
     hours: '4+ Hours',
     description: 'Build the web, Shape the future - Learn to Code Like a Pro',
@@ -133,11 +101,7 @@ const allCourses = [
   {
     id: 'excel-fundamental',
     title: 'Excel Fundamental',
-<<<<<<< HEAD
-    image: 'https://cdn3d.iconscout.com/3d/premium/thumb/excel-5977890-4995168.png',
-=======
     image: '/Excel.png',
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
     lectures: '20+ Lectures',
     hours: '2+ Hours',
     description: 'Transform Your Business: Digital Marketing Strategies That Work',
@@ -147,11 +111,7 @@ const allCourses = [
   {
     id: 'ui-ux-design',
     title: 'UI/UX Design',
-<<<<<<< HEAD
-    image: 'https://cdn3d.iconscout.com/3d/premium/thumb/ui-ux-design-5977973-4995251.png',
-=======
     image: '/UIUX.png',
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
     lectures: '10+ Lectures',
     hours: '2+ Hours',
     description: 'Build the web, Shape the future - Learn to Code Like a Pro',
@@ -161,11 +121,7 @@ const allCourses = [
   {
     id: 'javascript',
     title: 'Java Script Programing',
-<<<<<<< HEAD
-    image: 'https://cdn3d.iconscout.com/3d/premium/thumb/javascript-5977895-4995173.png',
-=======
     image: 'JS.png',
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
     lectures: '20+ Lectures',
     hours: '4+ Hours',
     description: 'Build the web, Shape the future - Learn to Code Like a Pro',
@@ -175,11 +131,7 @@ const allCourses = [
   {
     id: 'angular',
     title: 'Angular Framework',
-<<<<<<< HEAD
-    image: 'https://cdn3d.iconscout.com/3d/premium/thumb/angular-5977872-4995150.png',
-=======
     image: '/Angular.png',
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
     lectures: '12+ Lectures',
     hours: '2+ Hours',
     description: 'Transform Your Business: Digital Marketing Strategies That Work',
@@ -189,11 +141,7 @@ const allCourses = [
   {
     id: 'cyber-security',
     title: 'Cyber Security',
-<<<<<<< HEAD
-    image: 'https://cdn3d.iconscout.com/3d/premium/thumb/cyber-security-5977884-4995162.png',
-=======
     image: '/Cyber.png',
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
     lectures: '5+ Lectures',
     hours: '1+ Hours',
     description: 'Build the web, Shape the future - Learn to Code Like a Pro',
@@ -296,34 +244,17 @@ const CoursesPage = () => {
   };
 
   return (
-<<<<<<< HEAD
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
-=======
     <div className="min-h-screen yellow-gradient-bg">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
       {/* Hero Section with Welcome Background */}
       <div className="relative overflow-hidden">
         {/* Welcome Background Text */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-<<<<<<< HEAD
-          <div className="text-[15rem] lg:text-[20rem] font-bold text-purple-100/20 select-none whitespace-nowrap">
-=======
           <div className="text-[15rem] lg:text-[20rem] font-bold text-yellow-200/20 select-none whitespace-nowrap">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
             Welcome
           </div>
         </div>
 
         {/* Floating decorative elements */}
-<<<<<<< HEAD
-        <div className="absolute top-20 right-20 w-16 h-16 bg-purple-200 rounded-2xl opacity-60"></div>
-        <div className="absolute bottom-40 left-20 w-20 h-20 bg-indigo-200 rounded-full opacity-40"></div>
-        <div className="absolute top-1/2 right-1/3 w-12 h-12 bg-purple-300 rounded-xl opacity-50"></div>
-
-        <div className="relative z-10 max-w-6xl mx-auto px-6 py-16">
-          {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-sm text-gray-600 mb-8">
-=======
         <div className="absolute top-20 right-20 w-16 h-16 bg-yellow-300/60 rounded-2xl opacity-60"></div>
         <div className="absolute bottom-40 left-20 w-20 h-20 bg-yellow-400/50 rounded-full opacity-40"></div>
         <div className="absolute top-1/2 right-1/3 w-12 h-12 bg-yellow-500/60 rounded-xl opacity-50"></div>
@@ -331,7 +262,6 @@ const CoursesPage = () => {
         <div className="relative z-10 max-w-6xl mx-auto px-6 py-16">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-sm text-gray-700 mb-8">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
             <Link to="/" onClick={() => window.scrollTo(0, 0)} className="hover:text-purple-600 transition-colors">Home</Link>
             <span>•</span>
             <span>All Courses</span>
@@ -351,11 +281,7 @@ const CoursesPage = () => {
                   {topCourses.map((course, index) => (
                     <div key={index} className="w-full flex-shrink-0">
                       <div 
-<<<<<<< HEAD
-                        className={`relative bg-gradient-to-r ${course.color} rounded-3xl p-8 cursor-pointer hover:scale-[1.02] transition-all duration-300 shadow-2xl`}
-=======
                         className={`relative bg-gradient-to-r ${course.color} rounded-3xl p-8 cursor-pointer hover:scale-[1.02] transition-all duration-300 enhanced-shadow-lg`}
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                         onClick={() => handleCourseClick(course.id)}
                       >
                         <div className="grid md:grid-cols-2 gap-8 items-center">
@@ -389,11 +315,7 @@ const CoursesPage = () => {
 
                           {/* Right Image */}
                           <div className="relative">
-<<<<<<< HEAD
-                            <div className="aspect-video rounded-2xl overflow-hidden shadow-2xl">
-=======
                             <div className="aspect-video rounded-2xl overflow-hidden enhanced-shadow">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                               <img
                                 src={course.image}
                                 alt={course.title}
@@ -417,21 +339,13 @@ const CoursesPage = () => {
               {/* Navigation Arrows - Now outside the rounded container */}
               <button
                 onClick={prevSlide}
-<<<<<<< HEAD
-                className="absolute left-[-60px] top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white hover:scale-110 transition-all z-10"
-=======
                 className="absolute left-[-60px] top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center enhanced-shadow hover:bg-white hover:scale-110 transition-all z-10"
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
               >
                 <ChevronLeft className="w-6 h-6 text-gray-800" />
               </button>
               <button
                 onClick={nextSlide}
-<<<<<<< HEAD
-                className="absolute right-[-60px] top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white hover:scale-110 transition-all z-10"
-=======
                 className="absolute right-[-60px] top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center enhanced-shadow hover:bg-white hover:scale-110 transition-all z-10"
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
               >
                 <ChevronRight className="w-6 h-6 text-gray-800" />
               </button>
@@ -445,11 +359,7 @@ const CoursesPage = () => {
                     className={`h-3 rounded-full transition-all duration-300 ${
                       index === currentSlide 
                         ? 'bg-purple-600 w-8' 
-<<<<<<< HEAD
-                        : 'bg-gray-300 hover:bg-gray-400 w-3'
-=======
                         : 'bg-gray-400 hover:bg-gray-500 w-3'
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                     }`}
                   />
                 ))}
@@ -460,11 +370,7 @@ const CoursesPage = () => {
       </div>
 
       {/* All Courses Section */}
-<<<<<<< HEAD
-      <div className="bg-white py-16">
-=======
       <div className="bg-white/30 backdrop-blur-sm py-16">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-3xl font-bold mb-8 text-gray-800">All Courses</h2>
           
@@ -475,11 +381,7 @@ const CoursesPage = () => {
               return (
                 <div 
                   key={index} 
-<<<<<<< HEAD
-                  className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 hover:shadow-xl hover:border-purple-200 transition-all duration-300 cursor-pointer group relative"
-=======
                   className="glass-card rounded-3xl p-6 hover:shadow-xl hover:border-purple-200 transition-all duration-300 cursor-pointer group relative"
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                   onClick={() => handleCourseClick(course.id)}
                 >
                   {enrolled && (
@@ -575,15 +477,11 @@ const CoursesPage = () => {
                   {/* Left Content */}
                   <div className="text-white">
                     <div className="flex items-center gap-3 mb-6">
-<<<<<<< HEAD
-                      <span className="text-3xl font-bold">upLern</span>
-=======
                       <img 
                         src="/logo.png" 
                         alt="upLern Logo" 
                         className="h-8 w-auto object-contain"
                       />
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                       <div className="flex items-center gap-2 bg-purple-600/50 backdrop-blur-sm px-3 py-1 rounded-full">
                         <div className="w-2 h-2 bg-white rounded-full"></div>
                         <span className="text-sm font-medium">Premium Pass</span>
