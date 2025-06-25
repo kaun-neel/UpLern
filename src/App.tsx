@@ -23,20 +23,13 @@ import PrivacyPolicyPage from './components/PrivacyPolicyPage/PrivacyPolicyPage'
 import TermsOfServicePage from './components/TermsOfServicePage/TermsOfServicePage';
 import RefundPolicyPage from './components/RefundPolicyPage/RefundPolicyPage';
 import SupportPage from './components/SupportPage/SupportPage';
-<<<<<<< HEAD
-=======
 import WhatsAppFloat from './components/WhatsAppFloat';
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
 
 function App() {
   return (
     <AuthProvider>
       <Router>
-<<<<<<< HEAD
-        <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
-=======
         <div className="min-h-screen yellow-gradient-bg">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
           <Toaster position="top-right" />
           <Navbar />
           <Routes>
@@ -65,12 +58,9 @@ function App() {
             <Route path="/support" element={<SupportPage />} />
           </Routes>
           <Footer />
-<<<<<<< HEAD
-=======
           
           {/* WhatsApp Float Button - Available on all pages */}
           <WhatsAppFloat />
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
         </div>
       </Router>
     </AuthProvider>
