@@ -57,11 +57,7 @@ const CertificatesPage = () => {
   };
 
   return (
-<<<<<<< HEAD
-    <div className="bg-white rounded-2xl shadow-sm p-8">
-=======
     <div className="glass-card-dark rounded-2xl p-8">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
         <div>
           <h2 className="text-2xl font-semibold text-gray-900">My Certificates</h2>
@@ -76,11 +72,7 @@ const CertificatesPage = () => {
             placeholder="Search certificates..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-<<<<<<< HEAD
-            className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-=======
             className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm"
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
           />
         </div>
       </div>
@@ -99,11 +91,7 @@ const CertificatesPage = () => {
         <>
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-<<<<<<< HEAD
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200">
-=======
             <div className="bg-gradient-to-br from-purple-50/80 to-purple-100/80 backdrop-blur-sm rounded-xl p-6 border border-purple-200/50">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
               <div className="flex items-center justify-between mb-2">
                 <Award className="w-8 h-8 text-purple-600" />
                 <div className="text-right">
@@ -113,11 +101,7 @@ const CertificatesPage = () => {
               </div>
             </div>
             
-<<<<<<< HEAD
-            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border border-green-200">
-=======
             <div className="bg-gradient-to-br from-green-50/80 to-green-100/80 backdrop-blur-sm rounded-xl p-6 border border-green-200/50">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
               <div className="flex items-center justify-between mb-2">
                 <Calendar className="w-8 h-8 text-green-600" />
                 <div className="text-right">
@@ -129,11 +113,7 @@ const CertificatesPage = () => {
               </div>
             </div>
             
-<<<<<<< HEAD
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
-=======
             <div className="bg-gradient-to-br from-blue-50/80 to-blue-100/80 backdrop-blur-sm rounded-xl p-6 border border-blue-200/50">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
               <div className="flex items-center justify-between mb-2">
                 <Eye className="w-8 h-8 text-blue-600" />
                 <div className="text-right">
@@ -149,11 +129,7 @@ const CertificatesPage = () => {
             {filteredCertificates.map((certificate) => (
               <div
                 key={certificate.id}
-<<<<<<< HEAD
-                className="bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-lg hover:border-purple-200 transition-all duration-300"
-=======
                 className="bg-white/90 backdrop-blur-sm border border-gray-200/50 rounded-2xl p-6 hover:shadow-lg hover:border-purple-200 transition-all duration-300"
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
               >
                 {/* Certificate Preview */}
                 <div className="h-32 bg-gradient-to-br from-purple-400 to-indigo-600 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden">

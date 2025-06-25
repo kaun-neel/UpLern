@@ -108,11 +108,7 @@ const MyCoursesPage = () => {
 
   if (loading) {
     return (
-<<<<<<< HEAD
-      <div className="bg-white rounded-2xl shadow-sm p-8">
-=======
       <div className="glass-card-dark rounded-2xl p-8">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
         <div className="animate-pulse">
           <div className="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>
           <div className="space-y-4">
@@ -126,11 +122,7 @@ const MyCoursesPage = () => {
   }
 
   return (
-<<<<<<< HEAD
-    <div className="bg-white rounded-2xl shadow-sm p-8">
-=======
     <div className="glass-card-dark rounded-2xl p-8">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
         <div>
           <h2 className="text-2xl font-semibold text-gray-900">My Courses</h2>
@@ -175,11 +167,7 @@ const MyCoursesPage = () => {
         <>
           {/* Learning Stats */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-<<<<<<< HEAD
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200">
-=======
             <div className="bg-gradient-to-br from-purple-50/80 to-purple-100/80 backdrop-blur-sm rounded-xl p-6 border border-purple-200/50">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
               <div className="flex items-center justify-between mb-2">
                 <BookOpen className="w-8 h-8 text-purple-600" />
                 <TrendingUp className="w-5 h-5 text-purple-500" />
@@ -188,11 +176,7 @@ const MyCoursesPage = () => {
               <div className="text-sm text-purple-700 font-medium">Total Courses</div>
             </div>
             
-<<<<<<< HEAD
-            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border border-green-200">
-=======
             <div className="bg-gradient-to-br from-green-50/80 to-green-100/80 backdrop-blur-sm rounded-xl p-6 border border-green-200/50">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
               <div className="flex items-center justify-between mb-2">
                 <Award className="w-8 h-8 text-green-600" />
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
@@ -203,11 +187,7 @@ const MyCoursesPage = () => {
               <div className="text-sm text-green-700 font-medium">Completed</div>
             </div>
             
-<<<<<<< HEAD
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
-=======
             <div className="bg-gradient-to-br from-blue-50/80 to-blue-100/80 backdrop-blur-sm rounded-xl p-6 border border-blue-200/50">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
               <div className="flex items-center justify-between mb-2">
                 <Play className="w-8 h-8 text-blue-600" />
                 <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
@@ -218,11 +198,7 @@ const MyCoursesPage = () => {
               <div className="text-sm text-blue-700 font-medium">In Progress</div>
             </div>
             
-<<<<<<< HEAD
-            <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 border border-orange-200">
-=======
             <div className="bg-gradient-to-br from-orange-50/80 to-orange-100/80 backdrop-blur-sm rounded-xl p-6 border border-orange-200/50">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
               <div className="flex items-center justify-between mb-2">
                 <Clock className="w-8 h-8 text-orange-600" />
                 <div className="text-xs text-orange-600 font-semibold">AVG</div>
@@ -236,11 +212,7 @@ const MyCoursesPage = () => {
 
           {/* Premium Pass Status */}
           {hasPremiumPass && (
-<<<<<<< HEAD
-            <div className="mb-8 p-6 bg-gradient-to-r from-purple-100 to-indigo-100 rounded-2xl border border-purple-200">
-=======
             <div className="mb-8 p-6 bg-gradient-to-r from-purple-100/80 to-indigo-100/80 backdrop-blur-sm rounded-2xl border border-purple-200/50">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center">
                   <Award className="w-8 h-8 text-white" />
@@ -256,11 +228,7 @@ const MyCoursesPage = () => {
           {/* Courses List */}
           <div className="space-y-6">
             {enrollments.map((course) => (
-<<<<<<< HEAD
-              <div key={course.id} className="border border-gray-200 rounded-2xl p-6 hover:shadow-lg hover:border-purple-200 transition-all duration-300 bg-gradient-to-r from-white to-gray-50">
-=======
               <div key={course.id} className="border border-gray-200/50 rounded-2xl p-6 hover:shadow-lg hover:border-purple-200 transition-all duration-300 bg-gradient-to-r from-white/90 to-gray-50/90 backdrop-blur-sm">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                 <div className="grid lg:grid-cols-12 gap-6 items-center">
                   {/* Course Image and Basic Info */}
                   <div className="lg:col-span-5">
@@ -269,11 +237,7 @@ const MyCoursesPage = () => {
                         <img
                           src={getCourseImage(course.course_id)}
                           alt={course.course_name}
-<<<<<<< HEAD
-                          className="w-20 h-20 object-contain rounded-xl bg-white p-2 shadow-sm"
-=======
                           className="w-20 h-20 object-contain rounded-xl bg-white/80 backdrop-blur-sm p-2 shadow-sm border border-white/30"
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                         />
                         {course.status === 'completed' && (
                           <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">

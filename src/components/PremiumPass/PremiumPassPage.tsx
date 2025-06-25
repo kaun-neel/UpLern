@@ -42,29 +42,16 @@ const PremiumPassPage = () => {
   const premiumEnrollment = enrollments.find(e => e.enrollment_type === 'premium_pass');
 
   return (
-<<<<<<< HEAD
-    <div className="min-h-screen bg-[#2D1B69] text-white">
-      {/* Header */}
-      <div className="max-w-6xl mx-auto px-6 pt-8">
-        <Link to="/" className="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-colors mb-12">
-=======
     <div className="min-h-screen yellow-gradient-bg text-gray-800">
       {/* Header */}
       <div className="max-w-6xl mx-auto px-6 pt-8">
         <Link to="/" className="inline-flex items-center gap-2 text-gray-700 hover:text-purple-600 transition-colors mb-12">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
           <ChevronLeft size={20} />
           Back
         </Link>
 
         {/* Logo and Title */}
         <div className="text-center mb-16">
-<<<<<<< HEAD
-          <h1 className="text-4xl font-bold mb-2">upLern</h1>
-          <div className="flex items-center justify-center gap-2">
-            <h2 className="text-3xl font-bold">Premium Pass</h2>
-            <Crown className="w-8 h-8 text-yellow-400" />
-=======
           <div className="flex justify-center mb-4">
             <img 
               src="/logo.png" 
@@ -75,18 +62,13 @@ const PremiumPassPage = () => {
           <div className="flex items-center justify-center gap-2">
             <h2 className="text-3xl font-bold text-gray-800">Premium Pass</h2>
             <Crown className="w-8 h-8 text-yellow-500" />
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
           </div>
         </div>
 
         {/* Premium Status Banner */}
         {hasPremiumPass && (
           <div className="max-w-4xl mx-auto mb-16">
-<<<<<<< HEAD
-            <div className="bg-gradient-to-r from-yellow-400 to-orange-500 rounded-3xl p-8 text-center">
-=======
             <div className="bg-gradient-to-r from-yellow-400 to-orange-500 rounded-3xl p-8 text-center enhanced-shadow-lg">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
               <div className="flex items-center justify-center gap-3 mb-4">
                 <Crown className="w-12 h-12 text-white" />
                 <h3 className="text-3xl font-bold text-white">Premium Member</h3>
@@ -117,13 +99,8 @@ const PremiumPassPage = () => {
 
         {/* Introduction */}
         {!hasPremiumPass && (
-<<<<<<< HEAD
-          <div className="max-w-3xl mx-auto text-center mb-24 bg-[#3D2B79] rounded-3xl p-8">
-            <p className="text-lg">
-=======
           <div className="max-w-3xl mx-auto text-center mb-24 glass-card-dark rounded-3xl p-8">
             <p className="text-lg text-gray-700">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
               We're excited to introduce our newest course bundle, created to elevate your learning experience! Unlock a world of knowledge with our all-in-one package, thoughtfully designed to equip you with the expertise and confidence you need to thrive. More details coming soon on how you can take advantage of this exceptional opportunity!
             </p>
           </div>
@@ -131,28 +108,6 @@ const PremiumPassPage = () => {
 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-8 max-w-3xl mx-auto mb-24">
-<<<<<<< HEAD
-          <div className="bg-[#3D2B79] rounded-2xl p-6 text-center">
-            <h3 className="text-4xl font-bold mb-2">
-              <CountUp end={100} suffix="+" duration={2.5} />
-            </h3>
-            <p className="text-sm text-gray-300">Members</p>
-            <p className="text-xs text-gray-400 mt-2">Join the community with 1000+ students and excel!</p>
-          </div>
-          <div className="bg-[#3D2B79] rounded-2xl p-6 text-center">
-            <h3 className="text-4xl font-bold mb-2">
-              <CountUp end={1} prefix="0" suffix="+" duration={2.5} />
-            </h3>
-            <p className="text-sm text-gray-300">Hours</p>
-            <p className="text-xs text-gray-400 mt-2">Get access to every bit of our content</p>
-          </div>
-          <div className="bg-[#3D2B79] rounded-2xl p-6 text-center">
-            <h3 className="text-4xl font-bold mb-2">
-              <CountUp end={10} suffix="+" duration={2.5} />
-            </h3>
-            <p className="text-sm text-gray-300">Lectures</p>
-            <p className="text-xs text-gray-400 mt-2">Watch 100+ well-paced lecture at your comfort</p>
-=======
           <div className="glass-card-dark rounded-2xl p-6 text-center">
             <h3 className="text-4xl font-bold mb-2 text-gray-800">
               <CountUp end={100} suffix="+" duration={2.5} />
@@ -173,46 +128,24 @@ const PremiumPassPage = () => {
             </h3>
             <p className="text-sm text-gray-600">Lectures</p>
             <p className="text-xs text-gray-500 mt-2">Watch 100+ well-paced lecture at your comfort</p>
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
           </div>
         </div>
 
         {/* Premium Benefits for Existing Members */}
         {hasPremiumPass && (
           <div className="max-w-4xl mx-auto mb-24">
-<<<<<<< HEAD
-            <h3 className="text-3xl font-bold text-center mb-12">Your Premium Benefits</h3>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-[#3D2B79] rounded-3xl p-8">
-=======
             <h3 className="text-3xl font-bold text-center mb-12 text-gray-800">Your Premium Benefits</h3>
             <div className="grid md:grid-cols-2 gap-8">
               <div className="glass-card-dark rounded-3xl p-8">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
                     <CheckCircle className="w-6 h-6 text-white" />
                   </div>
-<<<<<<< HEAD
-                  <h4 className="text-xl font-bold">Unlimited Course Access</h4>
-=======
                   <h4 className="text-xl font-bold text-gray-800">Unlimited Course Access</h4>
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                 </div>
                 <ul className="space-y-3">
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-green-400" />
-<<<<<<< HEAD
-                    <span>Access to all 13+ current courses</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-400" />
-                    <span>Free access to all future courses</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-400" />
-                    <span>Lifetime access guarantee</span>
-=======
                     <span className="text-gray-700">Access to all 13+ current courses</span>
                   </li>
                   <li className="flex items-center gap-2">
@@ -222,40 +155,20 @@ const PremiumPassPage = () => {
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-green-400" />
                     <span className="text-gray-700">Lifetime access guarantee</span>
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                   </li>
                 </ul>
               </div>
 
-<<<<<<< HEAD
-              <div className="bg-[#3D2B79] rounded-3xl p-8">
-=======
               <div className="glass-card-dark rounded-3xl p-8">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
                     <Award className="w-6 h-6 text-white" />
                   </div>
-<<<<<<< HEAD
-                  <h4 className="text-xl font-bold">Premium Features</h4>
-=======
                   <h4 className="text-xl font-bold text-gray-800">Premium Features</h4>
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                 </div>
                 <ul className="space-y-3">
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-green-400" />
-<<<<<<< HEAD
-                    <span>Priority customer support</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-400" />
-                    <span>Exclusive eBooks and resources</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-400" />
-                    <span>Early access to new courses</span>
-=======
                     <span className="text-gray-700">Priority customer support</span>
                   </li>
                   <li className="flex items-center gap-2">
@@ -265,40 +178,20 @@ const PremiumPassPage = () => {
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-green-400" />
                     <span className="text-gray-700">Early access to new courses</span>
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                   </li>
                 </ul>
               </div>
 
-<<<<<<< HEAD
-              <div className="bg-[#3D2B79] rounded-3xl p-8">
-=======
               <div className="glass-card-dark rounded-3xl p-8">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
                     <GraduationCap className="w-6 h-6 text-white" />
                   </div>
-<<<<<<< HEAD
-                  <h4 className="text-xl font-bold">Certification Benefits</h4>
-=======
                   <h4 className="text-xl font-bold text-gray-800">Certification Benefits</h4>
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                 </div>
                 <ul className="space-y-3">
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-green-400" />
-<<<<<<< HEAD
-                    <span>Verified certificates for all courses</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-400" />
-                    <span>LinkedIn integration</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-400" />
-                    <span>Industry recognition</span>
-=======
                     <span className="text-gray-700">Verified certificates for all courses</span>
                   </li>
                   <li className="flex items-center gap-2">
@@ -308,40 +201,20 @@ const PremiumPassPage = () => {
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-green-400" />
                     <span className="text-gray-700">Industry recognition</span>
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                   </li>
                 </ul>
               </div>
 
-<<<<<<< HEAD
-              <div className="bg-[#3D2B79] rounded-3xl p-8">
-=======
               <div className="glass-card-dark rounded-3xl p-8">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center">
                     <Crown className="w-6 h-6 text-white" />
                   </div>
-<<<<<<< HEAD
-                  <h4 className="text-xl font-bold">Exclusive Access</h4>
-=======
                   <h4 className="text-xl font-bold text-gray-800">Exclusive Access</h4>
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                 </div>
                 <ul className="space-y-3">
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-green-400" />
-<<<<<<< HEAD
-                    <span>upLern Academy membership</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-400" />
-                    <span>Premium community access</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-400" />
-                    <span>Monthly live sessions</span>
-=======
                     <span className="text-gray-700">upLern Academy membership</span>
                   </li>
                   <li className="flex items-center gap-2">
@@ -351,7 +224,6 @@ const PremiumPassPage = () => {
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-green-400" />
                     <span className="text-gray-700">Monthly live sessions</span>
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                   </li>
                 </ul>
               </div>
@@ -361,26 +233,15 @@ const PremiumPassPage = () => {
 
         {/* Features for Non-Premium Users */}
         {!hasPremiumPass && (
-<<<<<<< HEAD
-          <div className="max-w-4xl mx-auto bg-[#3D2B79] rounded-3xl p-12 mb-24">
-=======
           <div className="max-w-4xl mx-auto glass-card-dark rounded-3xl p-12 mb-24">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
             <div className="grid md:grid-cols-2 gap-12">
               {/* Left Column - Pricing */}
               <div>
                 <div className="mb-8">
-<<<<<<< HEAD
-                  <h3 className="text-2xl font-bold mb-4">Join</h3>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-bold">₹999</span>
-                    <span className="text-lg text-gray-400 line-through">₹4999</span>
-=======
                   <h3 className="text-2xl font-bold mb-4 text-gray-800">Join</h3>
                   <div className="flex items-baseline gap-2">
                     <span className="text-3xl font-bold text-gray-800">₹999</span>
                     <span className="text-lg text-gray-500 line-through">₹4999</span>
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                     <span className="bg-green-500 text-white px-2 py-1 rounded-full text-sm font-medium">80% OFF</span>
                   </div>
                 </div>
@@ -388,21 +249,6 @@ const PremiumPassPage = () => {
                 <ul className="space-y-4 mb-8">
                   <li className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 bg-violet-400 rounded-full"></span>
-<<<<<<< HEAD
-                    <span>Lifetime Access To Verified Certificates.</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-violet-400 rounded-full"></span>
-                    <span>100+ New Courses Coming in 2025.</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-violet-400 rounded-full"></span>
-                    <span>Enjoy Unlimited Learning with Full course Access</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-violet-400 rounded-full"></span>
-                    <span>Complimentary Entry to upLern Academy.</span>
-=======
                     <span className="text-gray-700">Lifetime Access To Verified Certificates.</span>
                   </li>
                   <li className="flex items-center gap-2">
@@ -416,25 +262,16 @@ const PremiumPassPage = () => {
                   <li className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 bg-violet-400 rounded-full"></span>
                     <span className="text-gray-700">Complimentary Entry to upLern Academy.</span>
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                   </li>
                 </ul>
 
                 <div className="space-y-4">
-<<<<<<< HEAD
-                  <div className="w-full py-2 rounded-full bg-green-500 text-center font-medium">
-=======
                   <div className="w-full py-2 rounded-full bg-green-500 text-center font-medium text-white">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                     Save 80% - Limited Time Offer!
                   </div>
                   <button 
                     onClick={handlePurchaseClick}
-<<<<<<< HEAD
-                    className="w-full py-3 rounded-full bg-white text-purple-900 hover:bg-gray-100 transition-colors font-semibold"
-=======
                     className="w-full py-3 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 text-white hover:shadow-lg transition-all duration-300 font-semibold"
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                   >
                     {user ? 'Get Premium Pass' : 'Login to Purchase'}
                   </button>
@@ -444,26 +281,6 @@ const PremiumPassPage = () => {
               {/* Right Column - Features */}
               <div className="grid grid-cols-2 gap-8">
                 <div>
-<<<<<<< HEAD
-                  <BookOpen className="w-8 h-8 mb-4" />
-                  <h4 className="font-semibold mb-2">14+ Courses</h4>
-                  <p className="text-sm text-gray-300">Access a diverse selection of professionally developed, live and recorded courses designed to enhance your skill set and career prospects.</p>
-                </div>
-                <div>
-                  <Clock className="w-8 h-8 mb-4" />
-                  <h4 className="font-semibold mb-2">Lifetime Access</h4>
-                  <p className="text-sm text-gray-300">Benefit from unlimited, lifetime access to over 14 practical courses, available anytime at your convenience.</p>
-                </div>
-                <div>
-                  <Award className="w-8 h-8 mb-4" />
-                  <h4 className="font-semibold mb-2">Certified Programs</h4>
-                  <p className="text-sm text-gray-300">All upLern courses include certification, providing you with recognized credentials to strengthen your professional profile.</p>
-                </div>
-                <div>
-                  <GraduationCap className="w-8 h-8 mb-4" />
-                  <h4 className="font-semibold mb-2">upLern Academy</h4>
-                  <p className="text-sm text-gray-300">A meticulously curated academic platform aimed at supporting students in their career preparation with comprehensive study materials.</p>
-=======
                   <BookOpen className="w-8 h-8 mb-4 text-purple-600" />
                   <h4 className="font-semibold mb-2 text-gray-800">14+ Courses</h4>
                   <p className="text-sm text-gray-600">Access a diverse selection of professionally developed, live and recorded courses designed to enhance your skill set and career prospects.</p>
@@ -482,7 +299,6 @@ const PremiumPassPage = () => {
                   <GraduationCap className="w-8 h-8 mb-4 text-purple-600" />
                   <h4 className="font-semibold mb-2 text-gray-800">upLern Academy</h4>
                   <p className="text-sm text-gray-600">A meticulously curated academic platform aimed at supporting students in their career preparation with comprehensive study materials.</p>
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
                 </div>
               </div>
             </div>
@@ -491,38 +307,13 @@ const PremiumPassPage = () => {
 
         {/* Certificate Section */}
         <div className="max-w-4xl mx-auto mb-24">
-<<<<<<< HEAD
-          <h3 className="text-2xl font-bold text-center mb-12">Why Invest in Professional Certificate?</h3>
-=======
           <h3 className="text-2xl font-bold text-center mb-12 text-gray-800">Why Invest in Professional Certificate?</h3>
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
           
           <div className="grid md:grid-cols-2 gap-12">
             <div>
               <img 
                 src="images/certificate.png" 
                 alt="Sample Certificate" 
-<<<<<<< HEAD
-                className="w-full rounded-2xl"
-              />
-              <p className="text-center mt-4 text-gray-300">Sample certificate</p>
-            </div>
-            
-            <div className="space-y-8">
-              <div className="bg-[#3D2B79] rounded-2xl p-6">
-                <h4 className="font-semibold mb-2">Hike</h4>
-                <p className="text-sm text-gray-300">The dedication invested in obtaining this increased compensation over time.</p>
-              </div>
-              
-              <div className="bg-[#3D2B79] rounded-2xl p-6">
-                <h4 className="font-semibold mb-2">Advantage</h4>
-                <p className="text-sm text-gray-300">Acquiring credentials that distinguish you from your peers provides a notable competitive edge in the job market.</p>
-              </div>
-              
-              <div className="bg-[#3D2B79] rounded-2xl p-6">
-                <h4 className="font-semibold mb-2">Productivity</h4>
-                <p className="text-sm text-gray-300">Entering the workforce with industry-recognized certifications positions you for early success and long-term growth.</p>
-=======
                 className="w-full rounded-2xl enhanced-shadow"
               />
               <p className="text-center mt-4 text-gray-600">Sample certificate</p>
@@ -542,7 +333,6 @@ const PremiumPassPage = () => {
               <div className="glass-card rounded-2xl p-6">
                 <h4 className="font-semibold mb-2 text-gray-800">Productivity</h4>
                 <p className="text-sm text-gray-600">Entering the workforce with industry-recognized certifications positions you for early success and long-term growth.</p>
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
               </div>
             </div>
           </div>
@@ -553,11 +343,7 @@ const PremiumPassPage = () => {
       <div className="w-full bg-black py-12">
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex justify-between items-center">
-<<<<<<< HEAD
-            <h2 className="text-4xl font-bold">
-=======
             <h2 className="text-4xl font-bold text-white">
->>>>>>> 117c30fa8015fd276c748e4ca9ae5645df66f8c5
               Embrace Education,<br />
               Reach <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">New</span>{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">Elevation</span>
