@@ -45,12 +45,12 @@ const Navbar = () => {
   return (
     <>
       <header className="py-4 px-4 sm:px-6 md:px-12 flex justify-between items-center relative z-50">
-        {/* Logo */}
+        {/* Logo - Made Larger */}
         <Link to="/" className="flex items-center gap-3 z-50" onClick={closeMobileMenu}>
           <img 
             src="/Frame 3.png" 
             alt="Zyntiq Logo" 
-            className="h-8 sm:h-10 w-auto object-contain"
+            className="h-12 sm:h-14 md:h-16 w-auto object-contain"
           />
         </Link>
         

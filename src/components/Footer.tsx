@@ -28,7 +28,7 @@ const Footer = () => {
               <img 
                 src="/Frame 3.png" 
                 alt="Zyntiq Logo" 
-                className="h-8 sm:h-10 w-auto object-contain"
+                className="h-12 sm:h-14 w-auto object-contain"
               />
             </div>
             <p className="text-gray-700 mb-4 text-sm sm:text-base leading-relaxed">
