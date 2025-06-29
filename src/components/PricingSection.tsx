@@ -15,7 +15,7 @@ const PricingSection = () => {
         'Access to 100+ upcoming courses in 2025',
         'E-books worth ₹9,999'
       ],
-      buttonStyle: 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white hover:shadow-lg',
+      buttonStyle: 'border-2 border-black text-black hover:bg-black hover:text-white',
       link: '/premium-pass'
     },
     {
