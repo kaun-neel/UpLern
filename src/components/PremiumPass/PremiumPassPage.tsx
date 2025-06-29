@@ -50,13 +50,13 @@ const PremiumPassPage = () => {
           <span className="text-sm sm:text-base">Back</span>
         </Link>
 
-        {/* Logo and Title */}
+        {/* Logo and Title - Made Logo Much Larger */}
         <div className="text-center mb-12 sm:mb-16">
-          <div className="flex justify-center mb-3 sm:mb-4">
+          <div className="flex justify-center mb-4 sm:mb-6">
             <img 
               src="/Frame 3.png" 
               alt="Zyntiq Logo" 
-              className="h-14 sm:h-16 md:h-18 w-auto object-contain"
+              className="h-20 sm:h-24 md:h-28 lg:h-32 w-auto object-contain"
             />
           </div>
           <div className="flex items-center justify-center gap-2">
