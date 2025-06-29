@@ -24,6 +24,7 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
   const certificateRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
+  const [showMobileActions, setShowMobileActions] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -51,6 +52,7 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
     try {
       toast.loading('Generating certificate PDF...');
       
+      // Optimized settings for better alignment
       const canvasOptions = {
         scale: 2,
         useCORS: true,
@@ -60,7 +62,11 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
         height: 850,
         logging: false,
         removeContainer: true,
-        imageTimeout: 15000
+        imageTimeout: 15000,
+        x: 0,
+        y: 0,
+        scrollX: 0,
+        scrollY: 0
       };
 
       const canvas = await html2canvas(certificateRef.current, canvasOptions);
@@ -72,6 +78,7 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
         format: 'a4'
       });
 
+      // Calculate proper centering for PDF
       const imgWidth = 297;
       const imgHeight = 210;
       pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
@@ -81,6 +88,11 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
       
       toast.dismiss();
       toast.success('Certificate downloaded successfully!');
+      
+      // Hide mobile actions after download
+      if (isMobile) {
+        setShowMobileActions(false);
+      }
     } catch (error) {
       toast.dismiss();
       console.error('Error generating certificate:', error);
@@ -109,6 +121,9 @@ ${studentName}
 
     window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
     setShowShareMenu(false);
+    if (isMobile) {
+      setShowMobileActions(false);
+    }
   };
 
   const shareViaWhatsApp = () => {
@@ -122,6 +137,9 @@ ${studentName}
 
     window.open(`https://wa.me/?text=${message}`, '_blank');
     setShowShareMenu(false);
+    if (isMobile) {
+      setShowMobileActions(false);
+    }
   };
 
   const shareViaLinkedIn = () => {
@@ -133,6 +151,9 @@ This course has enhanced my skills in ${courseName} and I'm excited to apply thi
 
     window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}&summary=${text}`, '_blank');
     setShowShareMenu(false);
+    if (isMobile) {
+      setShowMobileActions(false);
+    }
   };
 
   const shareViaTwitter = () => {
@@ -144,6 +165,9 @@ Excited to apply these new skills! 💪
 
     window.open(`https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(window.location.href)}`, '_blank');
     setShowShareMenu(false);
+    if (isMobile) {
+      setShowMobileActions(false);
+    }
   };
 
   const copyToClipboard = async () => {
@@ -159,6 +183,9 @@ Excited to apply these new skills! 💪
       await navigator.clipboard.writeText(shareText);
       toast.success('Certificate details copied to clipboard!');
       setShowShareMenu(false);
+      if (isMobile) {
+        setShowMobileActions(false);
+      }
     } catch (error) {
       console.error('Failed to copy to clipboard:', error);
       toast.error('Failed to copy to clipboard');
@@ -182,6 +209,9 @@ Excited to apply these new skills! 💪
           url: window.location.href
         });
         setShowShareMenu(false);
+        if (isMobile) {
+          setShowMobileActions(false);
+        }
       } catch (error) {
         if (error.name !== 'AbortError') {
           console.error('Error sharing certificate:', error);
@@ -190,6 +220,14 @@ Excited to apply these new skills! 💪
       }
     } else {
       copyToClipboard();
+    }
+  };
+
+  const handleMobileDownloadClick = () => {
+    if (isMobile) {
+      setShowMobileActions(true);
+    } else {
+      downloadCertificate();
     }
   };
 
@@ -216,33 +254,130 @@ Excited to apply these new skills! 💪
         </div>
 
         <div className="p-4 sm:p-8">
-          {/* Action Buttons - Always Visible */}
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-6 sm:mb-8">
-            <button
-              onClick={downloadCertificate}
-              className="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-xl font-medium hover:shadow-lg transition-all duration-300 min-h-[48px]"
-            >
-              <Download className="w-5 h-5" />
-              Download PDF
-            </button>
-            
-            {/* Share Button with Dropdown */}
-            <div className="relative">
+          {/* Desktop Action Buttons - Always Visible on Desktop */}
+          {!isMobile && (
+            <div className="flex flex-col sm:flex-row justify-center gap-4 mb-6 sm:mb-8">
               <button
-                onClick={() => setShowShareMenu(!showShareMenu)}
-                className="flex items-center justify-center gap-2 px-6 py-3 border-2 border-purple-300 text-purple-600 rounded-xl font-medium hover:bg-purple-50 transition-colors min-h-[48px] w-full sm:w-auto"
+                onClick={downloadCertificate}
+                className="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-xl font-medium hover:shadow-lg transition-all duration-300 min-h-[48px]"
               >
-                <Share2 className="w-5 h-5" />
-                Share Certificate
+                <Download className="w-5 h-5" />
+                Download PDF
               </button>
               
-              {/* Share Menu */}
-              {showShareMenu && (
-                <div className="absolute top-full left-0 right-0 sm:left-auto sm:right-auto sm:w-64 mt-2 bg-white rounded-xl shadow-lg border border-gray-200 z-20">
-                  <div className="p-2">
+              {/* Share Button with Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => setShowShareMenu(!showShareMenu)}
+                  className="flex items-center justify-center gap-2 px-6 py-3 border-2 border-purple-300 text-purple-600 rounded-xl font-medium hover:bg-purple-50 transition-colors min-h-[48px] w-full sm:w-auto"
+                >
+                  <Share2 className="w-5 h-5" />
+                  Share Certificate
+                </button>
+                
+                {/* Share Menu */}
+                {showShareMenu && (
+                  <div className="absolute top-full left-0 right-0 sm:left-auto sm:right-auto sm:w-64 mt-2 bg-white rounded-xl shadow-lg border border-gray-200 z-20">
+                    <div className="p-2">
+                      <button
+                        onClick={shareViaEmail}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
+                      >
+                        <Mail className="w-5 h-5 text-blue-600" />
+                        <span>Share via Email</span>
+                      </button>
+                      
+                      <button
+                        onClick={shareViaWhatsApp}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
+                      >
+                        <MessageCircle className="w-5 h-5 text-green-600" />
+                        <span>Share on WhatsApp</span>
+                      </button>
+                      
+                      <button
+                        onClick={shareViaLinkedIn}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
+                      >
+                        <div className="w-5 h-5 bg-blue-700 rounded flex items-center justify-center">
+                          <span className="text-white text-xs font-bold">in</span>
+                        </div>
+                        <span>Share on LinkedIn</span>
+                      </button>
+                      
+                      <button
+                        onClick={shareViaTwitter}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
+                      >
+                        <div className="w-5 h-5 bg-blue-400 rounded flex items-center justify-center">
+                          <span className="text-white text-xs font-bold">𝕏</span>
+                        </div>
+                        <span>Share on Twitter</span>
+                      </button>
+                      
+                      <button
+                        onClick={copyToClipboard}
+                        className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
+                      >
+                        <Copy className="w-5 h-5 text-gray-600" />
+                        <span>Copy to Clipboard</span>
+                      </button>
+                      
+                      {navigator.share && (
+                        <button
+                          onClick={shareViaNativeAPI}
+                          className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
+                        >
+                          <Share2 className="w-5 h-5 text-purple-600" />
+                          <span>More Options</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Mobile Download Button - Shows Actions on Click */}
+          {isMobile && !showMobileActions && (
+            <div className="flex justify-center mb-6">
+              <button
+                onClick={handleMobileDownloadClick}
+                className="flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-xl font-medium hover:shadow-lg transition-all duration-300 text-lg"
+              >
+                <Download className="w-6 h-6" />
+                Download Certificate
+              </button>
+            </div>
+          )}
+
+          {/* Mobile Action Buttons - Show After Download Click */}
+          {isMobile && showMobileActions && (
+            <div className="mb-6">
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={downloadCertificate}
+                  className="flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-xl font-medium hover:shadow-lg transition-all duration-300"
+                >
+                  <Download className="w-5 h-5" />
+                  Download PDF
+                </button>
+                
+                <button
+                  onClick={() => setShowShareMenu(!showShareMenu)}
+                  className="flex items-center justify-center gap-2 px-6 py-4 border-2 border-purple-300 text-purple-600 rounded-xl font-medium hover:bg-purple-50 transition-colors"
+                >
+                  <Share2 className="w-5 h-5" />
+                  Share Certificate
+                </button>
+
+                {/* Mobile Share Menu */}
+                {showShareMenu && (
+                  <div className="bg-gray-50 rounded-xl p-4 space-y-2">
                     <button
                       onClick={shareViaEmail}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
+                      className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-white rounded-lg transition-colors"
                     >
                       <Mail className="w-5 h-5 text-blue-600" />
                       <span>Share via Email</span>
@@ -250,7 +385,7 @@ Excited to apply these new skills! 💪
                     
                     <button
                       onClick={shareViaWhatsApp}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
+                      className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-white rounded-lg transition-colors"
                     >
                       <MessageCircle className="w-5 h-5 text-green-600" />
                       <span>Share on WhatsApp</span>
@@ -258,7 +393,7 @@ Excited to apply these new skills! 💪
                     
                     <button
                       onClick={shareViaLinkedIn}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
+                      className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-white rounded-lg transition-colors"
                     >
                       <div className="w-5 h-5 bg-blue-700 rounded flex items-center justify-center">
                         <span className="text-white text-xs font-bold">in</span>
@@ -267,18 +402,8 @@ Excited to apply these new skills! 💪
                     </button>
                     
                     <button
-                      onClick={shareViaTwitter}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
-                    >
-                      <div className="w-5 h-5 bg-blue-400 rounded flex items-center justify-center">
-                        <span className="text-white text-xs font-bold">𝕏</span>
-                      </div>
-                      <span>Share on Twitter</span>
-                    </button>
-                    
-                    <button
                       onClick={copyToClipboard}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
+                      className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-white rounded-lg transition-colors"
                     >
                       <Copy className="w-5 h-5 text-gray-600" />
                       <span>Copy to Clipboard</span>
@@ -287,30 +412,37 @@ Excited to apply these new skills! 💪
                     {navigator.share && (
                       <button
                         onClick={shareViaNativeAPI}
-                        className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
+                        className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-white rounded-lg transition-colors"
                       >
                         <Share2 className="w-5 h-5 text-purple-600" />
                         <span>More Options</span>
                       </button>
                     )}
                   </div>
-                </div>
-              )}
+                )}
+
+                <button
+                  onClick={() => setShowMobileActions(false)}
+                  className="text-gray-500 text-center py-2"
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Certificate Display */}
           <div className="flex justify-center">
             <div 
               ref={certificateRef}
-              className="bg-white shadow-2xl w-full max-w-5xl"
+              className="certificate-container bg-white shadow-2xl w-full max-w-5xl mx-auto"
               style={{ 
                 aspectRatio: '1.414/1',
-                minHeight: isMobile ? '500px' : '700px'
+                minHeight: isMobile ? '600px' : '800px'
               }}
             >
               {/* Certificate Content */}
-              <div className="w-full h-full bg-gradient-to-br from-slate-50 via-white to-purple-50 relative overflow-hidden border-8 border-purple-200 rounded-lg">
+              <div className="w-full h-full bg-gradient-to-br from-slate-50 via-white to-purple-50 relative overflow-hidden border-8 border-purple-200 rounded-lg flex flex-col">
                 {/* Decorative Background Elements */}
                 <div className="absolute inset-0 opacity-5">
                   <div className="absolute top-16 left-16 w-32 h-32 bg-purple-500 rounded-full"></div>
@@ -325,22 +457,22 @@ Excited to apply these new skills! 💪
                 </div>
 
                 {/* Header Section */}
-                <div className="text-center pt-12 sm:pt-16 pb-6 sm:pb-8 px-6 sm:px-12">
-                  <div className="flex justify-center mb-4 sm:mb-6">
-                    <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-full flex items-center justify-center shadow-lg">
-                      <Award className="w-8 h-8 sm:w-12 sm:h-12 text-white" />
+                <div className="text-center pt-8 sm:pt-12 lg:pt-16 pb-4 sm:pb-6 lg:pb-8 px-6 sm:px-8 lg:px-12 flex-shrink-0">
+                  <div className="flex justify-center mb-3 sm:mb-4 lg:mb-6">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-full flex items-center justify-center shadow-lg">
+                      <Award className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-white" />
                     </div>
                   </div>
-                  <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 text-transparent bg-clip-text mb-2 sm:mb-4 leading-tight">
+                  <h1 className="text-xl sm:text-2xl lg:text-4xl xl:text-5xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 text-transparent bg-clip-text mb-2 sm:mb-3 lg:mb-4 leading-tight">
                     Certificate of Completion
                   </h1>
-                  <p className="text-base sm:text-lg lg:text-xl text-gray-600 font-medium">This certifies that</p>
+                  <p className="text-sm sm:text-base lg:text-lg xl:text-xl text-gray-600 font-medium">This certifies that</p>
                 </div>
 
                 {/* Student Name Section */}
-                <div className="text-center mb-6 sm:mb-10 px-6 sm:px-12">
-                  <div className="mb-4 sm:mb-6">
-                    <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight break-words" 
+                <div className="text-center mb-4 sm:mb-6 lg:mb-8 px-6 sm:px-8 lg:px-12 flex-shrink-0">
+                  <div className="mb-3 sm:mb-4 lg:mb-6">
+                    <h2 className="text-2xl sm:text-3xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-2 sm:mb-3 lg:mb-4 leading-tight break-words" 
                         style={{ 
                           fontFamily: 'Georgia, serif',
                           letterSpacing: '0.02em',
@@ -348,56 +480,56 @@ Excited to apply these new skills! 💪
                         }}>
                       {studentName}
                     </h2>
-                    <div className="w-48 sm:w-80 lg:w-96 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 mx-auto rounded-full"></div>
+                    <div className="w-32 sm:w-48 lg:w-80 xl:w-96 h-0.5 sm:h-1 bg-gradient-to-r from-purple-500 to-indigo-500 mx-auto rounded-full"></div>
                   </div>
                 </div>
 
                 {/* Course Details Section */}
-                <div className="text-center mb-8 sm:mb-12 px-6 sm:px-12">
-                  <p className="text-lg sm:text-xl lg:text-2xl text-gray-700 mb-3 sm:mb-4 font-medium">
+                <div className="text-center mb-6 sm:mb-8 lg:mb-10 px-6 sm:px-8 lg:px-12 flex-grow flex flex-col justify-center">
+                  <p className="text-sm sm:text-base lg:text-xl xl:text-2xl text-gray-700 mb-2 sm:mb-3 lg:mb-4 font-medium">
                     has successfully completed the course
                   </p>
-                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-purple-900 mb-4 sm:mb-6 leading-tight break-words">
+                  <h3 className="text-lg sm:text-xl lg:text-3xl xl:text-4xl font-bold text-purple-900 mb-3 sm:mb-4 lg:mb-6 leading-tight break-words">
                     {courseName}
                   </h3>
-                  <div className="flex items-center justify-center gap-2 sm:gap-4 text-base sm:text-lg lg:text-xl text-gray-600">
+                  <div className="flex items-center justify-center gap-2 sm:gap-3 lg:gap-4 text-sm sm:text-base lg:text-lg xl:text-xl text-gray-600">
                     <span>Completed on</span>
                     <span className="font-semibold text-purple-700">{formatDate(completionDate)}</span>
                   </div>
                 </div>
 
                 {/* Footer Section */}
-                <div className="absolute bottom-8 sm:bottom-12 lg:bottom-16 left-0 right-0 px-6 sm:px-12 lg:px-20">
-                  <div className="grid grid-cols-3 gap-4 sm:gap-8 text-center">
+                <div className="px-6 sm:px-8 lg:px-12 xl:px-20 pb-6 sm:pb-8 lg:pb-12 flex-shrink-0">
+                  <div className="grid grid-cols-3 gap-2 sm:gap-4 lg:gap-8 text-center">
                     {/* Signature */}
                     <div className="flex flex-col items-center">
-                      <div className="w-20 sm:w-32 lg:w-40 h-0.5 bg-gray-400 mb-2 sm:mb-3"></div>
-                      <p className="text-sm sm:text-base lg:text-lg font-semibold text-gray-700">Zyntiq Team</p>
-                      <p className="text-xs sm:text-sm text-gray-500">Authorized Signature</p>
+                      <div className="w-16 sm:w-24 lg:w-32 xl:w-40 h-0.5 bg-gray-400 mb-1 sm:mb-2 lg:mb-3"></div>
+                      <p className="text-xs sm:text-sm lg:text-base xl:text-lg font-semibold text-gray-700">Zyntiq Team</p>
+                      <p className="text-xs sm:text-xs lg:text-sm text-gray-500">Authorized Signature</p>
                     </div>
                     
                     {/* Official Seal */}
                     <div className="flex flex-col items-center">
-                      <div className="w-12 h-12 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center mb-2 sm:mb-3 border-2 border-purple-300">
-                        <Award className="w-6 h-6 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-purple-600" />
+                      <div className="w-8 h-8 sm:w-12 sm:h-12 lg:w-16 lg:h-16 xl:w-20 xl:h-20 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center mb-1 sm:mb-2 lg:mb-3 border-2 border-purple-300">
+                        <Award className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 xl:w-10 xl:h-10 text-purple-600" />
                       </div>
-                      <p className="text-xs sm:text-sm text-gray-500">Official Seal</p>
+                      <p className="text-xs sm:text-xs lg:text-sm text-gray-500">Official Seal</p>
                     </div>
                     
                     {/* Certificate ID */}
                     <div className="flex flex-col items-center">
-                      <p className="text-sm sm:text-base lg:text-lg font-semibold text-gray-700 mb-1">Certificate ID</p>
-                      <p className="text-xs sm:text-sm text-gray-600 font-mono break-all leading-tight">{certificateId}</p>
-                      <p className="text-xs text-gray-400 mt-1">Verify at zyntiq.in</p>
+                      <p className="text-xs sm:text-sm lg:text-base xl:text-lg font-semibold text-gray-700 mb-1">Certificate ID</p>
+                      <p className="text-xs sm:text-xs lg:text-sm text-gray-600 font-mono break-all leading-tight">{certificateId}</p>
+                      <p className="text-xs text-gray-400 mt-0.5 sm:mt-1">Verify at zyntiq.in</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Decorative Corner Elements */}
-                <div className="absolute top-8 left-8 w-8 h-8 border-l-4 border-t-4 border-purple-300 rounded-tl-lg"></div>
-                <div className="absolute top-8 right-8 w-8 h-8 border-r-4 border-t-4 border-purple-300 rounded-tr-lg"></div>
-                <div className="absolute bottom-8 left-8 w-8 h-8 border-l-4 border-b-4 border-purple-300 rounded-bl-lg"></div>
-                <div className="absolute bottom-8 right-8 w-8 h-8 border-r-4 border-b-4 border-purple-300 rounded-br-lg"></div>
+                <div className="absolute top-8 left-8 w-6 h-6 sm:w-8 sm:h-8 border-l-4 border-t-4 border-purple-300 rounded-tl-lg"></div>
+                <div className="absolute top-8 right-8 w-6 h-6 sm:w-8 sm:h-8 border-r-4 border-t-4 border-purple-300 rounded-tr-lg"></div>
+                <div className="absolute bottom-8 left-8 w-6 h-6 sm:w-8 sm:h-8 border-l-4 border-b-4 border-purple-300 rounded-bl-lg"></div>
+                <div className="absolute bottom-8 right-8 w-6 h-6 sm:w-8 sm:h-8 border-r-4 border-b-4 border-purple-300 rounded-br-lg"></div>
               </div>
             </div>
           </div>
@@ -405,7 +537,7 @@ Excited to apply these new skills! 💪
       </div>
 
       {/* Overlay to close share menu */}
-      {showShareMenu && (
+      {showShareMenu && !isMobile && (
         <div 
           className="fixed inset-0 z-10" 
           onClick={() => setShowShareMenu(false)}
