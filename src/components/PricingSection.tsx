@@ -50,7 +50,7 @@ const PricingSection = () => {
           {plans.map((plan, index) => (
             <div 
               key={index} 
-              className="relative rounded-3xl p-[1px] bg-gradient-to-r from-purple-400/60 to-indigo-400/60 hover:shadow-xl transition-all duration-300"
+              className="relative rounded-3xl p-[2px] bg-gradient-to-r from-purple-400/60 to-indigo-400/60 hover:shadow-xl transition-all duration-300"
             >
               <div className="glass-card-dark rounded-3xl p-6 sm:p-8 h-full flex flex-col bg-white">
                 <div className="flex items-center justify-between mb-4 sm:mb-6">
