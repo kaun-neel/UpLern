@@ -96,6 +96,28 @@ const AccountPage = () => {
       },
       description: 'Update your personal information'
     },
+    // ADDED: My Courses Navigation
+    { 
+      icon: <BookOpen size={18} />, 
+      label: 'My Courses', 
+      action: () => {
+        setActiveTab('courses');
+        setShowProfileDropdown(false);
+      },
+      description: 'View your enrolled courses and progress',
+      primary: true
+    },
+    // ADDED: Certificates Navigation
+    { 
+      icon: <Award size={18} />, 
+      label: 'My Certificates', 
+      action: () => {
+        setActiveTab('certificates');
+        setShowProfileDropdown(false);
+      },
+      description: 'Download and share your certificates',
+      primary: true
+    },
     { 
       icon: <Bell size={18} />, 
       label: 'Notifications', 
@@ -277,6 +299,8 @@ const AccountPage = () => {
                                       ? 'hover:bg-red-50 border-t border-gray-100' 
                                       : dropdownItem.highlight 
                                       ? 'hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50' 
+                                      : dropdownItem.primary
+                                      ? 'hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50'
                                       : ''
                                   }`}
                                 >
@@ -285,6 +309,8 @@ const AccountPage = () => {
                                       ? 'text-red-500 bg-red-50 group-hover:bg-red-100' 
                                       : dropdownItem.highlight 
                                       ? 'text-purple-600 bg-purple-50 group-hover:bg-purple-100' 
+                                      : dropdownItem.primary
+                                      ? 'text-blue-600 bg-blue-50 group-hover:bg-blue-100'
                                       : 'text-gray-500 bg-gray-50 group-hover:bg-gray-100'
                                   }`}>
                                     {dropdownItem.icon}
@@ -295,6 +321,8 @@ const AccountPage = () => {
                                         ? 'text-red-700 group-hover:text-red-800' 
                                         : dropdownItem.highlight 
                                         ? 'text-purple-700 group-hover:text-purple-800' 
+                                        : dropdownItem.primary
+                                        ? 'text-blue-700 group-hover:text-blue-800'
                                         : 'text-gray-700 group-hover:text-gray-900'
                                     }`}>
                                       {dropdownItem.label}
@@ -304,6 +332,8 @@ const AccountPage = () => {
                                         ? 'text-red-500' 
                                         : dropdownItem.highlight 
                                         ? 'text-purple-500' 
+                                        : dropdownItem.primary
+                                        ? 'text-blue-500'
                                         : 'text-gray-500'
                                     }`}>
                                       {dropdownItem.description}
@@ -313,6 +343,13 @@ const AccountPage = () => {
                                     <div className="flex items-center">
                                       <span className="px-2 py-1 bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-xs rounded-full font-medium">
                                         New
+                                      </span>
+                                    </div>
+                                  )}
+                                  {dropdownItem.primary && (
+                                    <div className="flex items-center">
+                                      <span className="px-2 py-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs rounded-full font-medium">
+                                        Go
                                       </span>
                                     </div>
                                   )}
