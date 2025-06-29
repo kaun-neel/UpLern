@@ -11,7 +11,7 @@ import { useAuth } from '../../lib/auth';
 const courseData = {
   'web-development': {
     title: 'Web Development Course',
-    description: 'The Web Development course from upLern is designed to provide students with comprehensive training in building dynamic and responsive websites. Covering both front-end and back-end development, this course equips students with the skills and knowledge needed to create modern web applications that meet industry standards and user expectations.',
+    description: 'The Web Development course from Zyntiq is designed to provide students with comprehensive training in building dynamic and responsive websites. Covering both front-end and back-end development, this course equips students with the skills and knowledge needed to create modern web applications that meet industry standards and user expectations.',
     image: '/WebD.png',
     lectures: '100+ Lectures',
     price: 599,
@@ -321,9 +321,9 @@ const CourseDetailPage: React.FC = () => {
 
   if (!courseDetails) {
     return (
-      <div className="min-h-screen yellow-gradient-bg flex items-center justify-center">
+      <div className="min-h-screen yellow-gradient-bg flex items-center justify-center px-4">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">Course Not Found</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">Course Not Found</h1>
           <p className="text-gray-600 mb-8">The course you're looking for doesn't exist.</p>
           <Link
             to="/courses"
@@ -340,20 +340,20 @@ const CourseDetailPage: React.FC = () => {
   return (
     <div className="min-h-screen yellow-gradient-bg">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-100/80 to-purple-100/80 backdrop-blur-sm py-8">
-        <div className="max-w-6xl mx-auto px-6">
+      <div className="bg-gradient-to-r from-blue-100/80 to-purple-100/80 backdrop-blur-sm py-6 sm:py-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <button 
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors mb-6"
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors mb-4 sm:mb-6"
           >
             <ChevronLeft size={20} />
             Back
           </button>
           
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <h1 className="text-4xl font-bold">{courseDetails.title}</h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-center">
+            <div className="text-center md:text-left">
+              <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">{courseDetails.title}</h1>
                 {isEnrolled && (
                   <div className="flex items-center gap-2 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
                     <CheckCircle size={16} />
@@ -361,34 +361,34 @@ const CourseDetailPage: React.FC = () => {
                   </div>
                 )}
               </div>
-              <p className="text-gray-600 mb-6">{courseDetails.description}</p>
+              <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base leading-relaxed">{courseDetails.description}</p>
               
-              <div className="flex flex-wrap gap-4">
-                <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full text-sm flex items-center gap-2 border border-white/30">
+              <div className="flex flex-wrap justify-center md:justify-start gap-3 sm:gap-4">
+                <div className="bg-white/80 backdrop-blur-sm px-3 sm:px-4 py-2 rounded-full text-sm flex items-center gap-2 border border-white/30">
                   <BookOpen size={16} />
                   {courseDetails.lectures}
                 </div>
-                <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full text-sm border border-white/30">
+                <div className="bg-white/80 backdrop-blur-sm px-3 sm:px-4 py-2 rounded-full text-sm border border-white/30">
                   {courseDetails.language}
                 </div>
-                <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full text-sm border border-white/30">
+                <div className="bg-white/80 backdrop-blur-sm px-3 sm:px-4 py-2 rounded-full text-sm border border-white/30">
                   {courseDetails.enrolled}
                 </div>
               </div>
             </div>
             
-            <div className="relative">
+            <div className="relative flex justify-center">
               <img
                 src={courseDetails.image}
                 alt={courseDetails.title}
-                className="w-full max-w-md mx-auto"
+                className="w-full max-w-xs sm:max-w-md mx-auto"
               />
               
               {!isEnrolled && (
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                  <div className="w-24 h-24 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-white transition-colors enhanced-shadow">
-                    <div className="w-16 h-16 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full flex items-center justify-center">
-                      <div className="w-0 h-0 border-t-8 border-t-transparent border-l-12 border-l-white border-b-8 border-b-transparent ml-1"></div>
+                  <div className="w-16 h-16 sm:w-24 sm:h-24 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer hover:bg-white transition-colors enhanced-shadow">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full flex items-center justify-center">
+                      <div className="w-0 h-0 border-t-6 sm:border-t-8 border-t-transparent border-l-8 sm:border-l-12 border-l-white border-b-6 sm:border-b-8 border-b-transparent ml-1"></div>
                     </div>
                   </div>
                 </div>
@@ -399,7 +399,7 @@ const CourseDetailPage: React.FC = () => {
       </div>
 
       {/* Course Content */}
-      <div className="max-w-6xl mx-auto px-6 py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {isEnrolled ? (
           // Show course content for enrolled users
           <CourseContent
@@ -410,22 +410,22 @@ const CourseDetailPage: React.FC = () => {
           />
         ) : (
           // Show course preview for non-enrolled users
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="md:col-span-2">
-              <h2 className="text-2xl font-bold mb-6">What you'll learn</h2>
-              <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+            <div className="lg:col-span-2">
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">What you'll learn</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {courseDetails.features.map((feature, index) => (
                   <div key={index} className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-violet-500 rounded-full"></div>
-                    <span className="text-gray-700">{feature}</span>
+                    <div className="w-2 h-2 bg-violet-500 rounded-full flex-shrink-0"></div>
+                    <span className="text-gray-700 text-sm sm:text-base">{feature}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             <div>
-              <div className="glass-card-dark rounded-3xl p-6 sticky top-6">
-                <div className="aspect-video bg-gray-100 rounded-xl mb-6">
+              <div className="glass-card-dark rounded-3xl p-4 sm:p-6 sticky top-6">
+                <div className="aspect-video bg-gray-100 rounded-xl mb-4 sm:mb-6">
                   <img
                     src={courseDetails.image}
                     alt={courseDetails.title}
@@ -433,22 +433,22 @@ const CourseDetailPage: React.FC = () => {
                   />
                 </div>
                 
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between mb-4 sm:mb-6">
                   <div>
-                    <span className="text-2xl font-bold">₹{courseDetails.price}</span>
-                    <span className="text-gray-400 line-through ml-2">₹{courseDetails.originalPrice}</span>
+                    <span className="text-xl sm:text-2xl font-bold">₹{courseDetails.price}</span>
+                    <span className="text-gray-400 line-through ml-2 text-sm sm:text-base">₹{courseDetails.originalPrice}</span>
                   </div>
-                  <span className="text-green-500 font-medium">75% OFF</span>
+                  <span className="text-green-500 font-medium text-sm sm:text-base">75% OFF</span>
                 </div>
 
                 <button 
                   onClick={handleEnrollClick}
-                  className="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 rounded-full font-medium hover:shadow-lg transition-all duration-300 mb-4"
+                  className="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 sm:py-4 rounded-full font-medium hover:shadow-lg transition-all duration-300 mb-3 sm:mb-4 text-base"
                 >
                   {user ? 'Enroll Now' : 'Login to Enroll'}
                 </button>
 
-                <p className="text-center text-sm text-gray-500">30-Day Money-Back Guarantee</p>
+                <p className="text-center text-xs sm:text-sm text-gray-500">30-Day Money-Back Guarantee</p>
               </div>
             </div>
           </div>
@@ -457,18 +457,18 @@ const CourseDetailPage: React.FC = () => {
 
       {/* Certificate Section - Only show if not enrolled */}
       {!isEnrolled && (
-        <div className="max-w-6xl mx-auto px-6 py-12">
-          <div className="grid md:grid-cols-2 gap-8 items-center glass-card rounded-3xl p-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-center glass-card rounded-3xl p-6 sm:p-8">
             <img
               src="https://cdn3d.iconscout.com/3d/premium/thumb/certificate-5856337-4892699.png"
               alt="Certificate"
-              className="w-full max-w-md mx-auto"
+              className="w-full max-w-sm sm:max-w-md mx-auto"
             />
-            <div>
-              <h2 className="text-3xl font-bold mb-4">
+            <div className="text-center md:text-left">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4">
                 Earn a carrier <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-pink-500">certificate</span>
               </h2>
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
                 You are encouraged to add this credential to your LinkedIn profile, résumé, or CV, and
                 share it on professional networks or during performance evaluations
               </p>
@@ -479,45 +479,45 @@ const CourseDetailPage: React.FC = () => {
 
       {/* Testimonials - Only show if not enrolled */}
       {!isEnrolled && (
-        <div className="max-w-6xl mx-auto px-6 py-12">
-          <h2 className="text-2xl font-bold mb-8">Featured review</h2>
-          <div className="grid md:grid-cols-3 gap-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+          <h2 className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8 text-center sm:text-left">Featured review</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="glass-card rounded-3xl p-6">
-                <h3 className="text-lg font-bold mb-4">"{testimonial.quote}"</h3>
-                <p className="text-gray-600 mb-6">"{testimonial.text}"</p>
+              <div key={index} className="glass-card rounded-3xl p-4 sm:p-6">
+                <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4">"{testimonial.quote}"</h3>
+                <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base leading-relaxed">"{testimonial.text}"</p>
                 <div className="flex items-center gap-3">
                   <img
                     src={testimonial.avatar}
                     alt={testimonial.name}
-                    className="w-12 h-12 rounded-full"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full"
                   />
-                  <span className="text-gray-700">-{testimonial.name}</span>
+                  <span className="text-gray-700 text-sm sm:text-base">-{testimonial.name}</span>
                 </div>
               </div>
             ))}
           </div>
-          <div className="flex justify-center gap-4 mt-8">
-            <button className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center bg-white/80 backdrop-blur-sm">
-              <ChevronLeft size={20} />
+          <div className="flex justify-center gap-3 sm:gap-4 mt-6 sm:mt-8">
+            <button className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-gray-300 flex items-center justify-center bg-white/80 backdrop-blur-sm">
+              <ChevronLeft size={16} />
             </button>
-            <button className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center bg-white/80 backdrop-blur-sm">
-              <ChevronRight size={20} />
+            <button className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-gray-300 flex items-center justify-center bg-white/80 backdrop-blur-sm">
+              <ChevronRight size={16} />
             </button>
           </div>
         </div>
       )}
 
       {/* Footer Banner */}
-      <div className="bg-black text-white py-12 px-6">
+      <div className="bg-black text-white py-8 sm:py-12 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
-          <div className="flex justify-between items-center">
-            <h2 className="text-4xl font-bold">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6 text-center md:text-left">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">
               Embrace Education,<br />
               Reach <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">New</span>{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">Elevation</span>
             </h2>
-            <button className="px-6 py-3 bg-blue-500 rounded-full hover:bg-blue-600 transition-colors">
+            <button className="px-6 py-3 bg-blue-500 rounded-full hover:bg-blue-600 transition-colors text-sm sm:text-base">
               Start Learning →
             </button>
           </div>

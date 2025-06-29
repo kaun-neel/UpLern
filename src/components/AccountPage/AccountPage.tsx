@@ -64,11 +64,11 @@ const AccountPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen yellow-gradient-bg py-12 px-6">
+      <div className="min-h-screen yellow-gradient-bg py-8 sm:py-12 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
           <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>
-            <div className="h-64 bg-gray-200 rounded"></div>
+            <div className="h-6 sm:h-8 bg-gray-200 rounded w-1/4 mb-4 sm:mb-6"></div>
+            <div className="h-48 sm:h-64 bg-gray-200 rounded"></div>
           </div>
         </div>
       </div>
@@ -76,22 +76,38 @@ const AccountPage = () => {
   }
 
   return (
-    <div className="min-h-screen yellow-gradient-bg py-12 px-6">
+    <div className="min-h-screen yellow-gradient-bg py-8 sm:py-12 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8 text-gray-800">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-gray-800 text-center sm:text-left">
           My <span className="gradient-text">Account</span>
         </h1>
 
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 sm:gap-8">
           {/* Sidebar */}
-          <div className="md:col-span-1">
-            <div className="glass-card-dark rounded-2xl p-6">
-              <ul className="space-y-2">
+          <div className="lg:col-span-1">
+            <div className="glass-card-dark rounded-2xl p-4 sm:p-6">
+              {/* Mobile Tab Selector */}
+              <div className="lg:hidden mb-4">
+                <select
+                  value={activeTab}
+                  onChange={(e) => setActiveTab(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm text-base"
+                >
+                  {menuItems.map((item) => (
+                    <option key={item.key} value={item.key}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Desktop Menu */}
+              <ul className="hidden lg:block space-y-2">
                 {menuItems.map((item, index) => (
                   <li key={index}>
                     <button
                       onClick={() => setActiveTab(item.key)}
-                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-left ${
                         activeTab === item.key
                           ? 'bg-purple-50 text-purple-600'
                           : 'hover:bg-gray-50 text-gray-700'
@@ -107,12 +123,12 @@ const AccountPage = () => {
           </div>
 
           {/* Main Content */}
-          <div className="md:col-span-3">
+          <div className="lg:col-span-3">
             {activeTab === 'profile' && (
-              <div className="glass-card-dark rounded-2xl p-8">
-                <h2 className="text-2xl font-semibold mb-6 text-gray-800">Profile Information</h2>
+              <div className="glass-card-dark rounded-2xl p-6 sm:p-8">
+                <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-gray-800">Profile Information</h2>
                 
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       First Name
@@ -120,7 +136,7 @@ const AccountPage = () => {
                     <input
                       type="text"
                       value={profile.first_name}
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm text-base"
                       readOnly
                     />
                   </div>
@@ -132,7 +148,7 @@ const AccountPage = () => {
                     <input
                       type="text"
                       value={profile.middle_name}
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm text-base"
                       readOnly
                     />
                   </div>
@@ -144,7 +160,7 @@ const AccountPage = () => {
                     <input
                       type="text"
                       value={profile.last_name}
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm text-base"
                       readOnly
                     />
                   </div>
@@ -154,31 +170,31 @@ const AccountPage = () => {
                       Phone Number
                     </label>
                     <div className="flex gap-2">
-                      <span className="px-3 py-2 bg-gray-100/80 backdrop-blur-sm rounded-lg">+91</span>
+                      <span className="px-3 py-3 bg-gray-100/80 backdrop-blur-sm rounded-lg text-base">+91</span>
                       <input
                         type="tel"
                         value={profile.phone}
-                        className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm"
+                        className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm text-base"
                         readOnly
                       />
                     </div>
                   </div>
 
-                  <div className="md:col-span-2">
+                  <div className="sm:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Email Address
                     </label>
                     <input
                       type="email"
                       value={profile.email}
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm text-base"
                       readOnly
                     />
                   </div>
                 </div>
 
-                <div className="mt-8">
-                  <button className="px-6 py-3 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 text-white hover:shadow-lg transition-all duration-300">
+                <div className="mt-6 sm:mt-8">
+                  <button className="w-full sm:w-auto px-6 py-3 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 text-white hover:shadow-lg transition-all duration-300 text-base">
                     Edit Profile
                   </button>
                 </div>
