@@ -124,13 +124,13 @@ const TestimonialsSection = () => {
   const visibleTestimonials = getVisibleTestimonials();
 
   return (
-    <section className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-16 yellow-gradient-bg relative overflow-hidden">
+    <section className="py-4 sm:py-6 md:py-8 px-4 sm:px-6 md:px-16 yellow-gradient-bg relative overflow-hidden">
       {/* Background Decorations - Hidden on mobile */}
       <div className="hidden md:block absolute top-20 left-10 w-32 h-32 bg-purple-200/30 rounded-full opacity-20 blur-3xl"></div>
       <div className="hidden md:block absolute bottom-20 right-10 w-40 h-40 bg-blue-200/30 rounded-full opacity-20 blur-3xl"></div>
       
       <div className="max-w-6xl mx-auto relative">
-        <div className="text-center mb-12 sm:mb-16">
+        <div className="text-center mb-8 sm:mb-10 md:mb-12">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-800 px-4">
             What are Students saying<br className="sm:hidden" /> 
             <span className="block sm:inline mt-2 sm:mt-0"> about </span>
@@ -195,7 +195,7 @@ const TestimonialsSection = () => {
         </div>
         
         {/* Navigation Controls */}
-        <div className="flex flex-col sm:flex-row justify-between items-center mt-8 sm:mt-12 gap-4">
+        <div className="flex flex-col sm:flex-row justify-between items-center mt-6 sm:mt-8 gap-4">
           {/* Pagination Dots */}
           <div className="flex-grow flex justify-center gap-2 sm:gap-3 order-2 sm:order-1">
             {Array.from({ length: totalSlides }, (_, index) => (
@@ -241,7 +241,7 @@ const TestimonialsSection = () => {
         </div>
 
         {/* Progress Indicator - Minimal bottom margin */}
-        <div className="mt-2 sm:mt-4 text-center">
+        <div className="mt-1 sm:mt-2 text-center">
           <span className="text-xs sm:text-sm text-gray-600">
             Showing {activeIndex + 1}-{Math.min(activeIndex + testimonialsPerView, testimonials.length)} of {testimonials.length} testimonials
           </span>

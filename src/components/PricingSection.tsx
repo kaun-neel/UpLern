@@ -37,9 +37,9 @@ const PricingSection = () => {
   ];
 
   return (
-    <section className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-16 yellow-gradient-bg">
+    <section className="py-4 sm:py-6 md:py-8 px-4 sm:px-6 md:px-16 yellow-gradient-bg">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12 sm:mb-16">
+        <div className="text-center mb-8 sm:mb-10 md:mb-12">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-800">
             Pricing Plans <span className="gradient-text">For You</span>
           </h2>
