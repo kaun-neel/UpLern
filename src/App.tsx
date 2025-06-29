@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './lib/auth.tsx';
 import Navbar from './components/Navbar';
@@ -25,13 +25,25 @@ import RefundPolicyPage from './components/RefundPolicyPage/RefundPolicyPage';
 import SupportPage from './components/SupportPage/SupportPage';
 import WhatsAppFloat from './components/WhatsAppFloat';
 
+// Component to conditionally render navbar
+const ConditionalNavbar = () => {
+  const location = useLocation();
+  const hiddenNavbarPaths = ['/premium-pass'];
+  
+  if (hiddenNavbarPaths.includes(location.pathname)) {
+    return null;
+  }
+  
+  return <Navbar />;
+};
+
 function App() {
   return (
     <AuthProvider>
       <Router>
         <div className="min-h-screen yellow-gradient-bg">
           <Toaster position="top-right" />
-          <Navbar />
+          <ConditionalNavbar />
           <Routes>
             <Route path="/" element={
               <main>
