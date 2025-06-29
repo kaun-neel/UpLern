@@ -22,6 +22,10 @@ body {
   min-height: 100vh;
   /* Prevent horizontal scroll on mobile */
   overflow-x: hidden;
+  /* Fix text rendering on mobile */
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
 }
 
 /* Global background class for consistent application */
@@ -46,6 +50,11 @@ body {
 
 .gradient-text {
   @apply bg-gradient-to-r from-purple-600 to-indigo-600 text-transparent bg-clip-text;
+  /* Fix text rendering issues */
+  -webkit-background-clip: text;
+  background-clip: text;
+  display: inline-block;
+  line-height: 1.2;
 }
 
 .gradient-button {
@@ -420,6 +429,39 @@ body {
     padding: 1.5rem;
     margin-bottom: 1rem;
   }
+
+  /* Fix text rendering on mobile devices */
+  * {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  /* Prevent text from appearing bulged or distorted */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Fix gradient text on mobile */
+  .gradient-text {
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(to right, #7c3aed, #4f46e5);
+    display: inline-block;
+    line-height: 1.2;
+  }
+
+  /* Ensure proper text scaling */
+  p, span, div {
+    line-height: 1.5;
+    text-rendering: optimizeLegibility;
+  }
 }
 
 /* Extra small devices (phones, 600px and down) */
@@ -435,6 +477,25 @@ body {
     padding: 0.875rem 1.5rem;
     font-size: 0.875rem;
     border-radius: 1.5rem;
+  }
+
+  /* Fix certificate text rendering on small screens */
+  .certificate-text {
+    font-size: clamp(0.75rem, 2.5vw, 1rem);
+    line-height: 1.3;
+    letter-spacing: 0;
+  }
+
+  .certificate-title {
+    font-size: clamp(1rem, 4vw, 1.5rem);
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+
+  .certificate-name {
+    font-size: clamp(1.25rem, 5vw, 2rem);
+    line-height: 1.1;
+    letter-spacing: -0.05em;
   }
 }
 
@@ -452,6 +513,12 @@ body {
   /* Sharper shadows and borders for retina displays */
   .enhanced-shadow {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Better text rendering on high DPI */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
@@ -543,5 +610,51 @@ select {
     background: white !important;
     box-shadow: none !important;
     border: 1px solid #ccc !important;
+  }
+}
+
+/* Certificate specific text fixes */
+.certificate-container {
+  font-family: 'Poppins', sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.certificate-container h1,
+.certificate-container h2,
+.certificate-container h3 {
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.certificate-container .gradient-text {
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(to right, #7c3aed, #4f46e5);
+  display: inline-block;
+  line-height: 1.2;
+}
+
+/* Prevent text overflow and ensure proper wrapping */
+.break-words {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.break-all {
+  word-break: break-all;
+}
+
+/* Ensure consistent font rendering across devices */
+@supports (font-variation-settings: normal) {
+  body {
+    font-family: 'Poppins', sans-serif;
+    font-variation-settings: 'wght' 400;
   }
 }

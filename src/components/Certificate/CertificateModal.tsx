@@ -357,54 +357,54 @@ Excited to apply these new skills! 💪
                 <div className="absolute inset-3 sm:inset-6 border-2 border-purple-300 rounded-lg"></div>
 
                 {/* Header */}
-                <div className="text-center pt-8 sm:pt-16 pb-4 sm:pb-8">
+                <div className="text-center pt-8 sm:pt-16 pb-4 sm:pb-8 px-4">
                   <div className="flex justify-center mb-3 sm:mb-6">
                     <div className="w-12 h-12 sm:w-20 sm:h-20 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-xl sm:rounded-2xl flex items-center justify-center">
                       <Award className="w-6 h-6 sm:w-12 sm:h-12 text-white" />
                     </div>
                   </div>
-                  <h1 className="text-2xl sm:text-5xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 text-transparent bg-clip-text mb-1 sm:mb-2">
+                  <h1 className="text-xl sm:text-3xl lg:text-5xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 text-transparent bg-clip-text mb-1 sm:mb-2 leading-tight">
                     Certificate of Completion
                   </h1>
-                  <p className="text-sm sm:text-xl text-gray-600">This certifies that</p>
+                  <p className="text-xs sm:text-lg lg:text-xl text-gray-600">This certifies that</p>
                 </div>
 
                 {/* Student Name */}
-                <div className="text-center mb-4 sm:mb-8">
-                  <h2 className="text-3xl sm:text-6xl font-bold text-gray-900 mb-2 sm:mb-4" style={{ fontFamily: 'serif' }}>
+                <div className="text-center mb-3 sm:mb-8 px-4">
+                  <h2 className="text-2xl sm:text-4xl lg:text-6xl font-bold text-gray-900 mb-2 sm:mb-4 leading-tight break-words" style={{ fontFamily: 'serif' }}>
                     {studentName}
                   </h2>
-                  <div className="w-48 sm:w-96 h-0.5 sm:h-1 bg-gradient-to-r from-purple-500 to-indigo-500 mx-auto"></div>
+                  <div className="w-32 sm:w-64 lg:w-96 h-0.5 sm:h-1 bg-gradient-to-r from-purple-500 to-indigo-500 mx-auto"></div>
                 </div>
 
                 {/* Course Details */}
-                <div className="text-center mb-6 sm:mb-12">
-                  <p className="text-lg sm:text-2xl text-gray-700 mb-2 sm:mb-4">has successfully completed the course</p>
-                  <h3 className="text-2xl sm:text-4xl font-bold text-purple-900 mb-3 sm:mb-6">{courseName}</h3>
-                  <p className="text-base sm:text-xl text-gray-600">
+                <div className="text-center mb-4 sm:mb-12 px-4">
+                  <p className="text-sm sm:text-xl lg:text-2xl text-gray-700 mb-2 sm:mb-4">has successfully completed the course</p>
+                  <h3 className="text-lg sm:text-2xl lg:text-4xl font-bold text-purple-900 mb-2 sm:mb-6 leading-tight break-words">{courseName}</h3>
+                  <p className="text-sm sm:text-lg lg:text-xl text-gray-600">
                     Completed on {formatDate(completionDate)}
                   </p>
                 </div>
 
                 {/* Footer */}
-                <div className="absolute bottom-4 sm:bottom-16 left-0 right-0">
-                  <div className="flex justify-between items-center px-6 sm:px-20">
-                    <div className="text-center">
-                      <div className="w-24 sm:w-48 h-0.5 sm:h-1 bg-gray-300 mb-1 sm:mb-2"></div>
-                      <p className="text-sm sm:text-lg font-semibold text-gray-700">Zyntiq Team</p>
+                <div className="absolute bottom-2 sm:bottom-8 lg:bottom-16 left-0 right-0 px-4 sm:px-8 lg:px-20">
+                  <div className="flex justify-between items-center text-center">
+                    <div className="flex-1">
+                      <div className="w-16 sm:w-32 lg:w-48 h-0.5 sm:h-1 bg-gray-300 mb-1 sm:mb-2 mx-auto"></div>
+                      <p className="text-xs sm:text-sm lg:text-lg font-semibold text-gray-700">Zyntiq Team</p>
                       <p className="text-xs sm:text-sm text-gray-500">Authorized Signature</p>
                     </div>
                     
-                    <div className="text-center">
-                      <div className="w-12 h-12 sm:w-24 sm:h-24 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center mb-1 sm:mb-2">
-                        <Award className="w-6 h-6 sm:w-12 sm:h-12 text-purple-600" />
+                    <div className="flex-1">
+                      <div className="w-8 h-8 sm:w-16 sm:h-16 lg:w-24 lg:h-24 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center mb-1 sm:mb-2 mx-auto">
+                        <Award className="w-4 h-4 sm:w-8 sm:h-8 lg:w-12 lg:h-12 text-purple-600" />
                       </div>
                       <p className="text-xs sm:text-sm text-gray-500">Official Seal</p>
                     </div>
                     
-                    <div className="text-center">
-                      <p className="text-sm sm:text-lg font-semibold text-gray-700">Certificate ID</p>
-                      <p className="text-xs sm:text-sm text-gray-500 font-mono">{certificateId}</p>
+                    <div className="flex-1">
+                      <p className="text-xs sm:text-sm lg:text-lg font-semibold text-gray-700">Certificate ID</p>
+                      <p className="text-xs sm:text-sm text-gray-500 font-mono break-all">{certificateId}</p>
                       <p className="text-xs text-gray-400 mt-0.5 sm:mt-1">Verify at zyntiq.in/verify</p>
                     </div>
                   </div>
