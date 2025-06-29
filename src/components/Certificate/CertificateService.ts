@@ -21,6 +21,17 @@ class CertificateService {
     courseName: string,
     courseId: string
   ): Promise<CertificateData> {
+    // Check if certificate already exists for this user and course
+    const existingCertificates = this.getCertificatesByCourse(courseId);
+    const existingCertificate = existingCertificates.find(cert => 
+      cert.studentName === studentName
+    );
+
+    if (existingCertificate) {
+      console.log('Certificate already exists, returning existing:', existingCertificate);
+      return existingCertificate;
+    }
+
     const certificateData: CertificateData = {
       id: this.generateCertificateId(),
       studentName,
@@ -32,6 +43,7 @@ class CertificateService {
 
     // Store certificate data in localStorage for demo purposes
     this.storeCertificate(certificateData);
+    console.log('New certificate generated and stored:', certificateData);
 
     return certificateData;
   }
@@ -40,7 +52,7 @@ class CertificateService {
     try {
       const existingCertificates = this.getUserCertificates();
       
-      // Check if certificate already exists for this course
+      // Check if certificate already exists for this course and student
       const existingIndex = existingCertificates.findIndex(
         cert => cert.courseId === certificateData.courseId && cert.studentName === certificateData.studentName
       );
@@ -48,18 +60,26 @@ class CertificateService {
       if (existingIndex >= 0) {
         // Update existing certificate
         existingCertificates[existingIndex] = certificateData;
+        console.log('Updated existing certificate');
       } else {
         // Add new certificate
         existingCertificates.push(certificateData);
+        console.log('Added new certificate');
       }
       
       localStorage.setItem('zyntiq_certificates', JSON.stringify(existingCertificates));
+      console.log('Certificates saved to localStorage:', existingCertificates);
       
       // Trigger storage event for cross-tab communication
       window.dispatchEvent(new StorageEvent('storage', {
         key: 'zyntiq_certificates',
         newValue: JSON.stringify(existingCertificates),
         storageArea: localStorage
+      }));
+
+      // Trigger custom event for immediate updates
+      window.dispatchEvent(new CustomEvent('certificateUpdated', {
+        detail: certificateData
       }));
     } catch (error) {
       console.error('Error storing certificate:', error);
@@ -69,7 +89,9 @@ class CertificateService {
   getUserCertificates(): CertificateData[] {
     try {
       const certificates = localStorage.getItem('zyntiq_certificates');
-      return certificates ? JSON.parse(certificates) : [];
+      const result = certificates ? JSON.parse(certificates) : [];
+      console.log('Retrieved certificates from localStorage:', result);
+      return result;
     } catch (error) {
       console.error('Error retrieving certificates:', error);
       return [];
@@ -103,7 +125,16 @@ class CertificateService {
 
   // Force refresh certificates from storage
   refreshCertificates(): CertificateData[] {
+    console.log('Force refreshing certificates from storage');
     return this.getUserCertificates();
+  }
+
+  // Clear all certificates (for testing)
+  clearAllCertificates(): void {
+    localStorage.removeItem('zyntiq_certificates');
+    window.dispatchEvent(new CustomEvent('certificateUpdated', {
+      detail: null
+    }));
   }
 }
 

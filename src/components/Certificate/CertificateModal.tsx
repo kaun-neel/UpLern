@@ -294,9 +294,27 @@ Excited to apply these new skills! 💪
                 {/* Header */}
                 <div className="text-center pt-16 pb-8">
                   <div className="flex justify-center mb-6">
+                    {/* 🖼️ CERTIFICATE IMAGE REPLACEMENT SECTION */}
+                    {/* ============================================= */}
+                    {/* TO REPLACE THE CERTIFICATE IMAGE:
+                        1. Replace the div below with an img tag
+                        2. Set src="/your-certificate-image.png" 
+                        3. Add appropriate alt text
+                        4. Adjust width/height as needed
+                        
+                        Example:
+                        <img 
+                          src="/image.png" 
+                          alt="Certificate Logo" 
+                          className="w-20 h-20 object-contain"
+                        />
+                    ============================================= */}
                     <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-2xl flex items-center justify-center">
                       <Award className="w-12 h-12 text-white" />
                     </div>
+                    {/* ============================================= */}
+                    {/* END OF CERTIFICATE IMAGE REPLACEMENT SECTION */}
+                    {/* ============================================= */}
                   </div>
                   <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 text-transparent bg-clip-text mb-2">
                     Certificate of Completion

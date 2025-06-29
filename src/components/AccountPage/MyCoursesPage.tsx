@@ -20,26 +20,37 @@ const MyCoursesPage = () => {
     if (user) {
       const userCertificates = certificateService.getUserCertificates();
       setCertificates(userCertificates);
+      console.log('Loaded certificates on mount:', userCertificates);
     }
   }, [user, enrollments]);
 
   // Listen for certificate updates
   useEffect(() => {
-    const handleCertificateUpdate = () => {
+    const handleCertificateUpdate = (event: any) => {
+      console.log('Certificate update event received:', event);
       if (user) {
         const updatedCertificates = certificateService.refreshCertificates();
         setCertificates(updatedCertificates);
+        console.log('Updated certificates state:', updatedCertificates);
       }
     };
 
-    window.addEventListener('storage', (e) => {
+    const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'zyntiq_certificates') {
-        handleCertificateUpdate();
+        console.log('Storage change detected for certificates');
+        handleCertificateUpdate(e);
       }
-    });
+    };
+
+    // Listen for custom certificate update events
+    window.addEventListener('certificateUpdated', handleCertificateUpdate);
+    
+    // Listen for storage changes (cross-tab updates)
+    window.addEventListener('storage', handleStorageChange);
 
     return () => {
-      window.removeEventListener('storage', handleCertificateUpdate);
+      window.removeEventListener('certificateUpdated', handleCertificateUpdate);
+      window.removeEventListener('storage', handleStorageChange);
     };
   }, [user]);
 
@@ -110,10 +121,13 @@ const MyCoursesPage = () => {
     }
 
     try {
-      // Check if certificate already exists
+      console.log('Certificate button clicked for course:', course.course_id);
+      
+      // Check if certificate already exists for this user and course
+      const studentName = `${user.first_name} ${user.last_name}`.trim();
       const existingCertificates = certificateService.getCertificatesByCourse(course.course_id);
       const userCertificate = existingCertificates.find(cert => 
-        cert.studentName === `${user.first_name} ${user.last_name}`.trim()
+        cert.studentName === studentName
       );
       
       let certificate;
@@ -122,22 +136,26 @@ const MyCoursesPage = () => {
         // Use existing certificate
         certificate = userCertificate;
         console.log('Using existing certificate:', certificate);
+        toast.success('Certificate loaded successfully!');
       } else {
         // Generate new certificate
+        console.log('Generating new certificate for:', studentName, course.course_name, course.course_id);
         certificate = await certificateService.generateCertificate(
-          `${user.first_name} ${user.last_name}`.trim(),
+          studentName,
           course.course_name,
           course.course_id
         );
         console.log('Generated new certificate:', certificate);
         
-        // Update local certificates state
+        // Update local certificates state immediately
         const updatedCertificates = certificateService.getUserCertificates();
         setCertificates(updatedCertificates);
+        console.log('Updated local certificates state:', updatedCertificates);
         
         toast.success('Certificate generated successfully!');
       }
 
+      // Show certificate modal
       setSelectedCertificate(certificate);
       setShowCertificateModal(true);
     } catch (error) {
