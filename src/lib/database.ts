@@ -3,7 +3,7 @@ import { User, ContactMessage, Enrollment, Profile } from './supabase';
 // Local storage database implementation
 class LocalStorageDatabase {
   private getStorageKey(table: string): string {
-    return `uplern_${table}`;
+    return `zyntiq_${table}`;
   }
 
   private generateId(): string {
@@ -38,7 +38,7 @@ class LocalStorageDatabase {
   // Hash password for storage (simple implementation for demo)
   private hashPassword(password: string): string {
     // In production, use proper password hashing like bcrypt
-    return btoa(password + 'uplern_salt');
+    return btoa(password + 'zyntiq_salt');
   }
 
   // Verify password
@@ -120,7 +120,7 @@ class LocalStorageDatabase {
         const { password: _, ...userWithoutPassword } = user;
         
         // Set current user session
-        localStorage.setItem('uplern_current_user', JSON.stringify({
+        localStorage.setItem('zyntiq_current_user', JSON.stringify({
           id: user.id,
           email: user.email
         }));
@@ -134,7 +134,7 @@ class LocalStorageDatabase {
       }
 
       // Set current user session
-      localStorage.setItem('uplern_current_user', JSON.stringify({
+      localStorage.setItem('zyntiq_current_user', JSON.stringify({
         id: user.id,
         email: user.email
       }));
@@ -150,7 +150,7 @@ class LocalStorageDatabase {
 
   async getCurrentUser(): Promise<{ user: User | null; error: string | null }> {
     try {
-      const currentUserData = localStorage.getItem('uplern_current_user');
+      const currentUserData = localStorage.getItem('zyntiq_current_user');
       if (!currentUserData) {
         return { user: null, error: null };
       }
@@ -168,7 +168,7 @@ class LocalStorageDatabase {
 
   async signOut(): Promise<{ error: string | null }> {
     try {
-      localStorage.removeItem('uplern_current_user');
+      localStorage.removeItem('zyntiq_current_user');
       return { error: null };
     } catch (error) {
       console.error('Sign out error:', error);
@@ -364,37 +364,37 @@ export const localDB = new LocalStorageDatabase();
 
 // Initialize demo data for localStorage
 const initializeDemoData = () => {
-  const users = JSON.parse(localStorage.getItem('uplern_users') || '[]');
-  const demoUserExists = users.find((user: User) => user.email === 'demo@uplern.com');
+  const users = JSON.parse(localStorage.getItem('zyntiq_users') || '[]');
+  const demoUserExists = users.find((user: User) => user.email === 'demo@zyntiq.in');
   
   if (!demoUserExists) {
     const demoUsers: (User & { password: string })[] = [
       {
         id: 'demo-user-1',
-        email: 'demo@uplern.com',
+        email: 'demo@zyntiq.in',
         first_name: 'Demo',
         middle_name: '',
         last_name: 'User',
         phone: '9876543210',
-        password: btoa('demo123' + 'uplern_salt'), // password: demo123
+        password: btoa('demo123' + 'zyntiq_salt'), // password: demo123
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       },
       {
         id: 'demo-user-2',
-        email: 'john@uplern.com',
+        email: 'john@zyntiq.in',
         first_name: 'John',
         middle_name: 'M',
         last_name: 'Doe',
         phone: '9876543211',
-        password: btoa('john123' + 'uplern_salt'), // password: john123
+        password: btoa('john123' + 'zyntiq_salt'), // password: john123
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       }
     ];
 
     users.push(...demoUsers);
-    localStorage.setItem('uplern_users', JSON.stringify(users));
+    localStorage.setItem('zyntiq_users', JSON.stringify(users));
 
     // Create demo enrollments for demo user
     const demoEnrollments: Enrollment[] = [
@@ -436,7 +436,7 @@ const initializeDemoData = () => {
       }
     ];
 
-    localStorage.setItem('uplern_enrollments', JSON.stringify(demoEnrollments));
+    localStorage.setItem('zyntiq_enrollments', JSON.stringify(demoEnrollments));
   }
 };
 
@@ -445,5 +445,5 @@ initializeDemoData();
 
 console.log('Using local storage database with demo data');
 console.log('Demo accounts:');
-console.log('1. Email: demo@uplern.com, Password: demo123');
-console.log('2. Email: john@uplern.com, Password: john123');
+console.log('1. Email: demo@zyntiq.in, Password: demo123');
+console.log('2. Email: john@zyntiq.in, Password: john123');

@@ -25,13 +25,13 @@ const Footer = () => {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <img 
-                src="/logo.png" 
-                alt="upLern Logo" 
+                src="/Frame 3.png" 
+                alt="Zyntiq Logo" 
                 className="h-10 w-auto object-contain"
               />
             </div>
             <p className="text-gray-700 mb-4">
-              Uplern is an online education platform dedicated to helping professionals acquire new skills and advance their careers.
+              Zyntiq is an online education platform dedicated to helping professionals acquire new skills and advance their careers.
             </p>
             <div className="flex gap-3">
               <a href="#" className="w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center hover:bg-white transition-colors enhanced-shadow">
@@ -102,8 +102,8 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="text-purple-500" size={18} />
-                <a href="mailto:info@uplern.com" className="text-gray-700 hover:text-purple-600 transition-colors">
-                  info@uplern.com
+                <a href="mailto:info@zyntiq.in" className="text-gray-700 hover:text-purple-600 transition-colors">
+                  info@zyntiq.in
                 </a>
               </li>
               <li className="flex items-center gap-3">
@@ -118,7 +118,7 @@ const Footer = () => {
         
         <div className="border-t border-yellow-400/30 pt-8">
           <p className="text-center text-gray-600 text-sm">
-            © {new Date().getFullYear()} Uplern. All rights reserved.
+            © {new Date().getFullYear()} Zyntiq. All rights reserved.
           </p>
         </div>
       </div>

@@ -7,7 +7,7 @@ const WhatsAppFloat = () => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const whatsappNumber = '+916291822142';
-  const message = encodeURIComponent('Hi! I\'m interested in learning more about upLern courses. Can you help me?');
+  const message = encodeURIComponent('Hi! I\'m interested in learning more about Zyntiq courses. Can you help me?');
   const whatsappUrl = `https://wa.me/${whatsappNumber.replace('+', '')}?text=${message}`;
 
   useEffect(() => {

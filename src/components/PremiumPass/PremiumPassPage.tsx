@@ -54,8 +54,8 @@ const PremiumPassPage = () => {
         <div className="text-center mb-16">
           <div className="flex justify-center mb-4">
             <img 
-              src="/logo.png" 
-              alt="upLern Logo" 
+              src="/Frame 3.png" 
+              alt="Zyntiq Logo" 
               className="h-12 w-auto object-contain"
             />
           </div>
@@ -215,7 +215,7 @@ const PremiumPassPage = () => {
                 <ul className="space-y-3">
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-green-400" />
-                    <span className="text-gray-700">upLern Academy membership</span>
+                    <span className="text-gray-700">Zyntiq Academy membership</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-green-400" />
@@ -261,7 +261,7 @@ const PremiumPassPage = () => {
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 bg-violet-400 rounded-full"></span>
-                    <span className="text-gray-700">Complimentary Entry to upLern Academy.</span>
+                    <span className="text-gray-700">Complimentary Entry to Zyntiq Academy.</span>
                   </li>
                 </ul>
 
@@ -293,11 +293,11 @@ const PremiumPassPage = () => {
                 <div>
                   <Award className="w-8 h-8 mb-4 text-purple-600" />
                   <h4 className="font-semibold mb-2 text-gray-800">Certified Programs</h4>
-                  <p className="text-sm text-gray-600">All upLern courses include certification, providing you with recognized credentials to strengthen your professional profile.</p>
+                  <p className="text-sm text-gray-600">All Zyntiq courses include certification, providing you with recognized credentials to strengthen your professional profile.</p>
                 </div>
                 <div>
                   <GraduationCap className="w-8 h-8 mb-4 text-purple-600" />
-                  <h4 className="font-semibold mb-2 text-gray-800">upLern Academy</h4>
+                  <h4 className="font-semibold mb-2 text-gray-800">Zyntiq Academy</h4>
                   <p className="text-sm text-gray-600">A meticulously curated academic platform aimed at supporting students in their career preparation with comprehensive study materials.</p>
                 </div>
               </div>

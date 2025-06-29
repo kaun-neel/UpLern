@@ -25,14 +25,14 @@ const AboutPage = () => {
             
             <div>
               <span className="inline-block px-4 py-2 bg-blue-50/80 backdrop-blur-sm text-sm rounded-full mb-6 border border-blue-200/50">
-                About upLern
+                About Zyntiq
               </span>
               <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-800">
-                Welcome to upLern for your skills with best Online Courses.
+                Welcome to Zyntiq for your skills with best Online Courses.
               </h1>
               <div className="space-y-4 text-gray-700">
                 <p>
-                  At Uplern, we believe the next generation deserves more than yesterday's ideas.
+                  At Zyntiq, we believe the next generation deserves more than yesterday's ideas.
                 </p>
                 <p>
                   We exist to energize, empower, and equip forward-thinkers to thrive in a rapidly changing world.
@@ -80,7 +80,7 @@ const AboutPage = () => {
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-8 text-gray-800">We are Certified</h2>
           <p className="text-gray-700 max-w-4xl mx-auto mb-12">
-            Uplern is an ISO-certified organization, dedicated to upholding the highest standards of quality, reliability, and continuous improvement. Our certification reflects our commitment to delivering services that meet global benchmarks for excellence and operational efficiency. At Uplern, we follow structured processes and best practices to ensure our clients receive consistent, secure, and value-driven solutions. This recognition not only reinforces our credibility but also demonstrates our dedication to fostering trust and long-term partnerships.
+            Zyntiq is an ISO-certified organization, dedicated to upholding the highest standards of quality, reliability, and continuous improvement. Our certification reflects our commitment to delivering services that meet global benchmarks for excellence and operational efficiency. At Zyntiq, we follow structured processes and best practices to ensure our clients receive consistent, secure, and value-driven solutions. This recognition not only reinforces our credibility but also demonstrates our dedication to fostering trust and long-term partnerships.
           </p>
           <div className="flex justify-center gap-8">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/ISO_Logo_%28Red_square%29.svg/180px-ISO_Logo_%28Red_square%29.svg.png" alt="ISO" className="h-16" />
@@ -152,7 +152,7 @@ const AboutPage = () => {
       <div className="py-16 px-6">
         <div className="max-w-6xl mx-auto text-center">
           <span className="text-purple-600 font-medium mb-2 block">Our Educational Philosophy</span>
-          <h2 className="text-3xl font-bold mb-12 text-gray-800">How does upLern Works?</h2>
+          <h2 className="text-3xl font-bold mb-12 text-gray-800">How does Zyntiq Works?</h2>
           
           <div className="grid md:grid-cols-3 gap-8">
             {[

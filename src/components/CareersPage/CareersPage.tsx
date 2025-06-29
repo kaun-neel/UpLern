@@ -63,7 +63,7 @@ const CareersPage = () => {
       <div className="relative overflow-hidden min-h-[600px]">
         <div className="max-w-6xl mx-auto px-6 pt-24 pb-48 relative z-10">
           <h1 className="text-5xl font-bold text-purple-900 mb-4">
-            upLern<br />
+            Zyntiq<br />
             INTERNSHIP<br />
             PROGRAM
           </h1>
@@ -266,7 +266,7 @@ const CareersPage = () => {
             {
               title: 'Join the Program',
               items: [
-                'Sign up for the internship program directly through the upLern platform.',
+                'Sign up for the internship program directly through the Zyntiq platform.',
                 'You\'ll be assigned a dedicated instructor.',
                 'Learn at your own pace with flexible scheduling.'
               ]

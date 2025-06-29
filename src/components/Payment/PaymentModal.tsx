@@ -37,7 +37,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         amount: RazorpayService.formatAmount(paymentData.amount),
         currency: 'INR',
         name: paymentData.itemName,
-        description: `Purchase of ${paymentData.itemName} from upLern`,
+        description: `Purchase of ${paymentData.itemName} from Zyntiq`,
         prefill: {
           name: paymentData.userName || `${user.first_name} ${user.last_name}`.trim() || 'User',
           email: paymentData.userEmail || user.email || '',
@@ -55,7 +55,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
       console.log('Payment result:', result);
 
       if (result.success && result.data) {
-        toast.success('🎉 Payment successful! Welcome to upLern!');
+        toast.success('🎉 Payment successful! Welcome to Zyntiq!');
         onSuccess?.(result.data);
         onClose();
       } else {

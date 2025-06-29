@@ -28,8 +28,8 @@ const Navbar = () => {
     <header className="py-4 px-6 md:px-12 flex justify-between items-center">
       <Link to="/" className="flex items-center gap-3">
         <img 
-          src="/logo.png" 
-          alt="upLern Logo" 
+          src="/Frame 3.png" 
+          alt="Zyntiq Logo" 
           className="h-10 w-auto object-contain"
         />
       </Link>
