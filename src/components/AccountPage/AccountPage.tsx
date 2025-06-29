@@ -142,26 +142,49 @@ const AccountPage = () => {
           {/* Sidebar */}
           <div className="lg:col-span-1">
             <div className="glass-card-dark rounded-2xl p-4 sm:p-6">
-              {/* Mobile Tab Selector */}
+              {/* Mobile Tab Selector with Purple Gradient and Arrow */}
               <div className="lg:hidden mb-4">
-                <select
-                  value={activeTab}
-                  onChange={(e) => setActiveTab(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm text-base"
-                >
-                  {menuItems.map((item) => (
-                    <option key={item.key} value={item.key}>
-                      {item.label}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <button
+                    onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+                    className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-medium text-base flex items-center justify-between hover:from-purple-600 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+                  >
+                    <span>{menuItems.find(item => item.key === activeTab)?.label || 'Profile'}</span>
+                    <ChevronDown 
+                      className={`w-5 h-5 transition-transform duration-300 ${
+                        showProfileDropdown ? 'rotate-180' : ''
+                      }`} 
+                    />
+                  </button>
+                  
+                  {/* Mobile Dropdown Menu */}
+                  {showProfileDropdown && (
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 z-30 overflow-hidden">
+                      {menuItems.map((item) => (
+                        <button
+                          key={item.key}
+                          onClick={() => {
+                            setActiveTab(item.key);
+                            setShowProfileDropdown(false);
+                          }}
+                          className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-purple-50 transition-colors ${
+                            activeTab === item.key ? 'bg-purple-100 text-purple-700' : 'text-gray-700'
+                          }`}
+                        >
+                          {item.icon}
+                          <span className="font-medium">{item.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Desktop Menu */}
               <ul className="hidden lg:block space-y-3">
                 {menuItems.map((item, index) => (
                   <li key={index}>
-                    {/* Enhanced Profile Tab with Attractive Dropdown */}
+                    {/* Enhanced Profile Tab with Purple Gradient and Dropdown Arrow */}
                     {item.key === 'profile' ? (
                       <div className="relative">
                         <button
@@ -171,40 +194,22 @@ const AccountPage = () => {
                           }}
                           className={`w-full flex items-center justify-between px-5 py-4 rounded-xl transition-all duration-300 text-left group relative overflow-hidden ${
                             activeTab === item.key
-                              ? 'bg-gradient-to-r from-purple-500 via-purple-600 to-indigo-600 text-white shadow-xl transform scale-[1.02] border-2 border-purple-300'
-                              : 'hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50 text-gray-700 hover:text-purple-700 hover:shadow-lg hover:scale-[1.01] border-2 border-transparent hover:border-purple-200'
+                              ? 'bg-gradient-to-r from-purple-500 via-purple-600 to-indigo-600 text-white shadow-xl transform scale-[1.02]'
+                              : 'hover:bg-gradient-to-r hover:from-purple-100 hover:to-indigo-100 text-gray-700 hover:text-purple-700 hover:shadow-lg hover:scale-[1.01] border-2 border-transparent hover:border-purple-200'
                           }`}
                         >
-                          {/* Animated Background Gradient */}
-                          <div className={`absolute inset-0 bg-gradient-to-r from-purple-400 via-purple-500 to-indigo-500 opacity-0 group-hover:opacity-10 transition-opacity duration-300 ${
-                            activeTab === item.key ? 'opacity-20' : ''
-                          }`}></div>
-                          
-                          {/* Sparkle Effect */}
-                          <div className={`absolute top-2 right-2 w-2 h-2 bg-white rounded-full opacity-0 transition-opacity duration-300 ${
-                            activeTab === item.key ? 'opacity-60 animate-pulse' : 'group-hover:opacity-40'
-                          }`}></div>
-                          
                           <div className="flex items-center gap-4 relative z-10">
                             <div className={`p-2 rounded-xl transition-all duration-300 ${
                               activeTab === item.key 
                                 ? 'bg-white/20 shadow-lg' 
-                                : 'group-hover:bg-purple-100 group-hover:shadow-md'
+                                : 'group-hover:bg-purple-200 group-hover:shadow-md'
                             }`}>
                               {item.icon}
                             </div>
-                            <div className="flex flex-col">
-                              <span className="font-semibold text-base">{item.label}</span>
-                              <span className={`text-xs transition-colors duration-300 ${
-                                activeTab === item.key 
-                                  ? 'text-white/80' 
-                                  : 'text-gray-500 group-hover:text-purple-600'
-                              }`}>
-                                Click to see options
-                              </span>
-                            </div>
+                            <span className="font-semibold text-base">{item.label}</span>
                           </div>
                           
+                          {/* Dropdown Arrow - Always Visible */}
                           <div className="relative z-10">
                             <ChevronDown 
                               className={`w-5 h-5 transition-all duration-300 ${
@@ -214,11 +219,6 @@ const AccountPage = () => {
                               }`} 
                             />
                           </div>
-
-                          {/* Dropdown Indicator */}
-                          <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-400 to-indigo-400 transition-all duration-300 ${
-                            showProfileDropdown ? 'opacity-100' : 'opacity-0'
-                          }`}></div>
                         </button>
 
                         {/* Enhanced Profile Dropdown Menu */}
