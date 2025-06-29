@@ -6,22 +6,27 @@ const HeroSection = () => {
     {
       src: "images/mic.png",
       alt: "Microphone",
-      className: "absolute w-16 h-16 sm:w-20 sm:h-20 top-8 right-8 floating-delay-1"
+      // Centered positioning for mobile and desktop
+      className: "absolute w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 floating-delay-1",
+      style: { top: '15%', left: '15%' }
     },
     {
       src: "images/coin.png",
       alt: "Dollar",
-      className: "absolute w-16 h-16 sm:w-20 sm:h-20 top-1/3 right-1/4 floating-delay-2"
+      className: "absolute w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 floating-delay-2",
+      style: { top: '20%', right: '15%' }
     },
     {
       src: "images/bulb.png",
       alt: "Idea",
-      className: "absolute w-16 h-16 sm:w-20 sm:h-20 bottom-1/3 left-1/4 floating-delay-3"
+      className: "absolute w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 floating-delay-3",
+      style: { bottom: '25%', left: '20%' }
     },
     {
       src: "images/camera.png",
       alt: "Camera",
-      className: "absolute w-16 h-16 sm:w-20 sm:h-20 bottom-8 right-8 floating"
+      className: "absolute w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 floating",
+      style: { bottom: '15%', right: '20%' }
     }
   ];
 
@@ -50,19 +55,23 @@ const HeroSection = () => {
         </div>
         
         {/* Centered Floating Icons Container */}
-        <div className="relative min-h-[320px] sm:min-h-[400px] flex items-center justify-center">
-          {/* Central container for icons */}
-          <div className="relative w-80 h-80 sm:w-96 sm:h-96">
-            {/* Floating Icons - Centered and positioned relative to container */}
+        <div className="relative min-h-[280px] sm:min-h-[320px] md:min-h-[400px] flex items-center justify-center">
+          {/* Central container for icons - properly centered */}
+          <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 mx-auto">
+            {/* Floating Icons - All positioned relative to the centered container */}
             {icons.map((icon, index) => (
               <img
                 key={index}
                 src={icon.src}
                 alt={icon.alt}
                 className={`${icon.className} z-10`}
+                style={icon.style}
                 loading="lazy"
               />
             ))}
+            
+            {/* Central visual anchor (invisible) */}
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-transparent"></div>
           </div>
         </div>
       </div>
