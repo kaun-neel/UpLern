@@ -59,7 +59,7 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
       if (isMobile && !showCertificate) {
         setShowCertificate(true);
         // Wait for render and font loading
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 1500));
       }
 
       if (!certificateRef.current) {
@@ -71,17 +71,17 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
       // Wait for fonts to load
       await document.fonts.ready;
       
-      // Portrait A4 optimized settings
+      // Enhanced settings for high-quality certificate generation
       const canvasOptions = {
-        scale: isMobile ? 2.5 : 3,
+        scale: 3,
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
-        width: isMobile ? 595 : 794, // A4 portrait width
-        height: isMobile ? 842 : 1123, // A4 portrait height
+        width: 794, // A4 portrait width at 96 DPI
+        height: 1123, // A4 portrait height at 96 DPI
         logging: false,
         removeContainer: true,
-        imageTimeout: 15000,
+        imageTimeout: 20000,
         foreignObjectRendering: false,
         letterRendering: true,
         onclone: (clonedDoc: Document) => {
@@ -89,7 +89,6 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
           const style = clonedDoc.createElement('style');
           style.textContent = `
             @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-            @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
             * {
               font-family: 'Poppins', sans-serif !important;
               -webkit-font-smoothing: antialiased !important;
@@ -97,14 +96,8 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
               text-rendering: optimizeLegibility !important;
               font-synthesis: none !important;
             }
-            .certificate-title {
-              font-family: 'Playfair Display', serif !important;
-            }
-            .student-name {
-              font-family: 'Playfair Display', serif !important;
-            }
             .gradient-text {
-              background: linear-gradient(to right, #7c3aed, #4f46e5) !important;
+              background: linear-gradient(to right, #8b5cf6, #6366f1) !important;
               -webkit-background-clip: text !important;
               background-clip: text !important;
               -webkit-text-fill-color: transparent !important;
@@ -112,14 +105,6 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
             }
           `;
           clonedDoc.head.appendChild(style);
-          
-          // Force font loading
-          const elements = clonedDoc.querySelectorAll('*');
-          elements.forEach(el => {
-            if (el instanceof HTMLElement) {
-              el.style.fontFamily = 'Poppins, sans-serif';
-            }
-          });
         }
       };
 
@@ -167,7 +152,7 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
       
       // Enhanced fallback for mobile
       try {
-        toast.loading('Retrying with mobile-optimized settings...');
+        toast.loading('Retrying with optimized settings...');
         
         if (!certificateRef.current) {
           toast.dismiss();
@@ -176,27 +161,27 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
         }
 
         // Wait a bit more for mobile rendering
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
         const fallbackCanvas = await html2canvas(certificateRef.current, {
-          scale: 1.5,
+          scale: 2,
           useCORS: true,
           allowTaint: true,
           backgroundColor: '#ffffff',
           logging: false,
           removeContainer: true,
-          imageTimeout: 10000,
+          imageTimeout: 15000,
           foreignObjectRendering: false,
           letterRendering: true,
-          width: 420,
-          height: 594
+          width: 595,
+          height: 842
         });
 
         if (fallbackCanvas.width === 0 || fallbackCanvas.height === 0) {
           throw new Error('Fallback canvas is also empty');
         }
 
-        const fallbackImgData = fallbackCanvas.toDataURL('image/jpeg', 0.9);
+        const fallbackImgData = fallbackCanvas.toDataURL('image/png', 0.95);
         
         if (fallbackImgData === 'data:,' || fallbackImgData.length < 100) {
           throw new Error('Fallback image data is invalid');
@@ -208,7 +193,7 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
           format: 'a4'
         });
 
-        fallbackPdf.addImage(fallbackImgData, 'JPEG', 0, 0, 210, 297);
+        fallbackPdf.addImage(fallbackImgData, 'PNG', 0, 0, 210, 297);
         fallbackPdf.save(`${courseName}-Certificate-${studentName}.pdf`);
         
         if (isMobile) {
@@ -554,7 +539,7 @@ Excited to apply these new skills! 💪
                 </div>
               )}
 
-              {/* Certificate Display - Portrait Format Like Real Certificate */}
+              {/* Certificate Display - Exact Match to Reference Image */}
               <div className="flex justify-center">
                 <div 
                   ref={certificateRef}
@@ -565,37 +550,20 @@ Excited to apply these new skills! 💪
                     minHeight: isMobile ? '500px' : '700px'
                   }}
                 >
-                  {/* Certificate Content - Portrait Layout */}
-                  <div className="w-full h-full bg-gradient-to-br from-slate-50 via-white to-purple-50 relative overflow-hidden border-8 border-purple-300 rounded-lg flex flex-col">
+                  {/* Certificate Content - Exact Match to Reference Design */}
+                  <div className="w-full h-full bg-gradient-to-br from-purple-50 via-white to-purple-50 relative overflow-hidden border-4 border-purple-300 rounded-lg flex flex-col">
                     
-                    {/* Elegant Decorative Border */}
-                    <div className="absolute inset-4 border-2 border-purple-200 rounded-lg">
-                      <div className="absolute inset-3 border border-purple-100 rounded-lg"></div>
-                    </div>
+                    {/* Inner Border */}
+                    <div className="absolute inset-4 border-2 border-purple-200 rounded-lg"></div>
 
-                    {/* Decorative Corner Flourishes */}
-                    <div className="absolute top-6 left-6 w-12 h-12 border-l-4 border-t-4 border-purple-400 rounded-tl-2xl opacity-60"></div>
-                    <div className="absolute top-6 right-6 w-12 h-12 border-r-4 border-t-4 border-purple-400 rounded-tr-2xl opacity-60"></div>
-                    <div className="absolute bottom-6 left-6 w-12 h-12 border-l-4 border-b-4 border-purple-400 rounded-bl-2xl opacity-60"></div>
-                    <div className="absolute bottom-6 right-6 w-12 h-12 border-r-4 border-b-4 border-purple-400 rounded-br-2xl opacity-60"></div>
-
-                    {/* Background Decorative Elements */}
-                    <div className="absolute inset-0 opacity-5">
-                      <div className="absolute top-20 left-16 w-24 h-24 bg-purple-500 rounded-full"></div>
-                      <div className="absolute top-32 right-20 w-16 h-16 bg-indigo-500 rounded-full"></div>
-                      <div className="absolute bottom-32 left-20 w-20 h-20 bg-purple-500 rounded-full"></div>
-                      <div className="absolute bottom-20 right-16 w-14 h-14 bg-indigo-500 rounded-full"></div>
-                    </div>
-
-                    {/* Header Section with Logo */}
+                    {/* Header Section with Award Icon */}
                     <div className="text-center pt-8 sm:pt-12 pb-4 sm:pb-6 px-6 sm:px-8 flex-shrink-0 relative z-10">
                       <div className="flex justify-center mb-4 sm:mb-6">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-full flex items-center justify-center shadow-lg border-4 border-white">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-full flex items-center justify-center shadow-lg">
                           <Award className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
                         </div>
                       </div>
-                      <h1 className="certificate-title text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 text-transparent bg-clip-text mb-2 sm:mb-3 leading-tight" 
-                          style={{ fontFamily: 'Playfair Display, serif' }}>
+                      <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold gradient-text mb-2 sm:mb-3 leading-tight">
                         Certificate of Completion
                       </h1>
                       <p className="text-sm sm:text-base lg:text-lg text-gray-600 font-medium">This certifies that</p>
@@ -603,12 +571,7 @@ Excited to apply these new skills! 💪
 
                     {/* Student Name Section */}
                     <div className="text-center mb-4 sm:mb-6 px-6 sm:px-8 flex-shrink-0 relative z-10">
-                      <h2 className="student-name text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight break-words" 
-                          style={{ 
-                            fontFamily: 'Playfair Display, serif',
-                            letterSpacing: '0.02em',
-                            textShadow: '0 1px 2px rgba(0,0,0,0.1)'
-                          }}>
+                      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight break-words">
                         {studentName}
                       </h2>
                       <div className="w-32 sm:w-48 lg:w-64 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 mx-auto rounded-full"></div>
@@ -628,10 +591,10 @@ Excited to apply these new skills! 💪
                       </div>
                     </div>
 
-                    {/* Footer Section */}
+                    {/* Footer Section - Three Columns Layout */}
                     <div className="px-6 sm:px-8 pb-6 sm:pb-8 flex-shrink-0 relative z-10">
                       <div className="grid grid-cols-3 gap-4 text-center">
-                        {/* Signature */}
+                        {/* Zyntiq Team Signature */}
                         <div className="flex flex-col items-center">
                           <div className="w-16 sm:w-24 lg:w-32 h-0.5 bg-gray-400 mb-2"></div>
                           <p className="text-xs sm:text-sm lg:text-base font-semibold text-gray-700">Zyntiq Team</p>
@@ -640,7 +603,7 @@ Excited to apply these new skills! 💪
                         
                         {/* Official Seal */}
                         <div className="flex flex-col items-center">
-                          <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center mb-2 border-2 border-purple-300 shadow-md">
+                          <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center mb-2 border-2 border-purple-300">
                             <Award className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-purple-600" />
                           </div>
                           <p className="text-xs sm:text-sm text-gray-500 font-medium">Official Seal</p>
@@ -654,9 +617,6 @@ Excited to apply these new skills! 💪
                         </div>
                       </div>
                     </div>
-
-                    {/* Elegant Bottom Border Design */}
-                    <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-500 opacity-20"></div>
                   </div>
                 </div>
               </div>
