@@ -39,8 +39,28 @@ class CertificateService {
   private storeCertificate(certificateData: CertificateData): void {
     try {
       const existingCertificates = this.getUserCertificates();
-      const updatedCertificates = [...existingCertificates, certificateData];
-      localStorage.setItem('uplern_certificates', JSON.stringify(updatedCertificates));
+      
+      // Check if certificate already exists for this course
+      const existingIndex = existingCertificates.findIndex(
+        cert => cert.courseId === certificateData.courseId && cert.studentName === certificateData.studentName
+      );
+      
+      if (existingIndex >= 0) {
+        // Update existing certificate
+        existingCertificates[existingIndex] = certificateData;
+      } else {
+        // Add new certificate
+        existingCertificates.push(certificateData);
+      }
+      
+      localStorage.setItem('zyntiq_certificates', JSON.stringify(existingCertificates));
+      
+      // Trigger storage event for cross-tab communication
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'zyntiq_certificates',
+        newValue: JSON.stringify(existingCertificates),
+        storageArea: localStorage
+      }));
     } catch (error) {
       console.error('Error storing certificate:', error);
     }
@@ -48,7 +68,7 @@ class CertificateService {
 
   getUserCertificates(): CertificateData[] {
     try {
-      const certificates = localStorage.getItem('uplern_certificates');
+      const certificates = localStorage.getItem('zyntiq_certificates');
       return certificates ? JSON.parse(certificates) : [];
     } catch (error) {
       console.error('Error retrieving certificates:', error);
@@ -76,9 +96,14 @@ class CertificateService {
     
 📅 Completed: ${new Date(certificate.completionDate).toLocaleDateString()}
 🆔 Certificate ID: ${certificate.id}
-🏫 Issued by: upLern
+🏫 Issued by: Zyntiq
 
-#upLern #OnlineLearning #Certificate #${certificate.courseName.replace(/\s+/g, '')}`;
+#Zyntiq #OnlineLearning #Certificate #${certificate.courseName.replace(/\s+/g, '')}`;
+  }
+
+  // Force refresh certificates from storage
+  refreshCertificates(): CertificateData[] {
+    return this.getUserCertificates();
   }
 }
 

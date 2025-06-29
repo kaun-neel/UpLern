@@ -74,11 +74,11 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
     const subject = encodeURIComponent(`🎓 ${courseName} Certificate - ${studentName}`);
     const body = encodeURIComponent(`Hi there!
 
-I'm excited to share that I've successfully completed the ${courseName} course and earned my certificate from upLern!
+I'm excited to share that I've successfully completed the ${courseName} course and earned my certificate from Zyntiq!
 
 📅 Completion Date: ${formatDate(completionDate)}
 🆔 Certificate ID: ${certificateId}
-🏫 Issued by: upLern
+🏫 Issued by: Zyntiq
 
 This course has enhanced my skills and knowledge in ${courseName}. I'm proud to add this achievement to my professional portfolio.
 
@@ -87,51 +87,51 @@ You can verify this certificate at: ${window.location.origin}/verify/${certifica
 Best regards,
 ${studentName}
 
-#upLern #OnlineLearning #Certificate #ProfessionalDevelopment`);
+#Zyntiq #OnlineLearning #Certificate #ProfessionalDevelopment`);
 
     window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
   };
 
   const shareViaWhatsApp = () => {
-    const message = encodeURIComponent(`🎓 I've successfully completed the ${courseName} course and earned my certificate from upLern!
+    const message = encodeURIComponent(`🎓 I've successfully completed the ${courseName} course and earned my certificate from Zyntiq!
 
 📅 Completed: ${formatDate(completionDate)}
 🆔 Certificate ID: ${certificateId}
-🏫 Issued by: upLern
+🏫 Issued by: Zyntiq
 
-#upLern #OnlineLearning #Certificate #${courseName.replace(/\s+/g, '')}`);
+#Zyntiq #OnlineLearning #Certificate #${courseName.replace(/\s+/g, '')}`);
 
     window.open(`https://wa.me/?text=${message}`, '_blank');
   };
 
   const shareViaLinkedIn = () => {
-    const text = encodeURIComponent(`I'm proud to share that I've completed the ${courseName} course from upLern and earned my certificate! 
+    const text = encodeURIComponent(`I'm proud to share that I've completed the ${courseName} course from Zyntiq and earned my certificate! 
 
 This course has enhanced my skills in ${courseName} and I'm excited to apply this knowledge in my professional journey.
 
-#upLern #OnlineLearning #Certificate #ProfessionalDevelopment #${courseName.replace(/\s+/g, '')}`);
+#Zyntiq #OnlineLearning #Certificate #ProfessionalDevelopment #${courseName.replace(/\s+/g, '')}`);
 
     window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}&summary=${text}`, '_blank');
   };
 
   const shareViaTwitter = () => {
-    const text = encodeURIComponent(`🎓 Just completed the ${courseName} course from @upLern and earned my certificate! 
+    const text = encodeURIComponent(`🎓 Just completed the ${courseName} course from @Zyntiq and earned my certificate! 
 
 Excited to apply these new skills! 💪
 
-#upLern #OnlineLearning #Certificate #${courseName.replace(/\s+/g, '')}`);
+#Zyntiq #OnlineLearning #Certificate #${courseName.replace(/\s+/g, '')}`);
 
     window.open(`https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(window.location.href)}`, '_blank');
   };
 
   const copyToClipboard = async () => {
-    const shareText = `🎓 I've successfully completed the ${courseName} course and earned my certificate from upLern!
+    const shareText = `🎓 I've successfully completed the ${courseName} course and earned my certificate from Zyntiq!
 
 📅 Completed: ${formatDate(completionDate)}
 🆔 Certificate ID: ${certificateId}
-🏫 Issued by: upLern
+🏫 Issued by: Zyntiq
 
-#upLern #OnlineLearning #Certificate #${courseName.replace(/\s+/g, '')}`;
+#Zyntiq #OnlineLearning #Certificate #${courseName.replace(/\s+/g, '')}`;
 
     try {
       await navigator.clipboard.writeText(shareText);
@@ -143,13 +143,13 @@ Excited to apply these new skills! 💪
   };
 
   const shareViaNativeAPI = async () => {
-    const shareText = `🎓 I've successfully completed the ${courseName} course and earned my certificate from upLern!
+    const shareText = `🎓 I've successfully completed the ${courseName} course and earned my certificate from Zyntiq!
 
 📅 Completed: ${formatDate(completionDate)}
 🆔 Certificate ID: ${certificateId}
-🏫 Issued by: upLern
+🏫 Issued by: Zyntiq
 
-#upLern #OnlineLearning #Certificate #${courseName.replace(/\s+/g, '')}`;
+#Zyntiq #OnlineLearning #Certificate #${courseName.replace(/\s+/g, '')}`;
     
     if (navigator.share) {
       try {
@@ -326,7 +326,7 @@ Excited to apply these new skills! 💪
                   <div className="flex justify-between items-center px-20">
                     <div className="text-center">
                       <div className="w-48 h-1 bg-gray-300 mb-2"></div>
-                      <p className="text-lg font-semibold text-gray-700">upLern Team</p>
+                      <p className="text-lg font-semibold text-gray-700">Zyntiq Team</p>
                       <p className="text-sm text-gray-500">Authorized Signature</p>
                     </div>
                     
@@ -340,7 +340,7 @@ Excited to apply these new skills! 💪
                     <div className="text-center">
                       <p className="text-lg font-semibold text-gray-700">Certificate ID</p>
                       <p className="text-sm text-gray-500 font-mono">{certificateId}</p>
-                      <p className="text-xs text-gray-400 mt-1">Verify at uplern.com/verify</p>
+                      <p className="text-xs text-gray-400 mt-1">Verify at zyntiq.in/verify</p>
                     </div>
                   </div>
                 </div>

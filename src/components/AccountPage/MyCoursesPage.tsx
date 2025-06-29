@@ -5,7 +5,7 @@ import { useEnrollment } from '../../hooks/useEnrollment';
 import { useAuth } from '../../lib/auth';
 import { certificateService } from '../Certificate/CertificateService';
 import CertificateModal from '../Certificate/CertificateModal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 
 const MyCoursesPage = () => {
@@ -13,6 +13,35 @@ const MyCoursesPage = () => {
   const { enrollments, loading, hasPremiumPass } = useEnrollment();
   const [selectedCertificate, setSelectedCertificate] = useState<any>(null);
   const [showCertificateModal, setShowCertificateModal] = useState(false);
+  const [certificates, setCertificates] = useState<any[]>([]);
+
+  // Load certificates when component mounts and when enrollments change
+  useEffect(() => {
+    if (user) {
+      const userCertificates = certificateService.getUserCertificates();
+      setCertificates(userCertificates);
+    }
+  }, [user, enrollments]);
+
+  // Listen for certificate updates
+  useEffect(() => {
+    const handleCertificateUpdate = () => {
+      if (user) {
+        const updatedCertificates = certificateService.refreshCertificates();
+        setCertificates(updatedCertificates);
+      }
+    };
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'zyntiq_certificates') {
+        handleCertificateUpdate();
+      }
+    });
+
+    return () => {
+      window.removeEventListener('storage', handleCertificateUpdate);
+    };
+  }, [user]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -83,11 +112,16 @@ const MyCoursesPage = () => {
     try {
       // Check if certificate already exists
       const existingCertificates = certificateService.getCertificatesByCourse(course.course_id);
+      const userCertificate = existingCertificates.find(cert => 
+        cert.studentName === `${user.first_name} ${user.last_name}`.trim()
+      );
+      
       let certificate;
 
-      if (existingCertificates.length > 0) {
+      if (userCertificate) {
         // Use existing certificate
-        certificate = existingCertificates[0];
+        certificate = userCertificate;
+        console.log('Using existing certificate:', certificate);
       } else {
         // Generate new certificate
         certificate = await certificateService.generateCertificate(
@@ -95,6 +129,12 @@ const MyCoursesPage = () => {
           course.course_name,
           course.course_id
         );
+        console.log('Generated new certificate:', certificate);
+        
+        // Update local certificates state
+        const updatedCertificates = certificateService.getUserCertificates();
+        setCertificates(updatedCertificates);
+        
         toast.success('Certificate generated successfully!');
       }
 
