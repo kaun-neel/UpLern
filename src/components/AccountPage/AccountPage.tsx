@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, BookOpen, Award } from 'lucide-react';
+import { User, BookOpen, Award, ChevronDown, Settings, LogOut, Crown } from 'lucide-react';
 import { useAuth } from '../../lib/auth.tsx';
 import { localDB } from '../../lib/database';
 import toast from 'react-hot-toast';
@@ -9,8 +9,9 @@ import CertificatesPage from './CertificatesPage';
 
 const AccountPage = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const [activeTab, setActiveTab] = useState('profile');
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [profile, setProfile] = useState({
     first_name: '',
     middle_name: '',
@@ -56,10 +57,31 @@ const AccountPage = () => {
     getProfile();
   }, [user, navigate]);
 
+  const handleLogout = async () => {
+    try {
+      const { error } = await signOut();
+      if (error) {
+        toast.error(error);
+        return;
+      }
+      toast.success('Logged out successfully');
+      navigate('/');
+    } catch (error) {
+      toast.error('Failed to log out');
+    }
+  };
+
   const menuItems = [
     { icon: <User size={20} />, label: 'Profile', key: 'profile' },
     { icon: <BookOpen size={20} />, label: 'My Courses', key: 'courses' },
     { icon: <Award size={20} />, label: 'Certificates', key: 'certificates' }
+  ];
+
+  const profileDropdownItems = [
+    { icon: <Settings size={16} />, label: 'Account Settings', action: () => setActiveTab('profile') },
+    { icon: <User size={16} />, label: 'Edit Profile', action: () => toast.info('Edit profile feature coming soon!') },
+    { icon: <Crown size={16} />, label: 'Upgrade to Premium', action: () => navigate('/premium-pass') },
+    { icon: <LogOut size={16} />, label: 'Sign Out', action: handleLogout, danger: true }
   ];
 
   if (loading) {
@@ -105,20 +127,120 @@ const AccountPage = () => {
               <ul className="hidden lg:block space-y-2">
                 {menuItems.map((item, index) => (
                   <li key={index}>
-                    <button
-                      onClick={() => setActiveTab(item.key)}
-                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-left ${
-                        activeTab === item.key
-                          ? 'bg-purple-50 text-purple-600'
-                          : 'hover:bg-gray-50 text-gray-700'
-                      }`}
-                    >
-                      {item.icon}
-                      <span className="font-medium">{item.label}</span>
-                    </button>
+                    {/* Enhanced Profile Tab with Dropdown */}
+                    {item.key === 'profile' ? (
+                      <div className="relative">
+                        <button
+                          onClick={() => {
+                            setActiveTab(item.key);
+                            setShowProfileDropdown(!showProfileDropdown);
+                          }}
+                          className={`w-full flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-300 text-left group ${
+                            activeTab === item.key
+                              ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg transform scale-[1.02]'
+                              : 'hover:bg-purple-50 text-gray-700 hover:text-purple-600 hover:shadow-md'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className={`p-1 rounded-lg transition-colors ${
+                              activeTab === item.key ? 'bg-white/20' : 'group-hover:bg-purple-100'
+                            }`}>
+                              {item.icon}
+                            </div>
+                            <span className="font-medium">{item.label}</span>
+                          </div>
+                          <ChevronDown 
+                            className={`w-4 h-4 transition-transform duration-300 ${
+                              showProfileDropdown ? 'rotate-180' : ''
+                            }`} 
+                          />
+                        </button>
+
+                        {/* Profile Dropdown Menu */}
+                        {showProfileDropdown && (
+                          <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 z-20 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                            <div className="py-2">
+                              {/* User Info Header */}
+                              <div className="px-4 py-3 bg-gradient-to-r from-purple-50 to-indigo-50 border-b border-gray-100">
+                                <div className="flex items-center gap-3">
+                                  <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center">
+                                    <User className="w-5 h-5 text-white" />
+                                  </div>
+                                  <div>
+                                    <p className="font-semibold text-gray-900 text-sm">
+                                      {profile.first_name} {profile.last_name}
+                                    </p>
+                                    <p className="text-xs text-gray-600 truncate max-w-[150px]">
+                                      {profile.email}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Dropdown Items */}
+                              {profileDropdownItems.map((dropdownItem, idx) => (
+                                <button
+                                  key={idx}
+                                  onClick={() => {
+                                    dropdownItem.action();
+                                    setShowProfileDropdown(false);
+                                  }}
+                                  className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 transition-colors text-sm ${
+                                    dropdownItem.danger ? 'text-red-600 hover:bg-red-50' : 'text-gray-700'
+                                  }`}
+                                >
+                                  <div className={`p-1 rounded ${
+                                    dropdownItem.danger ? 'text-red-500' : 'text-gray-500'
+                                  }`}>
+                                    {dropdownItem.icon}
+                                  </div>
+                                  <span className="font-medium">{dropdownItem.label}</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      /* Regular Menu Items */
+                      <button
+                        onClick={() => {
+                          setActiveTab(item.key);
+                          setShowProfileDropdown(false);
+                        }}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 text-left group ${
+                          activeTab === item.key
+                            ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg transform scale-[1.02]'
+                            : 'hover:bg-purple-50 text-gray-700 hover:text-purple-600 hover:shadow-md'
+                        }`}
+                      >
+                        <div className={`p-1 rounded-lg transition-colors ${
+                          activeTab === item.key ? 'bg-white/20' : 'group-hover:bg-purple-100'
+                        }`}>
+                          {item.icon}
+                        </div>
+                        <span className="font-medium">{item.label}</span>
+                      </button>
+                    )}
                   </li>
                 ))}
               </ul>
+
+              {/* Quick Stats */}
+              <div className="hidden lg:block mt-6 pt-6 border-t border-gray-200">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-600">Account Status</span>
+                    <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+                      Active
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-600">Member Since</span>
+                    <span className="text-gray-800 font-medium">2024</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -126,7 +248,12 @@ const AccountPage = () => {
           <div className="lg:col-span-3">
             {activeTab === 'profile' && (
               <div className="glass-card-dark rounded-2xl p-6 sm:p-8">
-                <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-gray-800">Profile Information</h2>
+                <div className="flex items-center justify-between mb-6 sm:mb-8">
+                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">Profile Information</h2>
+                  <button className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300">
+                    Edit Profile
+                  </button>
+                </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   <div>
@@ -193,10 +320,16 @@ const AccountPage = () => {
                   </div>
                 </div>
 
-                <div className="mt-6 sm:mt-8">
-                  <button className="w-full sm:w-auto px-6 py-3 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 text-white hover:shadow-lg transition-all duration-300 text-base">
-                    Edit Profile
-                  </button>
+                {/* Profile Actions */}
+                <div className="mt-8 pt-6 border-t border-gray-200">
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <button className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-lg font-medium hover:shadow-lg transition-all duration-300">
+                      Update Profile
+                    </button>
+                    <button className="flex-1 px-6 py-3 border-2 border-purple-300 text-purple-600 rounded-lg font-medium hover:bg-purple-50 transition-colors">
+                      Change Password
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
@@ -206,6 +339,14 @@ const AccountPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Overlay to close dropdown */}
+      {showProfileDropdown && (
+        <div 
+          className="fixed inset-0 z-10" 
+          onClick={() => setShowProfileDropdown(false)}
+        />
+      )}
     </div>
   );
 };
