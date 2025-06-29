@@ -53,13 +53,13 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
 
   const downloadCertificate = async () => {
     try {
-      toast.loading('Generating high-quality certificate PDF...');
+      toast.loading('Generating certificate PDF...', { duration: 3000 });
       
       // Show certificate temporarily for capture if on mobile
       if (isMobile && !showCertificate) {
         setShowCertificate(true);
-        // Wait for render
-        await new Promise(resolve => setTimeout(resolve, 500));
+        // Wait for render and font loading
+        await new Promise(resolve => setTimeout(resolve, 1000));
       }
 
       if (!certificateRef.current) {
@@ -67,19 +67,23 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
         toast.error('Certificate not ready. Please try again.');
         return;
       }
+
+      // Wait for fonts to load
+      await document.fonts.ready;
       
-      // Enhanced settings for high-quality PDF generation
+      // Mobile-optimized settings for better PDF generation
       const canvasOptions = {
-        scale: 3, // High scale for quality
+        scale: isMobile ? 2 : 3,
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
-        width: 1400,
-        height: 990,
+        width: isMobile ? 800 : 1200,
+        height: isMobile ? 566 : 849, // A4 landscape ratio
         logging: false,
         removeContainer: true,
-        imageTimeout: 30000,
-        foreignObjectRendering: true,
+        imageTimeout: 15000,
+        foreignObjectRendering: false, // Disable for better mobile compatibility
+        letterRendering: true,
         onclone: (clonedDoc: Document) => {
           // Ensure fonts are loaded in cloned document
           const style = clonedDoc.createElement('style');
@@ -90,20 +94,47 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
               -webkit-font-smoothing: antialiased !important;
               -moz-osx-font-smoothing: grayscale !important;
               text-rendering: optimizeLegibility !important;
+              font-synthesis: none !important;
+            }
+            .gradient-text {
+              background: linear-gradient(to right, #7c3aed, #4f46e5) !important;
+              -webkit-background-clip: text !important;
+              background-clip: text !important;
+              -webkit-text-fill-color: transparent !important;
+              color: transparent !important;
             }
           `;
           clonedDoc.head.appendChild(style);
+          
+          // Force font loading
+          const elements = clonedDoc.querySelectorAll('*');
+          elements.forEach(el => {
+            if (el instanceof HTMLElement) {
+              el.style.fontFamily = 'Poppins, sans-serif';
+            }
+          });
         }
       };
 
       const canvas = await html2canvas(certificateRef.current, canvasOptions);
+      
+      // Verify canvas has content
+      if (canvas.width === 0 || canvas.height === 0) {
+        throw new Error('Canvas is empty');
+      }
+      
       const imgData = canvas.toDataURL('image/png', 1.0);
+      
+      // Verify image data
+      if (imgData === 'data:,' || imgData.length < 100) {
+        throw new Error('Invalid image data generated');
+      }
       
       const pdf = new jsPDF({
         orientation: 'landscape',
         unit: 'mm',
         format: 'a4',
-        compress: false
+        compress: true
       });
 
       const pdfWidth = 297;
@@ -120,15 +151,15 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
       }
       
       toast.dismiss();
-      toast.success('High-quality certificate downloaded successfully!');
+      toast.success('Certificate downloaded successfully!');
       
     } catch (error) {
       toast.dismiss();
       console.error('Error generating certificate:', error);
       
-      // Fallback attempt
+      // Enhanced fallback for mobile
       try {
-        toast.loading('Retrying with optimized settings...');
+        toast.loading('Retrying with mobile-optimized settings...');
         
         if (!certificateRef.current) {
           toast.dismiss();
@@ -136,17 +167,33 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
           return;
         }
 
+        // Wait a bit more for mobile rendering
+        await new Promise(resolve => setTimeout(resolve, 500));
+
         const fallbackCanvas = await html2canvas(certificateRef.current, {
-          scale: 2,
+          scale: 1.5,
           useCORS: true,
           allowTaint: true,
           backgroundColor: '#ffffff',
           logging: false,
           removeContainer: true,
-          imageTimeout: 30000
+          imageTimeout: 10000,
+          foreignObjectRendering: false,
+          letterRendering: true,
+          width: 600,
+          height: 424
         });
 
-        const fallbackImgData = fallbackCanvas.toDataURL('image/jpeg', 0.95);
+        if (fallbackCanvas.width === 0 || fallbackCanvas.height === 0) {
+          throw new Error('Fallback canvas is also empty');
+        }
+
+        const fallbackImgData = fallbackCanvas.toDataURL('image/jpeg', 0.9);
+        
+        if (fallbackImgData === 'data:,' || fallbackImgData.length < 100) {
+          throw new Error('Fallback image data is invalid');
+        }
+        
         const fallbackPdf = new jsPDF({
           orientation: 'landscape',
           unit: 'mm',
