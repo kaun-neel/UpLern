@@ -39,14 +39,25 @@ const BenefitsSection = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        {/* Fixed Grid Layout with Proper Alignment */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 justify-items-center">
           {benefits.map((benefit, index) => (
-            <div key={index} className="benefit-card group">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-purple-50 flex items-center justify-center mb-4 z-10 relative group-hover:scale-110 transition-transform duration-300">
+            <div 
+              key={index} 
+              className="benefit-card group w-full max-w-sm mx-auto flex flex-col items-center justify-start text-center h-full"
+            >
+              {/* Icon Container - Fixed Size and Centered */}
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-purple-50 flex items-center justify-center mb-4 sm:mb-6 z-10 relative group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
                 {benefit.icon}
               </div>
-              <h3 className="font-bold text-base sm:text-lg mb-3 z-10 relative text-center px-2">{benefit.title}</h3>
-              <p className="text-gray-600 text-xs sm:text-sm text-center z-10 relative px-2 leading-relaxed">
+              
+              {/* Title - Consistent Height and Alignment */}
+              <h3 className="font-bold text-base sm:text-lg mb-3 sm:mb-4 z-10 relative text-center px-2 leading-tight min-h-[3rem] flex items-center justify-center">
+                {benefit.title}
+              </h3>
+              
+              {/* Description - Flexible Height */}
+              <p className="text-gray-600 text-xs sm:text-sm text-center z-10 relative px-2 leading-relaxed flex-grow">
                 {benefit.description}
               </p>
             </div>
