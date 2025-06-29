@@ -5,29 +5,41 @@ const WhatsAppFloat = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const whatsappNumber = '+916291822142';
   const message = encodeURIComponent('Hi! I\'m interested in learning more about Zyntiq courses. Can you help me?');
   const whatsappUrl = `https://wa.me/${whatsappNumber.replace('+', '')}?text=${message}`;
 
   useEffect(() => {
+    // Check if mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
     // Show the button after a short delay when page loads
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 2000);
 
-    // Show tooltip after another delay to guide users
+    // Show tooltip after another delay to guide users (only on desktop)
     const tooltipTimer = setTimeout(() => {
-      setShowTooltip(true);
-      // Hide tooltip after 5 seconds
-      setTimeout(() => setShowTooltip(false), 5000);
+      if (!isMobile) {
+        setShowTooltip(true);
+        // Hide tooltip after 5 seconds
+        setTimeout(() => setShowTooltip(false), 5000);
+      }
     }, 5000);
 
     return () => {
       clearTimeout(timer);
       clearTimeout(tooltipTimer);
+      window.removeEventListener('resize', checkMobile);
     };
-  }, []);
+  }, [isMobile]);
 
   const handleClick = () => {
     window.open(whatsappUrl, '_blank');
@@ -38,14 +50,14 @@ const WhatsAppFloat = () => {
   return (
     <>
       {/* WhatsApp Float Button */}
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
         <div className="relative">
-          {/* Tooltip */}
-          {(showTooltip || isHovered) && (
-            <div className="absolute bottom-full right-0 mb-3 w-64 bg-white rounded-2xl shadow-2xl border border-gray-200 p-4 transform transition-all duration-300 animate-in fade-in slide-in-from-bottom-2">
+          {/* Tooltip - Only show on desktop */}
+          {!isMobile && (showTooltip || isHovered) && (
+            <div className="absolute bottom-full right-0 mb-3 w-56 sm:w-64 bg-white rounded-2xl shadow-2xl border border-gray-200 p-3 sm:p-4 transform transition-all duration-300 animate-in fade-in slide-in-from-bottom-2">
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                  <MessageCircle className="w-5 h-5 text-white" />
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                  <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                 </div>
                 <div className="flex-1">
                   <h4 className="font-semibold text-gray-900 text-sm mb-1">Need Help?</h4>
@@ -57,29 +69,30 @@ const WhatsAppFloat = () => {
                   onClick={() => setShowTooltip(false)}
                   className="text-gray-400 hover:text-gray-600 transition-colors"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-3 h-3 sm:w-4 sm:h-4" />
                 </button>
               </div>
               {/* Arrow */}
-              <div className="absolute top-full right-6 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white"></div>
+              <div className="absolute top-full right-4 sm:right-6 w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white"></div>
             </div>
           )}
 
           {/* Main Button */}
           <button
             onClick={handleClick}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            className="group relative w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full shadow-2xl hover:shadow-green-500/25 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-green-500/30"
+            onMouseEnter={() => !isMobile && setIsHovered(true)}
+            onMouseLeave={() => !isMobile && setIsHovered(false)}
+            className="group relative w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full shadow-2xl hover:shadow-green-500/25 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-green-500/30"
+            aria-label="Contact us on WhatsApp"
           >
-            {/* Pulse Animation */}
-            <div className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-20"></div>
+            {/* Pulse Animation - Reduced on mobile */}
+            <div className={`absolute inset-0 rounded-full bg-green-500 ${isMobile ? 'animate-pulse' : 'animate-ping'} opacity-20`}></div>
             <div className="absolute inset-0 rounded-full bg-green-500 animate-pulse opacity-30"></div>
             
             {/* WhatsApp Icon */}
             <div className="relative z-10 flex items-center justify-center w-full h-full">
               <svg
-                className="w-8 h-8 text-white transition-transform duration-300 group-hover:scale-110"
+                className="w-6 h-6 sm:w-8 sm:h-8 text-white transition-transform duration-300 group-hover:scale-110"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
@@ -92,21 +105,11 @@ const WhatsAppFloat = () => {
           </button>
 
           {/* Online Status Indicator */}
-          <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-400 border-2 border-white rounded-full flex items-center justify-center">
-            <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse"></div>
+          <div className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-green-400 border-2 border-white rounded-full flex items-center justify-center">
+            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-600 rounded-full animate-pulse"></div>
           </div>
         </div>
       </div>
-
-      {/* Mobile Optimization - Adjust position on small screens */}
-      <style jsx>{`
-        @media (max-width: 640px) {
-          .fixed.bottom-6.right-6 {
-            bottom: 1rem;
-            right: 1rem;
-          }
-        }
-      `}</style>
     </>
   );
 };

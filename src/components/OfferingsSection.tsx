@@ -1,12 +1,5 @@
 import React from 'react';
 
-const characterImages = {
-  reading: "https://cdn3d.iconscout.com/3d/premium/thumb/man-reading-book-5706068-4755617.png?f=webp",
-  speaking: "https://cdn3d.iconscout.com/3d/premium/thumb/man-talking-with-megaphone-5706085-4755634.png?f=webp",
-  announcing: "https://cdn3d.iconscout.com/3d/premium/thumb/businessman-announcing-with-megaphone-5706084-4755633.png?f=webp",
-  working: "https://cdn3d.iconscout.com/3d/premium/thumb/businessman-working-on-laptop-5706067-4755616.png?f=webp"
-};
-
 const OfferingsSection = () => {
   const offerings = [
     {
@@ -32,24 +25,25 @@ const OfferingsSection = () => {
   ];
 
   return (
-    <section className="py-16 md:py-24 px-6 md:px-16">
+    <section className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-16">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold mb-16 text-left ml-8 text-gray-800">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-12 sm:mb-16 text-center md:text-left md:ml-8 text-gray-800">
           What we Offer <span className="gradient-text">Here!</span>
         </h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {offerings.map((offering, index) => (
-            <div key={index} className="flex flex-col items-center">
-              <div className="relative h-64 w-64 flex items-center justify-center mb-6">
+            <div key={index} className="flex flex-col items-center group">
+              <div className="relative h-48 sm:h-56 md:h-64 w-full max-w-[200px] sm:max-w-[240px] md:max-w-[264px] flex items-center justify-center mb-4 sm:mb-6">
                 <img 
                   src={offering.image} 
                   alt={offering.title}
-                  className="w-full h-full object-contain transform hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
                 />
               </div>
-              <div className="glass-card-dark px-6 py-3 rounded-full text-center w-full max-w-[200px]">
-                <h3 className="font-semibold text-sm md:text-base text-gray-800">{offering.title}</h3>
+              <div className="glass-card-dark px-4 sm:px-6 py-2 sm:py-3 rounded-full text-center w-full max-w-[180px] sm:max-w-[200px]">
+                <h3 className="font-semibold text-xs sm:text-sm md:text-base text-gray-800 leading-tight">{offering.title}</h3>
               </div>
             </div>
           ))}

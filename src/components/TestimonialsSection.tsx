@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 const TestimonialsSection = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   
   const testimonials = [
     {
@@ -47,35 +48,28 @@ const TestimonialsSection = () => {
       name: "Emma",
       role: "Product Manager",
       avatar: "https://randomuser.me/api/portraits/women/25.jpg"
-    },
-    {
-      quote: "Life-changing educational experience",
-      text: "From a complete beginner to landing my first tech job in 8 months. The step-by-step approach and mentor support made all the difference in my learning journey.",
-      name: "David",
-      role: "Data Analyst",
-      avatar: "https://randomuser.me/api/portraits/men/28.jpg"
-    },
-    {
-      quote: "Professional growth accelerated",
-      text: "The advanced courses helped me transition from junior to senior developer. The industry-relevant curriculum and expert instructors provided exactly what I needed.",
-      name: "Lisa",
-      role: "Senior Developer",
-      avatar: "https://randomuser.me/api/portraits/women/35.jpg"
-    },
-    {
-      quote: "Flexible learning that fits my schedule",
-      text: "As a working parent, I needed flexibility. This platform allowed me to learn during my free time and progress at my own pace without compromising on quality.",
-      name: "Robert",
-      role: "DevOps Engineer",
-      avatar: "https://randomuser.me/api/portraits/men/52.jpg"
     }
   ];
 
-  // Calculate total number of slides (showing 3 at a time)
-  const totalSlides = testimonials.length - 2; // 9 testimonials, showing 3 at a time = 7 possible positions
-
-  // Auto-slide functionality
+  // Check if mobile on mount and resize
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Calculate how many testimonials to show
+  const testimonialsPerView = isMobile ? 1 : 3;
+  const totalSlides = testimonials.length - testimonialsPerView + 1;
+
+  // Auto-slide functionality (disabled on mobile for better performance)
+  useEffect(() => {
+    if (isMobile) return; // Disable auto-slide on mobile
+    
     const interval = setInterval(() => {
       if (!isAnimating) {
         nextTestimonial();
@@ -83,13 +77,12 @@ const TestimonialsSection = () => {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [activeIndex, isAnimating]);
+  }, [activeIndex, isAnimating, isMobile]);
 
   const nextTestimonial = () => {
     if (isAnimating) return;
     setIsAnimating(true);
     
-    // When we reach the last possible position (showing testimonials 7,8,9), go back to start
     setActiveIndex((prevIndex) => {
       const nextIndex = prevIndex + 1;
       return nextIndex >= totalSlides ? 0 : nextIndex;
@@ -116,10 +109,10 @@ const TestimonialsSection = () => {
     setTimeout(() => setIsAnimating(false), 500);
   };
 
-  // Get exactly 3 testimonials starting from activeIndex
+  // Get visible testimonials
   const getVisibleTestimonials = () => {
     const visible = [];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < testimonialsPerView; i++) {
       const index = activeIndex + i;
       if (index < testimonials.length) {
         visible.push(testimonials[index]);
@@ -131,18 +124,19 @@ const TestimonialsSection = () => {
   const visibleTestimonials = getVisibleTestimonials();
 
   return (
-    <section className="py-16 md:py-24 px-6 md:px-16 yellow-gradient-bg relative overflow-hidden">
-      {/* Background Decorations */}
-      <div className="absolute top-20 left-10 w-32 h-32 bg-purple-200/30 rounded-full opacity-20 blur-3xl"></div>
-      <div className="absolute bottom-20 right-10 w-40 h-40 bg-blue-200/30 rounded-full opacity-20 blur-3xl"></div>
+    <section className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 md:px-16 yellow-gradient-bg relative overflow-hidden">
+      {/* Background Decorations - Hidden on mobile */}
+      <div className="hidden md:block absolute top-20 left-10 w-32 h-32 bg-purple-200/30 rounded-full opacity-20 blur-3xl"></div>
+      <div className="hidden md:block absolute bottom-20 right-10 w-40 h-40 bg-blue-200/30 rounded-full opacity-20 blur-3xl"></div>
       
       <div className="max-w-6xl mx-auto relative">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800">
-            What are Students saying<br /> 
-            about <span className="gradient-text">our Courses</span>
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-800 px-4">
+            What are Students saying<br className="sm:hidden" /> 
+            <span className="block sm:inline mt-2 sm:mt-0"> about </span>
+            <span className="gradient-text">our Courses</span>
           </h2>
-          <p className="text-gray-700 max-w-2xl mx-auto">
+          <p className="text-gray-700 max-w-2xl mx-auto text-sm sm:text-base px-4">
             Join thousands of successful learners who have transformed their careers with our comprehensive courses.
           </p>
         </div>
@@ -151,30 +145,30 @@ const TestimonialsSection = () => {
         <div className="relative">
           <div className="overflow-hidden">
             <div 
-              className={`grid grid-cols-1 md:grid-cols-3 gap-8 transition-all duration-500 ease-in-out ${
+              className={`grid ${isMobile ? 'grid-cols-1' : 'md:grid-cols-3'} gap-4 sm:gap-6 md:gap-8 transition-all duration-500 ease-in-out ${
                 isAnimating ? 'transform scale-95 opacity-80' : 'transform scale-100 opacity-100'
               }`}
             >
               {visibleTestimonials.map((testimonial, index) => (
                 <div 
                   key={`${activeIndex}-${index}`} 
-                  className={`testimonial-card group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 ${
+                  className={`testimonial-card group ${
                     isAnimating ? 'animate-pulse' : 'animate-in fade-in slide-in-from-bottom duration-500'
                   }`}
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   {/* Quote Icon */}
                   <div className="absolute top-4 right-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                    <svg className="w-12 h-12 text-purple-500" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-8 h-8 sm:w-12 sm:h-12 text-purple-500" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h4v10h-10z"/>
                     </svg>
                   </div>
 
                   <div className="relative z-10">
-                    <h3 className="text-lg font-bold text-center mb-4 text-gray-900 group-hover:text-purple-600 transition-colors">
+                    <h3 className="text-base sm:text-lg font-bold text-center mb-3 sm:mb-4 text-gray-900 group-hover:text-purple-600 transition-colors line-clamp-2">
                       "{testimonial.quote}"
                     </h3>
-                    <p className="text-sm text-gray-700 mb-6 leading-relaxed">
+                    <p className="text-xs sm:text-sm text-gray-700 mb-4 sm:mb-6 leading-relaxed line-clamp-3">
                       "{testimonial.text}"
                     </p>
                     <div className="flex items-center mt-auto">
@@ -182,11 +176,11 @@ const TestimonialsSection = () => {
                         <img 
                           src={testimonial.avatar} 
                           alt={testimonial.name} 
-                          className="w-12 h-12 rounded-full mr-4 border-2 border-white shadow-lg group-hover:border-purple-300 transition-colors"
+                          className="w-10 h-10 sm:w-12 sm:h-12 rounded-full mr-3 sm:mr-4 border-2 border-white shadow-lg group-hover:border-purple-300 transition-colors"
                         />
                       </div>
                       <div>
-                        <p className="font-semibold text-gray-900">-{testimonial.name}</p>
+                        <p className="font-semibold text-gray-900 text-sm sm:text-base">-{testimonial.name}</p>
                         <p className="text-xs text-gray-600">{testimonial.role}</p>
                       </div>
                     </div>
@@ -201,9 +195,9 @@ const TestimonialsSection = () => {
         </div>
         
         {/* Navigation Controls */}
-        <div className="flex justify-between items-center mt-12">
+        <div className="flex flex-col sm:flex-row justify-between items-center mt-8 sm:mt-12 gap-4">
           {/* Pagination Dots */}
-          <div className="flex-grow flex justify-center gap-3">
+          <div className="flex-grow flex justify-center gap-2 sm:gap-3 order-2 sm:order-1">
             {Array.from({ length: totalSlides }, (_, index) => (
               <button
                 key={index}
@@ -211,7 +205,7 @@ const TestimonialsSection = () => {
                 disabled={isAnimating}
                 className={`transition-all duration-300 rounded-full ${
                   index === activeIndex
-                    ? 'w-12 h-3 bg-gradient-to-r from-blue-500 to-purple-500 shadow-lg'
+                    ? 'w-8 sm:w-12 h-3 bg-gradient-to-r from-blue-500 to-purple-500 shadow-lg'
                     : 'w-3 h-3 bg-gray-400 hover:bg-gray-500'
                 } disabled:opacity-50`}
                 aria-label={`Go to slide ${index + 1}`}
@@ -220,26 +214,26 @@ const TestimonialsSection = () => {
           </div>
           
           {/* Arrow Navigation */}
-          <div className="flex gap-3 ml-8">
+          <div className="flex gap-2 sm:gap-3 order-1 sm:order-2">
             <button 
               onClick={prevTestimonial}
               disabled={isAnimating}
-              className="group w-12 h-12 rounded-full border-2 border-gray-400 flex items-center justify-center hover:border-purple-500 hover:bg-purple-50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed bg-white/80 backdrop-blur-sm"
+              className="group w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-gray-400 flex items-center justify-center hover:border-purple-500 hover:bg-purple-50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed bg-white/80 backdrop-blur-sm"
               aria-label="Previous testimonials"
             >
               <ChevronLeft 
-                size={20} 
+                size={isMobile ? 16 : 20} 
                 className="text-gray-600 group-hover:text-purple-600 transition-colors" 
               />
             </button>
             <button 
               onClick={nextTestimonial}
               disabled={isAnimating}
-              className="group w-12 h-12 rounded-full border-2 border-gray-400 flex items-center justify-center hover:border-purple-500 hover:bg-purple-50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed bg-white/80 backdrop-blur-sm"
+              className="group w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-gray-400 flex items-center justify-center hover:border-purple-500 hover:bg-purple-50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed bg-white/80 backdrop-blur-sm"
               aria-label="Next testimonials"
             >
               <ChevronRight 
-                size={20} 
+                size={isMobile ? 16 : 20} 
                 className="text-gray-600 group-hover:text-purple-600 transition-colors" 
               />
             </button>
@@ -247,9 +241,9 @@ const TestimonialsSection = () => {
         </div>
 
         {/* Progress Indicator */}
-        <div className="mt-8 text-center">
-          <span className="text-sm text-gray-600">
-            Showing {activeIndex + 1}-{Math.min(activeIndex + 3, testimonials.length)} of {testimonials.length} testimonials
+        <div className="mt-6 sm:mt-8 text-center">
+          <span className="text-xs sm:text-sm text-gray-600">
+            Showing {activeIndex + 1}-{Math.min(activeIndex + testimonialsPerView, testimonials.length)} of {testimonials.length} testimonials
           </span>
         </div>
       </div>

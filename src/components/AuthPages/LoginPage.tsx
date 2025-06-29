@@ -69,25 +69,25 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen yellow-gradient-bg flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full glass-card-dark rounded-2xl p-8">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold">Log into your account</h2>
-          <div className="mt-4 p-4 bg-blue-50/80 backdrop-blur-sm border border-blue-200 rounded-lg">
-            <p className="text-sm text-blue-800 font-medium">Demo Accounts:</p>
-            <p className="text-xs text-blue-700 mt-1">Email: demo@uplern.com, Password: demo123</p>
-            <p className="text-xs text-blue-700">Email: john@uplern.com, Password: john123</p>
+    <div className="min-h-screen yellow-gradient-bg flex items-center justify-center py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full glass-card-dark rounded-2xl p-6 sm:p-8">
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold">Log into your account</h2>
+          <div className="mt-4 p-3 sm:p-4 bg-blue-50/80 backdrop-blur-sm border border-blue-200 rounded-lg">
+            <p className="text-sm font-medium text-blue-800">Demo Accounts:</p>
+            <p className="text-xs text-blue-700 mt-1">Email: demo@zyntiq.in, Password: demo123</p>
+            <p className="text-xs text-blue-700">Email: john@zyntiq.in, Password: john123</p>
           </div>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form onSubmit={handleLogin} className="space-y-4 sm:space-y-6">
           <div>
             <input
               type="email"
               placeholder="Enter your email address"
               value={formData.email}
               onChange={(e) => setFormData({...formData, email: e.target.value})}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent bg-white/90 backdrop-blur-sm"
+              className="w-full px-4 py-3 sm:py-4 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent bg-white/90 backdrop-blur-sm text-base"
               required
               disabled={loading}
             />
@@ -99,7 +99,7 @@ const LoginPage = () => {
               placeholder="Enter your password"
               value={formData.password}
               onChange={(e) => setFormData({...formData, password: e.target.value})}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent bg-white/90 backdrop-blur-sm"
+              className="w-full px-4 py-3 sm:py-4 rounded-lg border border-gray-300 focus:ring-2 focus:ring-violet-500 focus:border-transparent bg-white/90 backdrop-blur-sm text-base"
               required
               disabled={loading}
             />
@@ -108,18 +108,18 @@ const LoginPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 rounded-lg font-medium hover:shadow-lg transition-all duration-300 disabled:opacity-50"
+            className="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white py-3 sm:py-4 rounded-lg font-medium hover:shadow-lg transition-all duration-300 disabled:opacity-50 text-base"
           >
             {loading ? 'Logging in...' : 'Log in'}
           </button>
         </form>
 
         {isGoogleAuthAvailable && (
-          <div className="mt-6">
+          <div className="mt-4 sm:mt-6">
             <button
               onClick={handleGoogleLogin}
               disabled={googleLoading}
-              className="w-full flex items-center justify-center gap-3 border border-gray-300 py-3 rounded-lg hover:bg-gray-50 hover:border-gray-400 hover:shadow-md transition-all duration-300 disabled:opacity-50 group bg-white/90 backdrop-blur-sm"
+              className="w-full flex items-center justify-center gap-3 border border-gray-300 py-3 sm:py-4 rounded-lg hover:bg-gray-50 hover:border-gray-400 hover:shadow-md transition-all duration-300 disabled:opacity-50 group bg-white/90 backdrop-blur-sm"
             >
               <div className="relative">
                 <img 
@@ -131,7 +131,7 @@ const LoginPage = () => {
                   <div className="absolute inset-0 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
                 )}
               </div>
-              <span className="font-medium text-gray-700">
+              <span className="font-medium text-gray-700 text-base">
                 {googleLoading ? 'Connecting to Google...' : 'Continue with Google'}
               </span>
             </button>
@@ -139,14 +139,14 @@ const LoginPage = () => {
         )}
 
         {!isGoogleAuthAvailable && (
-          <div className="mt-6 p-4 bg-blue-50/80 backdrop-blur-sm border border-blue-200 rounded-lg">
+          <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-blue-50/80 backdrop-blur-sm border border-blue-200 rounded-lg">
             <p className="text-sm text-blue-800 text-center">
               Google Sign-In is not available in this environment. Please use email/password authentication.
             </p>
           </div>
         )}
 
-        <div className="mt-6 text-center text-sm">
+        <div className="mt-4 sm:mt-6 text-center text-sm">
           <span className="text-gray-600">You don't have an account? </span>
           <Link to="/signup" className="text-violet-600 hover:text-violet-700 font-medium">
             Sign Up
