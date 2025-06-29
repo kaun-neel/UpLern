@@ -51,21 +51,20 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
     try {
       toast.loading('Generating certificate PDF...');
       
-      // Optimized settings for both mobile and desktop
       const canvasOptions = {
-        scale: isMobile ? 1.5 : 2,
+        scale: 2,
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
-        width: isMobile ? 800 : 1056,
-        height: isMobile ? 600 : 816,
+        width: 1200,
+        height: 850,
         logging: false,
         removeContainer: true,
         imageTimeout: 15000
       };
 
       const canvas = await html2canvas(certificateRef.current, canvasOptions);
-      const imgData = canvas.toDataURL('image/png', 0.9);
+      const imgData = canvas.toDataURL('image/png', 0.95);
       
       const pdf = new jsPDF({
         orientation: 'landscape',
@@ -85,40 +84,7 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
     } catch (error) {
       toast.dismiss();
       console.error('Error generating certificate:', error);
-      
-      // Fallback attempt with lower quality
-      try {
-        toast.loading('Retrying with optimized settings...');
-        
-        const fallbackCanvas = await html2canvas(certificateRef.current, {
-          scale: 1,
-          useCORS: true,
-          allowTaint: true,
-          backgroundColor: '#ffffff',
-          width: 600,
-          height: 450,
-          logging: false,
-          removeContainer: true,
-          imageTimeout: 30000
-        });
-
-        const fallbackImgData = fallbackCanvas.toDataURL('image/jpeg', 0.7);
-        const fallbackPdf = new jsPDF({
-          orientation: 'landscape',
-          unit: 'mm',
-          format: 'a4'
-        });
-
-        fallbackPdf.addImage(fallbackImgData, 'JPEG', 0, 0, 297, 210);
-        fallbackPdf.save(`${courseName}-Certificate-${studentName}.pdf`);
-        
-        toast.dismiss();
-        toast.success('Certificate downloaded successfully!');
-      } catch (fallbackError) {
-        toast.dismiss();
-        console.error('Fallback download failed:', fallbackError);
-        toast.error('Download failed. Please try again or contact support.');
-      }
+      toast.error('Download failed. Please try again.');
     }
   };
 
@@ -229,9 +195,9 @@ Excited to apply these new skills! 💪
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-3xl shadow-2xl max-w-6xl w-full max-h-[95vh] overflow-y-auto">
+      <div className="bg-white rounded-3xl shadow-2xl max-w-7xl w-full max-h-[95vh] overflow-y-auto">
         {/* Header */}
-        <div className="bg-gradient-to-r from-purple-500 to-indigo-500 p-6 text-white relative">
+        <div className="bg-gradient-to-r from-purple-500 to-indigo-500 p-4 sm:p-6 text-white relative">
           <button
             onClick={onClose}
             className="absolute top-4 right-4 text-white/80 hover:text-white transition-colors w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/20"
@@ -239,19 +205,19 @@ Excited to apply these new skills! 💪
             <X size={24} />
           </button>
           <div className="flex items-center gap-4 pr-12">
-            <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center">
-              <Award className="w-8 h-8" />
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/20 rounded-2xl flex items-center justify-center">
+              <Award className="w-6 h-6 sm:w-8 sm:h-8" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold">Your Certificate</h2>
-              <p className="text-white/90">Congratulations on completing the course!</p>
+              <h2 className="text-xl sm:text-2xl font-bold">Your Certificate</h2>
+              <p className="text-white/90 text-sm sm:text-base">Congratulations on completing the course!</p>
             </div>
           </div>
         </div>
 
-        <div className="p-8">
+        <div className="p-4 sm:p-8">
           {/* Action Buttons - Always Visible */}
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
+          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-6 sm:mb-8">
             <button
               onClick={downloadCertificate}
               className="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-xl font-medium hover:shadow-lg transition-all duration-300 min-h-[48px]"
@@ -337,78 +303,101 @@ Excited to apply these new skills! 💪
           <div className="flex justify-center">
             <div 
               ref={certificateRef}
-              className="bg-white shadow-2xl max-w-4xl w-full"
+              className="bg-white shadow-2xl w-full max-w-5xl"
               style={{ 
-                aspectRatio: isMobile ? '4/3' : '1056/816',
-                minHeight: isMobile ? '400px' : '600px'
+                aspectRatio: '1.414/1',
+                minHeight: isMobile ? '500px' : '700px'
               }}
             >
               {/* Certificate Content */}
-              <div className="w-full h-full bg-gradient-to-br from-purple-50 via-white to-indigo-50 relative overflow-hidden border-8 border-purple-200 rounded-lg">
-                {/* Background Pattern */}
+              <div className="w-full h-full bg-gradient-to-br from-slate-50 via-white to-purple-50 relative overflow-hidden border-8 border-purple-200 rounded-lg">
+                {/* Decorative Background Elements */}
                 <div className="absolute inset-0 opacity-5">
-                  <div className="absolute top-10 left-10 w-16 sm:w-32 h-16 sm:h-32 bg-purple-500 rounded-full"></div>
-                  <div className="absolute top-20 right-20 w-12 sm:w-24 h-12 sm:h-24 bg-indigo-500 rounded-full"></div>
-                  <div className="absolute bottom-20 left-20 w-14 sm:w-28 h-14 sm:h-28 bg-purple-500 rounded-full"></div>
-                  <div className="absolute bottom-10 right-10 w-10 sm:w-20 h-10 sm:h-20 bg-indigo-500 rounded-full"></div>
+                  <div className="absolute top-16 left-16 w-32 h-32 bg-purple-500 rounded-full"></div>
+                  <div className="absolute top-32 right-32 w-24 h-24 bg-indigo-500 rounded-full"></div>
+                  <div className="absolute bottom-32 left-32 w-28 h-28 bg-purple-500 rounded-full"></div>
+                  <div className="absolute bottom-16 right-16 w-20 h-20 bg-indigo-500 rounded-full"></div>
                 </div>
 
-                {/* Inner Border */}
-                <div className="absolute inset-3 sm:inset-6 border-2 border-purple-300 rounded-lg"></div>
+                {/* Elegant Border Pattern */}
+                <div className="absolute inset-6 border-2 border-purple-300 rounded-lg">
+                  <div className="absolute inset-4 border border-purple-200 rounded-lg"></div>
+                </div>
 
-                {/* Header */}
-                <div className="text-center pt-8 sm:pt-16 pb-4 sm:pb-8 px-4">
-                  <div className="flex justify-center mb-3 sm:mb-6">
-                    <div className="w-12 h-12 sm:w-20 sm:h-20 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-xl sm:rounded-2xl flex items-center justify-center">
-                      <Award className="w-6 h-6 sm:w-12 sm:h-12 text-white" />
+                {/* Header Section */}
+                <div className="text-center pt-12 sm:pt-16 pb-6 sm:pb-8 px-6 sm:px-12">
+                  <div className="flex justify-center mb-4 sm:mb-6">
+                    <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-full flex items-center justify-center shadow-lg">
+                      <Award className="w-8 h-8 sm:w-12 sm:h-12 text-white" />
                     </div>
                   </div>
-                  <h1 className="text-xl sm:text-3xl lg:text-5xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 text-transparent bg-clip-text mb-1 sm:mb-2 leading-tight">
+                  <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 text-transparent bg-clip-text mb-2 sm:mb-4 leading-tight">
                     Certificate of Completion
                   </h1>
-                  <p className="text-xs sm:text-lg lg:text-xl text-gray-600">This certifies that</p>
+                  <p className="text-base sm:text-lg lg:text-xl text-gray-600 font-medium">This certifies that</p>
                 </div>
 
-                {/* Student Name */}
-                <div className="text-center mb-3 sm:mb-8 px-4">
-                  <h2 className="text-2xl sm:text-4xl lg:text-6xl font-bold text-gray-900 mb-2 sm:mb-4 leading-tight break-words" style={{ fontFamily: 'serif' }}>
-                    {studentName}
-                  </h2>
-                  <div className="w-32 sm:w-64 lg:w-96 h-0.5 sm:h-1 bg-gradient-to-r from-purple-500 to-indigo-500 mx-auto"></div>
+                {/* Student Name Section */}
+                <div className="text-center mb-6 sm:mb-10 px-6 sm:px-12">
+                  <div className="mb-4 sm:mb-6">
+                    <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight break-words" 
+                        style={{ 
+                          fontFamily: 'Georgia, serif',
+                          letterSpacing: '0.02em',
+                          textShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                        }}>
+                      {studentName}
+                    </h2>
+                    <div className="w-48 sm:w-80 lg:w-96 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 mx-auto rounded-full"></div>
+                  </div>
                 </div>
 
-                {/* Course Details */}
-                <div className="text-center mb-4 sm:mb-12 px-4">
-                  <p className="text-sm sm:text-xl lg:text-2xl text-gray-700 mb-2 sm:mb-4">has successfully completed the course</p>
-                  <h3 className="text-lg sm:text-2xl lg:text-4xl font-bold text-purple-900 mb-2 sm:mb-6 leading-tight break-words">{courseName}</h3>
-                  <p className="text-sm sm:text-lg lg:text-xl text-gray-600">
-                    Completed on {formatDate(completionDate)}
+                {/* Course Details Section */}
+                <div className="text-center mb-8 sm:mb-12 px-6 sm:px-12">
+                  <p className="text-lg sm:text-xl lg:text-2xl text-gray-700 mb-3 sm:mb-4 font-medium">
+                    has successfully completed the course
                   </p>
+                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-purple-900 mb-4 sm:mb-6 leading-tight break-words">
+                    {courseName}
+                  </h3>
+                  <div className="flex items-center justify-center gap-2 sm:gap-4 text-base sm:text-lg lg:text-xl text-gray-600">
+                    <span>Completed on</span>
+                    <span className="font-semibold text-purple-700">{formatDate(completionDate)}</span>
+                  </div>
                 </div>
 
-                {/* Footer */}
-                <div className="absolute bottom-2 sm:bottom-8 lg:bottom-16 left-0 right-0 px-4 sm:px-8 lg:px-20">
-                  <div className="flex justify-between items-center text-center">
-                    <div className="flex-1">
-                      <div className="w-16 sm:w-32 lg:w-48 h-0.5 sm:h-1 bg-gray-300 mb-1 sm:mb-2 mx-auto"></div>
-                      <p className="text-xs sm:text-sm lg:text-lg font-semibold text-gray-700">Zyntiq Team</p>
+                {/* Footer Section */}
+                <div className="absolute bottom-8 sm:bottom-12 lg:bottom-16 left-0 right-0 px-6 sm:px-12 lg:px-20">
+                  <div className="grid grid-cols-3 gap-4 sm:gap-8 text-center">
+                    {/* Signature */}
+                    <div className="flex flex-col items-center">
+                      <div className="w-20 sm:w-32 lg:w-40 h-0.5 bg-gray-400 mb-2 sm:mb-3"></div>
+                      <p className="text-sm sm:text-base lg:text-lg font-semibold text-gray-700">Zyntiq Team</p>
                       <p className="text-xs sm:text-sm text-gray-500">Authorized Signature</p>
                     </div>
                     
-                    <div className="flex-1">
-                      <div className="w-8 h-8 sm:w-16 sm:h-16 lg:w-24 lg:h-24 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center mb-1 sm:mb-2 mx-auto">
-                        <Award className="w-4 h-4 sm:w-8 sm:h-8 lg:w-12 lg:h-12 text-purple-600" />
+                    {/* Official Seal */}
+                    <div className="flex flex-col items-center">
+                      <div className="w-12 h-12 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center mb-2 sm:mb-3 border-2 border-purple-300">
+                        <Award className="w-6 h-6 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-purple-600" />
                       </div>
                       <p className="text-xs sm:text-sm text-gray-500">Official Seal</p>
                     </div>
                     
-                    <div className="flex-1">
-                      <p className="text-xs sm:text-sm lg:text-lg font-semibold text-gray-700">Certificate ID</p>
-                      <p className="text-xs sm:text-sm text-gray-500 font-mono break-all">{certificateId}</p>
-                      <p className="text-xs text-gray-400 mt-0.5 sm:mt-1">Verify at zyntiq.in/verify</p>
+                    {/* Certificate ID */}
+                    <div className="flex flex-col items-center">
+                      <p className="text-sm sm:text-base lg:text-lg font-semibold text-gray-700 mb-1">Certificate ID</p>
+                      <p className="text-xs sm:text-sm text-gray-600 font-mono break-all leading-tight">{certificateId}</p>
+                      <p className="text-xs text-gray-400 mt-1">Verify at zyntiq.in</p>
                     </div>
                   </div>
                 </div>
+
+                {/* Decorative Corner Elements */}
+                <div className="absolute top-8 left-8 w-8 h-8 border-l-4 border-t-4 border-purple-300 rounded-tl-lg"></div>
+                <div className="absolute top-8 right-8 w-8 h-8 border-r-4 border-t-4 border-purple-300 rounded-tr-lg"></div>
+                <div className="absolute bottom-8 left-8 w-8 h-8 border-l-4 border-b-4 border-purple-300 rounded-bl-lg"></div>
+                <div className="absolute bottom-8 right-8 w-8 h-8 border-r-4 border-b-4 border-purple-300 rounded-br-lg"></div>
               </div>
             </div>
           </div>
