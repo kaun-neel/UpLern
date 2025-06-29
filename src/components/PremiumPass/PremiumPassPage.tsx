@@ -43,7 +43,7 @@ const PremiumPassPage = () => {
 
   return (
     <div className="min-h-screen yellow-gradient-bg text-gray-800">
-      {/* Header */}
+      {/* Header with only Back Button - No Navbar */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8">
         <Link to="/" className="inline-flex items-center gap-2 text-gray-700 hover:text-purple-600 transition-colors mb-8 sm:mb-12 min-h-[44px]">
           <ChevronLeft size={20} />
