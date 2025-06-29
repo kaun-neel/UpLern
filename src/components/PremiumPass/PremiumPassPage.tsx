@@ -56,7 +56,7 @@ const PremiumPassPage = () => {
             <img 
               src="/Frame 3.png" 
               alt="Zyntiq Logo" 
-              className="h-20 sm:h-24 md:h-28 lg:h-32 w-auto object-contain"
+              className="h-24 sm:h-28 md:h-32 lg:h-36 xl:h-40 w-auto object-contain"
             />
           </div>
           <div className="flex items-center justify-center gap-2">
