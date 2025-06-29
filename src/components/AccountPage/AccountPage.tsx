@@ -63,7 +63,7 @@ const AccountPage = () => {
     { icon: <Award size={20} />, label: 'Certificates', key: 'certificates' }
   ];
 
-  // Mobile dropdown items - only courses and certificates
+  // Mobile dropdown items
   const mobileDropdownItems = [
     { 
       icon: <User size={18} />, 
@@ -108,7 +108,7 @@ const AccountPage = () => {
             <div className="glass-card-dark rounded-2xl p-4 sm:p-6">
               
               {/* MOBILE: Purple Gradient Tab with Dropdown */}
-              <div className="lg:hidden mb-4">
+              <div className="lg:hidden mb-4 relative">
                 <div className="relative">
                   <button
                     onClick={() => setShowMobileDropdown(!showMobileDropdown)}
@@ -121,27 +121,6 @@ const AccountPage = () => {
                       }`} 
                     />
                   </button>
-                  
-                  {/* Mobile Dropdown Menu */}
-                  {showMobileDropdown && (
-                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden">
-                      {mobileDropdownItems.map((item) => (
-                        <button
-                          key={item.key}
-                          onClick={() => {
-                            setActiveTab(item.key);
-                            setShowMobileDropdown(false);
-                          }}
-                          className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-purple-50 transition-colors ${
-                            activeTab === item.key ? 'bg-purple-100 text-purple-700' : 'text-gray-700'
-                          }`}
-                        >
-                          {item.icon}
-                          <span className="font-medium">{item.label}</span>
-                        </button>
-                      ))}
-                    </div>
-                  )}
                 </div>
               </div>
 
@@ -192,97 +171,125 @@ const AccountPage = () => {
           </div>
 
           {/* Main Content */}
-          <div className="lg:col-span-3">
-            {activeTab === 'profile' && (
-              <div className="glass-card-dark rounded-2xl p-6 sm:p-8">
-                <div className="flex items-center justify-between mb-6 sm:mb-8">
-                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">Profile Information</h2>
-                  <button className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300">
-                    Edit Profile
+          <div className="lg:col-span-3 relative">
+            {/* Mobile Dropdown Menu - Layered Above Content */}
+            {showMobileDropdown && (
+              <div className="lg:hidden absolute top-0 left-0 right-0 z-50 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden mb-4">
+                {mobileDropdownItems.map((item) => (
+                  <button
+                    key={item.key}
+                    onClick={() => {
+                      setActiveTab(item.key);
+                      setShowMobileDropdown(false);
+                    }}
+                    className={`w-full flex items-center gap-3 px-6 py-4 text-left hover:bg-purple-50 transition-colors border-b border-gray-100 last:border-b-0 ${
+                      activeTab === item.key ? 'bg-purple-100 text-purple-700' : 'text-gray-700'
+                    }`}
+                  >
+                    <div className={`p-2 rounded-lg ${
+                      activeTab === item.key ? 'bg-purple-200' : 'bg-gray-100'
+                    }`}>
+                      {item.icon}
+                    </div>
+                    <span className="font-medium">{item.label}</span>
                   </button>
-                </div>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      First Name
-                    </label>
-                    <input
-                      type="text"
-                      value={profile.first_name}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm text-base"
-                      readOnly
-                    />
-                  </div>
+                ))}
+              </div>
+            )}
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Middle Name
-                    </label>
-                    <input
-                      type="text"
-                      value={profile.middle_name}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm text-base"
-                      readOnly
-                    />
+            {/* Content Area */}
+            <div className={`transition-all duration-300 ${showMobileDropdown ? 'mt-48' : ''}`}>
+              {activeTab === 'profile' && (
+                <div className="glass-card-dark rounded-2xl p-6 sm:p-8">
+                  <div className="flex items-center justify-between mb-6 sm:mb-8">
+                    <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">Profile Information</h2>
+                    <button className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300">
+                      Edit Profile
+                    </button>
                   </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Last Name
-                    </label>
-                    <input
-                      type="text"
-                      value={profile.last_name}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm text-base"
-                      readOnly
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Phone Number
-                    </label>
-                    <div className="flex gap-2">
-                      <span className="px-3 py-3 bg-gray-100/80 backdrop-blur-sm rounded-lg text-base">+91</span>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        First Name
+                      </label>
                       <input
-                        type="tel"
-                        value={profile.phone}
-                        className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm text-base"
+                        type="text"
+                        value={profile.first_name}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm text-base"
+                        readOnly
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Middle Name
+                      </label>
+                      <input
+                        type="text"
+                        value={profile.middle_name}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm text-base"
+                        readOnly
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Last Name
+                      </label>
+                      <input
+                        type="text"
+                        value={profile.last_name}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm text-base"
+                        readOnly
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Phone Number
+                      </label>
+                      <div className="flex gap-2">
+                        <span className="px-3 py-3 bg-gray-100/80 backdrop-blur-sm rounded-lg text-base">+91</span>
+                        <input
+                          type="tel"
+                          value={profile.phone}
+                          className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm text-base"
+                          readOnly
+                        />
+                      </div>
+                    </div>
+
+                    <div className="sm:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Email Address
+                      </label>
+                      <input
+                        type="email"
+                        value={profile.email}
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm text-base"
                         readOnly
                       />
                     </div>
                   </div>
 
-                  <div className="sm:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      value={profile.email}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/90 backdrop-blur-sm text-base"
-                      readOnly
-                    />
+                  {/* Profile Actions */}
+                  <div className="mt-8 pt-6 border-t border-gray-200">
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <button className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-lg font-medium hover:shadow-lg transition-all duration-300">
+                        Update Profile
+                      </button>
+                      <button className="flex-1 px-6 py-3 border-2 border-purple-300 text-purple-600 rounded-lg font-medium hover:bg-purple-50 transition-colors">
+                        Change Password
+                      </button>
+                    </div>
                   </div>
                 </div>
+              )}
 
-                {/* Profile Actions */}
-                <div className="mt-8 pt-6 border-t border-gray-200">
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <button className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-lg font-medium hover:shadow-lg transition-all duration-300">
-                      Update Profile
-                    </button>
-                    <button className="flex-1 px-6 py-3 border-2 border-purple-300 text-purple-600 rounded-lg font-medium hover:bg-purple-50 transition-colors">
-                      Change Password
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'courses' && <MyCoursesPage />}
-            {activeTab === 'certificates' && <CertificatesPage />}
+              {activeTab === 'courses' && <MyCoursesPage />}
+              {activeTab === 'certificates' && <CertificatesPage />}
+            </div>
           </div>
         </div>
       </div>
