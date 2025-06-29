@@ -52,10 +52,10 @@ body {
   @apply bg-gradient-to-r from-purple-500 to-indigo-500 text-white;
 }
 
-/* Mobile-optimized floating animation */
+/* Enhanced floating animation - works on all devices */
 .floating {
   animation: float 6s ease-in-out infinite;
-  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.15));
+  filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.15));
   transform-origin: center;
   will-change: transform;
 }
@@ -81,6 +81,26 @@ body {
   }
   75% {
     transform: translateY(15px) rotate(-2deg) scale(0.98);
+  }
+}
+
+/* Mobile-specific floating animation adjustments */
+@media (max-width: 768px) {
+  .floating,
+  .floating-delay-1,
+  .floating-delay-2,
+  .floating-delay-3 {
+    animation-duration: 4s;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg) scale(1);
+    }
+    50% {
+      transform: translateY(-8px) rotate(1deg) scale(1.01);
+    }
   }
 }
 
@@ -373,20 +393,6 @@ body {
 
 /* Mobile-specific improvements */
 @media (max-width: 768px) {
-  /* Reduce floating animation intensity on mobile */
-  .floating {
-    animation: floatMobile 4s ease-in-out infinite;
-  }
-  
-  @keyframes floatMobile {
-    0%, 100% {
-      transform: translateY(0) rotate(0deg) scale(1);
-    }
-    50% {
-      transform: translateY(-8px) rotate(1deg) scale(1.01);
-    }
-  }
-  
   /* Better touch targets */
   button, .button, a[role="button"] {
     min-height: 44px;
@@ -418,11 +424,6 @@ body {
 
 /* Extra small devices (phones, 600px and down) */
 @media (max-width: 600px) {
-  /* Further reduce animations for performance */
-  .floating, .animate-float {
-    animation: none;
-  }
-  
   /* Ensure proper spacing */
   .container-mobile {
     padding-left: 1rem;
@@ -462,10 +463,8 @@ body {
   }
 }
 
-/* Reduced motion for accessibility */
+/* Reduced motion for accessibility - but keep floating icons */
 @media (prefers-reduced-motion: reduce) {
-  .floating,
-  .animate-float,
   .testimonial-slide-in,
   .slide-enter-active,
   .slide-exit-active {
@@ -478,6 +477,14 @@ body {
   .glass-card:hover,
   .glass-card-dark:hover {
     transform: none;
+  }
+  
+  /* Keep floating animations but reduce intensity */
+  .floating,
+  .floating-delay-1,
+  .floating-delay-2,
+  .floating-delay-3 {
+    animation-duration: 8s;
   }
 }
 
