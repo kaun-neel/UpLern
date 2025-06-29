@@ -71,30 +71,37 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
       // Wait for fonts to load
       await document.fonts.ready;
       
-      // Mobile-optimized settings for better PDF generation
+      // Portrait A4 optimized settings
       const canvasOptions = {
-        scale: isMobile ? 2 : 3,
+        scale: isMobile ? 2.5 : 3,
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
-        width: isMobile ? 800 : 1200,
-        height: isMobile ? 566 : 849, // A4 landscape ratio
+        width: isMobile ? 595 : 794, // A4 portrait width
+        height: isMobile ? 842 : 1123, // A4 portrait height
         logging: false,
         removeContainer: true,
         imageTimeout: 15000,
-        foreignObjectRendering: false, // Disable for better mobile compatibility
+        foreignObjectRendering: false,
         letterRendering: true,
         onclone: (clonedDoc: Document) => {
           // Ensure fonts are loaded in cloned document
           const style = clonedDoc.createElement('style');
           style.textContent = `
             @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
             * {
               font-family: 'Poppins', sans-serif !important;
               -webkit-font-smoothing: antialiased !important;
               -moz-osx-font-smoothing: grayscale !important;
               text-rendering: optimizeLegibility !important;
               font-synthesis: none !important;
+            }
+            .certificate-title {
+              font-family: 'Playfair Display', serif !important;
+            }
+            .student-name {
+              font-family: 'Playfair Display', serif !important;
             }
             .gradient-text {
               background: linear-gradient(to right, #7c3aed, #4f46e5) !important;
@@ -130,15 +137,16 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
         throw new Error('Invalid image data generated');
       }
       
+      // Create PDF in portrait format
       const pdf = new jsPDF({
-        orientation: 'landscape',
+        orientation: 'portrait',
         unit: 'mm',
         format: 'a4',
         compress: true
       });
 
-      const pdfWidth = 297;
-      const pdfHeight = 210;
+      const pdfWidth = 210; // A4 portrait width
+      const pdfHeight = 297; // A4 portrait height
       
       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight, '', 'FAST');
       
@@ -180,8 +188,8 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
           imageTimeout: 10000,
           foreignObjectRendering: false,
           letterRendering: true,
-          width: 600,
-          height: 424
+          width: 420,
+          height: 594
         });
 
         if (fallbackCanvas.width === 0 || fallbackCanvas.height === 0) {
@@ -195,12 +203,12 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
         }
         
         const fallbackPdf = new jsPDF({
-          orientation: 'landscape',
+          orientation: 'portrait',
           unit: 'mm',
           format: 'a4'
         });
 
-        fallbackPdf.addImage(fallbackImgData, 'JPEG', 0, 0, 297, 210);
+        fallbackPdf.addImage(fallbackImgData, 'JPEG', 0, 0, 210, 297);
         fallbackPdf.save(`${courseName}-Certificate-${studentName}.pdf`);
         
         if (isMobile) {
@@ -546,106 +554,109 @@ Excited to apply these new skills! 💪
                 </div>
               )}
 
-              {/* Certificate Display - Properly Sized for Mobile */}
+              {/* Certificate Display - Portrait Format Like Real Certificate */}
               <div className="flex justify-center">
                 <div 
                   ref={certificateRef}
                   className="certificate-container bg-white shadow-2xl w-full mx-auto"
                   style={{ 
-                    maxWidth: isMobile ? '100%' : '900px',
-                    aspectRatio: '1.414/1',
-                    minHeight: isMobile ? '400px' : '600px'
+                    maxWidth: isMobile ? '100%' : '600px',
+                    aspectRatio: '210/297', // A4 portrait ratio
+                    minHeight: isMobile ? '500px' : '700px'
                   }}
                 >
-                  {/* Certificate Content */}
-                  <div className="w-full h-full bg-gradient-to-br from-slate-50 via-white to-purple-50 relative overflow-hidden border-4 sm:border-8 border-purple-200 rounded-lg flex flex-col">
-                    {/* Decorative Background Elements */}
+                  {/* Certificate Content - Portrait Layout */}
+                  <div className="w-full h-full bg-gradient-to-br from-slate-50 via-white to-purple-50 relative overflow-hidden border-8 border-purple-300 rounded-lg flex flex-col">
+                    
+                    {/* Elegant Decorative Border */}
+                    <div className="absolute inset-4 border-2 border-purple-200 rounded-lg">
+                      <div className="absolute inset-3 border border-purple-100 rounded-lg"></div>
+                    </div>
+
+                    {/* Decorative Corner Flourishes */}
+                    <div className="absolute top-6 left-6 w-12 h-12 border-l-4 border-t-4 border-purple-400 rounded-tl-2xl opacity-60"></div>
+                    <div className="absolute top-6 right-6 w-12 h-12 border-r-4 border-t-4 border-purple-400 rounded-tr-2xl opacity-60"></div>
+                    <div className="absolute bottom-6 left-6 w-12 h-12 border-l-4 border-b-4 border-purple-400 rounded-bl-2xl opacity-60"></div>
+                    <div className="absolute bottom-6 right-6 w-12 h-12 border-r-4 border-b-4 border-purple-400 rounded-br-2xl opacity-60"></div>
+
+                    {/* Background Decorative Elements */}
                     <div className="absolute inset-0 opacity-5">
-                      <div className="absolute top-8 sm:top-16 left-8 sm:left-16 w-16 sm:w-32 h-16 sm:h-32 bg-purple-500 rounded-full"></div>
-                      <div className="absolute top-16 sm:top-32 right-16 sm:right-32 w-12 sm:w-24 h-12 sm:h-24 bg-indigo-500 rounded-full"></div>
-                      <div className="absolute bottom-16 sm:bottom-32 left-16 sm:left-32 w-14 sm:w-28 h-14 sm:h-28 bg-purple-500 rounded-full"></div>
-                      <div className="absolute bottom-8 sm:bottom-16 right-8 sm:right-16 w-10 sm:w-20 h-10 sm:h-20 bg-indigo-500 rounded-full"></div>
+                      <div className="absolute top-20 left-16 w-24 h-24 bg-purple-500 rounded-full"></div>
+                      <div className="absolute top-32 right-20 w-16 h-16 bg-indigo-500 rounded-full"></div>
+                      <div className="absolute bottom-32 left-20 w-20 h-20 bg-purple-500 rounded-full"></div>
+                      <div className="absolute bottom-20 right-16 w-14 h-14 bg-indigo-500 rounded-full"></div>
                     </div>
 
-                    {/* Elegant Border Pattern */}
-                    <div className="absolute inset-3 sm:inset-6 border border-purple-300 rounded-lg">
-                      <div className="absolute inset-2 sm:inset-4 border border-purple-200 rounded-lg"></div>
-                    </div>
-
-                    {/* Header Section */}
-                    <div className="text-center pt-4 sm:pt-8 lg:pt-12 pb-2 sm:pb-4 lg:pb-6 px-3 sm:px-6 lg:px-8 flex-shrink-0">
-                      <div className="flex justify-center mb-2 sm:mb-3 lg:mb-4">
-                        <div className="w-8 h-8 sm:w-12 sm:h-12 lg:w-16 lg:h-16 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-full flex items-center justify-center shadow-lg">
-                          <Award className="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-white" />
+                    {/* Header Section with Logo */}
+                    <div className="text-center pt-8 sm:pt-12 pb-4 sm:pb-6 px-6 sm:px-8 flex-shrink-0 relative z-10">
+                      <div className="flex justify-center mb-4 sm:mb-6">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-full flex items-center justify-center shadow-lg border-4 border-white">
+                          <Award className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
                         </div>
                       </div>
-                      <h1 className="text-sm sm:text-xl lg:text-3xl xl:text-4xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 text-transparent bg-clip-text mb-1 sm:mb-2 lg:mb-3 leading-tight">
+                      <h1 className="certificate-title text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 text-transparent bg-clip-text mb-2 sm:mb-3 leading-tight" 
+                          style={{ fontFamily: 'Playfair Display, serif' }}>
                         Certificate of Completion
                       </h1>
-                      <p className="text-xs sm:text-sm lg:text-base xl:text-lg text-gray-600 font-medium">This certifies that</p>
+                      <p className="text-sm sm:text-base lg:text-lg text-gray-600 font-medium">This certifies that</p>
                     </div>
 
                     {/* Student Name Section */}
-                    <div className="text-center mb-2 sm:mb-4 lg:mb-6 px-3 sm:px-6 lg:px-8 flex-shrink-0">
-                      <div className="mb-2 sm:mb-3 lg:mb-4">
-                        <h2 className="text-lg sm:text-2xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-1 sm:mb-2 lg:mb-3 leading-tight break-words" 
-                            style={{ 
-                              fontFamily: 'Georgia, serif',
-                              letterSpacing: '0.02em',
-                              textShadow: '0 1px 2px rgba(0,0,0,0.1)'
-                            }}>
-                          {studentName}
-                        </h2>
-                        <div className="w-16 sm:w-32 lg:w-64 xl:w-80 h-0.5 sm:h-1 bg-gradient-to-r from-purple-500 to-indigo-500 mx-auto rounded-full"></div>
-                      </div>
+                    <div className="text-center mb-4 sm:mb-6 px-6 sm:px-8 flex-shrink-0 relative z-10">
+                      <h2 className="student-name text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight break-words" 
+                          style={{ 
+                            fontFamily: 'Playfair Display, serif',
+                            letterSpacing: '0.02em',
+                            textShadow: '0 1px 2px rgba(0,0,0,0.1)'
+                          }}>
+                        {studentName}
+                      </h2>
+                      <div className="w-32 sm:w-48 lg:w-64 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 mx-auto rounded-full"></div>
                     </div>
 
                     {/* Course Details Section */}
-                    <div className="text-center mb-3 sm:mb-6 lg:mb-8 px-3 sm:px-6 lg:px-8 flex-grow flex flex-col justify-center">
-                      <p className="text-xs sm:text-sm lg:text-lg xl:text-xl text-gray-700 mb-1 sm:mb-2 lg:mb-3 font-medium">
+                    <div className="text-center mb-6 sm:mb-8 px-6 sm:px-8 flex-grow flex flex-col justify-center relative z-10">
+                      <p className="text-sm sm:text-base lg:text-lg text-gray-700 mb-2 sm:mb-3 font-medium">
                         has successfully completed the course
                       </p>
-                      <h3 className="text-sm sm:text-lg lg:text-2xl xl:text-3xl font-bold text-purple-900 mb-2 sm:mb-3 lg:mb-4 leading-tight break-words">
+                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-900 mb-4 sm:mb-6 leading-tight break-words px-2">
                         {courseName}
                       </h3>
-                      <div className="flex items-center justify-center gap-1 sm:gap-2 lg:gap-3 text-xs sm:text-sm lg:text-base xl:text-lg text-gray-600">
+                      <div className="flex items-center justify-center gap-2 text-sm sm:text-base lg:text-lg text-gray-600">
                         <span>Completed on</span>
                         <span className="font-semibold text-purple-700">{formatDate(completionDate)}</span>
                       </div>
                     </div>
 
                     {/* Footer Section */}
-                    <div className="px-3 sm:px-6 lg:px-8 xl:px-12 pb-3 sm:pb-6 lg:pb-8 flex-shrink-0">
-                      <div className="grid grid-cols-3 gap-1 sm:gap-2 lg:gap-4 text-center">
+                    <div className="px-6 sm:px-8 pb-6 sm:pb-8 flex-shrink-0 relative z-10">
+                      <div className="grid grid-cols-3 gap-4 text-center">
                         {/* Signature */}
                         <div className="flex flex-col items-center">
-                          <div className="w-8 sm:w-16 lg:w-24 xl:w-32 h-0.5 bg-gray-400 mb-1 sm:mb-2"></div>
+                          <div className="w-16 sm:w-24 lg:w-32 h-0.5 bg-gray-400 mb-2"></div>
                           <p className="text-xs sm:text-sm lg:text-base font-semibold text-gray-700">Zyntiq Team</p>
-                          <p className="text-xs lg:text-sm text-gray-500">Authorized Signature</p>
+                          <p className="text-xs sm:text-sm text-gray-500">Authorized Signature</p>
                         </div>
                         
                         {/* Official Seal */}
                         <div className="flex flex-col items-center">
-                          <div className="w-6 h-6 sm:w-10 sm:h-10 lg:w-14 lg:h-14 xl:w-16 xl:h-16 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center mb-1 sm:mb-2 border border-purple-300">
-                            <Award className="w-3 h-3 sm:w-5 sm:h-5 lg:w-7 lg:h-7 xl:w-8 xl:h-8 text-purple-600" />
+                          <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center mb-2 border-2 border-purple-300 shadow-md">
+                            <Award className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-purple-600" />
                           </div>
-                          <p className="text-xs lg:text-sm text-gray-500">Official Seal</p>
+                          <p className="text-xs sm:text-sm text-gray-500 font-medium">Official Seal</p>
                         </div>
                         
                         {/* Certificate ID */}
                         <div className="flex flex-col items-center">
                           <p className="text-xs sm:text-sm lg:text-base font-semibold text-gray-700 mb-1">Certificate ID</p>
-                          <p className="text-xs lg:text-sm text-gray-600 font-mono break-all leading-tight">{certificateId}</p>
-                          <p className="text-xs text-gray-400 mt-0.5">Verify at zyntiq.in</p>
+                          <p className="text-xs sm:text-sm text-gray-600 font-mono break-all leading-tight px-1">{certificateId}</p>
+                          <p className="text-xs text-gray-400 mt-1">Verify at zyntiq.in</p>
                         </div>
                       </div>
                     </div>
 
-                    {/* Decorative Corner Elements */}
-                    <div className="absolute top-4 left-4 w-3 h-3 sm:w-6 sm:h-6 border-l-2 border-t-2 border-purple-300 rounded-tl-lg"></div>
-                    <div className="absolute top-4 right-4 w-3 h-3 sm:w-6 sm:h-6 border-r-2 border-t-2 border-purple-300 rounded-tr-lg"></div>
-                    <div className="absolute bottom-4 left-4 w-3 h-3 sm:w-6 sm:h-6 border-l-2 border-b-2 border-purple-300 rounded-bl-lg"></div>
-                    <div className="absolute bottom-4 right-4 w-3 h-3 sm:w-6 sm:h-6 border-r-2 border-b-2 border-purple-300 rounded-br-lg"></div>
+                    {/* Elegant Bottom Border Design */}
+                    <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-500 opacity-20"></div>
                   </div>
                 </div>
               </div>
