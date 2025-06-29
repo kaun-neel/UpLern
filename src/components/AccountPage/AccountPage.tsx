@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, BookOpen, Award, ChevronDown, Settings, LogOut, Crown } from 'lucide-react';
+import { User, BookOpen, Award, ChevronDown, Settings, LogOut, Crown, Edit, Shield, Bell } from 'lucide-react';
 import { useAuth } from '../../lib/auth.tsx';
 import { localDB } from '../../lib/database';
 import toast from 'react-hot-toast';
@@ -78,10 +78,44 @@ const AccountPage = () => {
   ];
 
   const profileDropdownItems = [
-    { icon: <Settings size={16} />, label: 'Account Settings', action: () => setActiveTab('profile') },
-    { icon: <User size={16} />, label: 'Edit Profile', action: () => toast.info('Edit profile feature coming soon!') },
-    { icon: <Crown size={16} />, label: 'Upgrade to Premium', action: () => navigate('/premium-pass') },
-    { icon: <LogOut size={16} />, label: 'Sign Out', action: handleLogout, danger: true }
+    { 
+      icon: <Settings size={18} />, 
+      label: 'Account Settings', 
+      action: () => setActiveTab('profile'),
+      description: 'Manage your account preferences'
+    },
+    { 
+      icon: <Edit size={18} />, 
+      label: 'Edit Profile', 
+      action: () => toast.info('Edit profile feature coming soon!'),
+      description: 'Update your personal information'
+    },
+    { 
+      icon: <Bell size={18} />, 
+      label: 'Notifications', 
+      action: () => toast.info('Notification settings coming soon!'),
+      description: 'Manage your notification preferences'
+    },
+    { 
+      icon: <Shield size={18} />, 
+      label: 'Privacy & Security', 
+      action: () => toast.info('Privacy settings coming soon!'),
+      description: 'Control your privacy settings'
+    },
+    { 
+      icon: <Crown size={18} />, 
+      label: 'Upgrade to Premium', 
+      action: () => navigate('/premium-pass'),
+      description: 'Get unlimited access to all courses',
+      highlight: true
+    },
+    { 
+      icon: <LogOut size={18} />, 
+      label: 'Sign Out', 
+      action: handleLogout, 
+      danger: true,
+      description: 'Sign out of your account'
+    }
   ];
 
   if (loading) {
@@ -124,10 +158,10 @@ const AccountPage = () => {
               </div>
 
               {/* Desktop Menu */}
-              <ul className="hidden lg:block space-y-2">
+              <ul className="hidden lg:block space-y-3">
                 {menuItems.map((item, index) => (
                   <li key={index}>
-                    {/* Enhanced Profile Tab with Dropdown */}
+                    {/* Enhanced Profile Tab with Attractive Dropdown */}
                     {item.key === 'profile' ? (
                       <div className="relative">
                         <button
@@ -135,49 +169,87 @@ const AccountPage = () => {
                             setActiveTab(item.key);
                             setShowProfileDropdown(!showProfileDropdown);
                           }}
-                          className={`w-full flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-300 text-left group ${
+                          className={`w-full flex items-center justify-between px-5 py-4 rounded-xl transition-all duration-300 text-left group relative overflow-hidden ${
                             activeTab === item.key
-                              ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg transform scale-[1.02]'
-                              : 'hover:bg-purple-50 text-gray-700 hover:text-purple-600 hover:shadow-md'
+                              ? 'bg-gradient-to-r from-purple-500 via-purple-600 to-indigo-600 text-white shadow-xl transform scale-[1.02] border-2 border-purple-300'
+                              : 'hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50 text-gray-700 hover:text-purple-700 hover:shadow-lg hover:scale-[1.01] border-2 border-transparent hover:border-purple-200'
                           }`}
                         >
-                          <div className="flex items-center gap-3">
-                            <div className={`p-1 rounded-lg transition-colors ${
-                              activeTab === item.key ? 'bg-white/20' : 'group-hover:bg-purple-100'
+                          {/* Animated Background Gradient */}
+                          <div className={`absolute inset-0 bg-gradient-to-r from-purple-400 via-purple-500 to-indigo-500 opacity-0 group-hover:opacity-10 transition-opacity duration-300 ${
+                            activeTab === item.key ? 'opacity-20' : ''
+                          }`}></div>
+                          
+                          {/* Sparkle Effect */}
+                          <div className={`absolute top-2 right-2 w-2 h-2 bg-white rounded-full opacity-0 transition-opacity duration-300 ${
+                            activeTab === item.key ? 'opacity-60 animate-pulse' : 'group-hover:opacity-40'
+                          }`}></div>
+                          
+                          <div className="flex items-center gap-4 relative z-10">
+                            <div className={`p-2 rounded-xl transition-all duration-300 ${
+                              activeTab === item.key 
+                                ? 'bg-white/20 shadow-lg' 
+                                : 'group-hover:bg-purple-100 group-hover:shadow-md'
                             }`}>
                               {item.icon}
                             </div>
-                            <span className="font-medium">{item.label}</span>
+                            <div className="flex flex-col">
+                              <span className="font-semibold text-base">{item.label}</span>
+                              <span className={`text-xs transition-colors duration-300 ${
+                                activeTab === item.key 
+                                  ? 'text-white/80' 
+                                  : 'text-gray-500 group-hover:text-purple-600'
+                              }`}>
+                                Click to see options
+                              </span>
+                            </div>
                           </div>
-                          <ChevronDown 
-                            className={`w-4 h-4 transition-transform duration-300 ${
-                              showProfileDropdown ? 'rotate-180' : ''
-                            }`} 
-                          />
+                          
+                          <div className="relative z-10">
+                            <ChevronDown 
+                              className={`w-5 h-5 transition-all duration-300 ${
+                                showProfileDropdown ? 'rotate-180 scale-110' : ''
+                              } ${
+                                activeTab === item.key ? 'text-white' : 'text-gray-400 group-hover:text-purple-600'
+                              }`} 
+                            />
+                          </div>
+
+                          {/* Dropdown Indicator */}
+                          <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-400 to-indigo-400 transition-all duration-300 ${
+                            showProfileDropdown ? 'opacity-100' : 'opacity-0'
+                          }`}></div>
                         </button>
 
-                        {/* Profile Dropdown Menu */}
+                        {/* Enhanced Profile Dropdown Menu */}
                         {showProfileDropdown && (
-                          <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-200 z-20 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
-                            <div className="py-2">
-                              {/* User Info Header */}
-                              <div className="px-4 py-3 bg-gradient-to-r from-purple-50 to-indigo-50 border-b border-gray-100">
-                                <div className="flex items-center gap-3">
-                                  <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center">
-                                    <User className="w-5 h-5 text-white" />
+                          <div className="absolute top-full left-0 right-0 mt-3 bg-white rounded-2xl shadow-2xl border border-gray-200 z-30 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300">
+                            {/* User Info Header */}
+                            <div className="px-5 py-4 bg-gradient-to-r from-purple-50 via-indigo-50 to-purple-50 border-b border-gray-100">
+                              <div className="flex items-center gap-4">
+                                <div className="relative">
+                                  <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center shadow-lg">
+                                    <User className="w-6 h-6 text-white" />
                                   </div>
-                                  <div>
-                                    <p className="font-semibold text-gray-900 text-sm">
-                                      {profile.first_name} {profile.last_name}
-                                    </p>
-                                    <p className="text-xs text-gray-600 truncate max-w-[150px]">
-                                      {profile.email}
-                                    </p>
+                                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <p className="font-bold text-gray-900 text-base truncate">
+                                    {profile.first_name} {profile.last_name}
+                                  </p>
+                                  <p className="text-sm text-gray-600 truncate">
+                                    {profile.email}
+                                  </p>
+                                  <div className="flex items-center gap-2 mt-1">
+                                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                                    <span className="text-xs text-green-600 font-medium">Online</span>
                                   </div>
                                 </div>
                               </div>
+                            </div>
 
-                              {/* Dropdown Items */}
+                            {/* Dropdown Items */}
+                            <div className="py-2">
                               {profileDropdownItems.map((dropdownItem, idx) => (
                                 <button
                                   key={idx}
@@ -185,18 +257,60 @@ const AccountPage = () => {
                                     dropdownItem.action();
                                     setShowProfileDropdown(false);
                                   }}
-                                  className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 transition-colors text-sm ${
-                                    dropdownItem.danger ? 'text-red-600 hover:bg-red-50' : 'text-gray-700'
+                                  className={`w-full flex items-start gap-4 px-5 py-3 text-left hover:bg-gray-50 transition-all duration-200 group ${
+                                    dropdownItem.danger 
+                                      ? 'hover:bg-red-50 border-t border-gray-100' 
+                                      : dropdownItem.highlight 
+                                      ? 'hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50' 
+                                      : ''
                                   }`}
                                 >
-                                  <div className={`p-1 rounded ${
-                                    dropdownItem.danger ? 'text-red-500' : 'text-gray-500'
+                                  <div className={`p-2 rounded-lg transition-all duration-200 group-hover:scale-110 ${
+                                    dropdownItem.danger 
+                                      ? 'text-red-500 bg-red-50 group-hover:bg-red-100' 
+                                      : dropdownItem.highlight 
+                                      ? 'text-purple-600 bg-purple-50 group-hover:bg-purple-100' 
+                                      : 'text-gray-500 bg-gray-50 group-hover:bg-gray-100'
                                   }`}>
                                     {dropdownItem.icon}
                                   </div>
-                                  <span className="font-medium">{dropdownItem.label}</span>
+                                  <div className="flex-1 min-w-0">
+                                    <div className={`font-semibold text-sm transition-colors duration-200 ${
+                                      dropdownItem.danger 
+                                        ? 'text-red-700 group-hover:text-red-800' 
+                                        : dropdownItem.highlight 
+                                        ? 'text-purple-700 group-hover:text-purple-800' 
+                                        : 'text-gray-700 group-hover:text-gray-900'
+                                    }`}>
+                                      {dropdownItem.label}
+                                    </div>
+                                    <div className={`text-xs mt-0.5 transition-colors duration-200 ${
+                                      dropdownItem.danger 
+                                        ? 'text-red-500' 
+                                        : dropdownItem.highlight 
+                                        ? 'text-purple-500' 
+                                        : 'text-gray-500'
+                                    }`}>
+                                      {dropdownItem.description}
+                                    </div>
+                                  </div>
+                                  {dropdownItem.highlight && (
+                                    <div className="flex items-center">
+                                      <span className="px-2 py-1 bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-xs rounded-full font-medium">
+                                        New
+                                      </span>
+                                    </div>
+                                  )}
                                 </button>
                               ))}
+                            </div>
+
+                            {/* Footer */}
+                            <div className="px-5 py-3 bg-gray-50 border-t border-gray-100">
+                              <div className="flex items-center justify-between text-xs text-gray-500">
+                                <span>Account ID: {user?.id.slice(0, 8)}...</span>
+                                <span>Member since 2024</span>
+                              </div>
                             </div>
                           </div>
                         )}
@@ -208,18 +322,18 @@ const AccountPage = () => {
                           setActiveTab(item.key);
                           setShowProfileDropdown(false);
                         }}
-                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 text-left group ${
+                        className={`w-full flex items-center gap-4 px-5 py-4 rounded-xl transition-all duration-300 text-left group ${
                           activeTab === item.key
                             ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg transform scale-[1.02]'
-                            : 'hover:bg-purple-50 text-gray-700 hover:text-purple-600 hover:shadow-md'
+                            : 'hover:bg-purple-50 text-gray-700 hover:text-purple-600 hover:shadow-md hover:scale-[1.01]'
                         }`}
                       >
-                        <div className={`p-1 rounded-lg transition-colors ${
+                        <div className={`p-2 rounded-lg transition-colors ${
                           activeTab === item.key ? 'bg-white/20' : 'group-hover:bg-purple-100'
                         }`}>
                           {item.icon}
                         </div>
-                        <span className="font-medium">{item.label}</span>
+                        <span className="font-semibold">{item.label}</span>
                       </button>
                     )}
                   </li>
@@ -227,17 +341,22 @@ const AccountPage = () => {
               </ul>
 
               {/* Quick Stats */}
-              <div className="hidden lg:block mt-6 pt-6 border-t border-gray-200">
-                <div className="space-y-3">
+              <div className="hidden lg:block mt-8 pt-6 border-t border-gray-200">
+                <div className="space-y-4">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Account Status</span>
-                    <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+                    <span className="text-gray-600 font-medium">Account Status</span>
+                    <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold flex items-center gap-1">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                       Active
                     </span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Member Since</span>
-                    <span className="text-gray-800 font-medium">2024</span>
+                    <span className="text-gray-600 font-medium">Member Since</span>
+                    <span className="text-gray-800 font-semibold">2024</span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-600 font-medium">Profile Views</span>
+                    <span className="text-purple-600 font-semibold">127</span>
                   </div>
                 </div>
               </div>
@@ -343,7 +462,7 @@ const AccountPage = () => {
       {/* Overlay to close dropdown */}
       {showProfileDropdown && (
         <div 
-          className="fixed inset-0 z-10" 
+          className="fixed inset-0 z-20" 
           onClick={() => setShowProfileDropdown(false)}
         />
       )}
