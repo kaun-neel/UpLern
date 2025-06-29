@@ -81,38 +81,56 @@ const AccountPage = () => {
     { 
       icon: <Settings size={18} />, 
       label: 'Account Settings', 
-      action: () => setActiveTab('profile'),
+      action: () => {
+        setActiveTab('profile');
+        setShowProfileDropdown(false);
+      },
       description: 'Manage your account preferences'
     },
     { 
       icon: <Edit size={18} />, 
       label: 'Edit Profile', 
-      action: () => toast.info('Edit profile feature coming soon!'),
+      action: () => {
+        toast.info('Edit profile feature coming soon!');
+        setShowProfileDropdown(false);
+      },
       description: 'Update your personal information'
     },
     { 
       icon: <Bell size={18} />, 
       label: 'Notifications', 
-      action: () => toast.info('Notification settings coming soon!'),
+      action: () => {
+        toast.info('Notification settings coming soon!');
+        setShowProfileDropdown(false);
+      },
       description: 'Manage your notification preferences'
     },
     { 
       icon: <Shield size={18} />, 
       label: 'Privacy & Security', 
-      action: () => toast.info('Privacy settings coming soon!'),
+      action: () => {
+        toast.info('Privacy settings coming soon!');
+        setShowProfileDropdown(false);
+      },
       description: 'Control your privacy settings'
     },
     { 
       icon: <Crown size={18} />, 
       label: 'Upgrade to Premium', 
-      action: () => navigate('/premium-pass'),
+      action: () => {
+        navigate('/premium-pass');
+        setShowProfileDropdown(false);
+      },
       description: 'Get unlimited access to all courses',
       highlight: true
     },
     { 
       icon: <LogOut size={18} />, 
       label: 'Sign Out', 
-      action: handleLogout, 
+      action: () => {
+        handleLogout();
+        setShowProfileDropdown(false);
+      }, 
       danger: true,
       description: 'Sign out of your account'
     }
@@ -159,7 +177,7 @@ const AccountPage = () => {
                   
                   {/* Mobile Dropdown Menu */}
                   {showProfileDropdown && (
-                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 z-30 overflow-hidden">
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden">
                       {menuItems.map((item) => (
                         <button
                           key={item.key}
@@ -221,9 +239,9 @@ const AccountPage = () => {
                           </div>
                         </button>
 
-                        {/* Enhanced Profile Dropdown Menu */}
+                        {/* Enhanced Profile Dropdown Menu - ALWAYS VISIBLE WHEN OPEN */}
                         {showProfileDropdown && (
-                          <div className="absolute top-full left-0 right-0 mt-3 bg-white rounded-2xl shadow-2xl border border-gray-200 z-30 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300">
+                          <div className="absolute top-full left-0 right-0 mt-3 bg-white rounded-2xl shadow-2xl border border-gray-200 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300">
                             {/* User Info Header */}
                             <div className="px-5 py-4 bg-gradient-to-r from-purple-50 via-indigo-50 to-purple-50 border-b border-gray-100">
                               <div className="flex items-center gap-4">
@@ -253,10 +271,7 @@ const AccountPage = () => {
                               {profileDropdownItems.map((dropdownItem, idx) => (
                                 <button
                                   key={idx}
-                                  onClick={() => {
-                                    dropdownItem.action();
-                                    setShowProfileDropdown(false);
-                                  }}
+                                  onClick={dropdownItem.action}
                                   className={`w-full flex items-start gap-4 px-5 py-3 text-left hover:bg-gray-50 transition-all duration-200 group ${
                                     dropdownItem.danger 
                                       ? 'hover:bg-red-50 border-t border-gray-100' 
@@ -459,10 +474,10 @@ const AccountPage = () => {
         </div>
       </div>
 
-      {/* Overlay to close dropdown */}
+      {/* Overlay to close dropdown - CRITICAL FOR DROPDOWN FUNCTIONALITY */}
       {showProfileDropdown && (
         <div 
-          className="fixed inset-0 z-20" 
+          className="fixed inset-0 z-40 bg-transparent" 
           onClick={() => setShowProfileDropdown(false)}
         />
       )}
