@@ -460,7 +460,11 @@ const CourseDetailPage: React.FC = () => {
         <div className="max-w-6xl mx-auto px-6 py-12">
           <div className="grid md:grid-cols-2 gap-8 items-center glass-card rounded-3xl p-8">
             <img
+<<<<<<< HEAD
               src="/images/ertification.png"
+=======
+              src="https://cdn3d.iconscout.com/3d/premium/thumb/certificate-5856337-4892699.png"
+>>>>>>> 7d57a90e78321fef7b0110966acf66288fb41779
               alt="Certificate"
               className="w-full max-w-md mx-auto"
             />
