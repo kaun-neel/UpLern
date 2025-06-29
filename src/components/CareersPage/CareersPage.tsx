@@ -1,10 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Monitor, Shield, Building, Building2, Home } from 'lucide-react';
-<<<<<<< HEAD
-import { image } from 'html2canvas/dist/types/css/types/image';
-=======
->>>>>>> 7d57a90e78321fef7b0110966acf66288fb41779
 
 const CareersPage = () => {
   const internships = [
@@ -12,31 +8,19 @@ const CareersPage = () => {
       title: 'HR/Marketing',
       icon: <Users className="w-6 h-6" />,
       description: 'Fuel your ambition: Take charge of your career with our 2-month HR/Marketing internship.',
-<<<<<<< HEAD
-      image: '/DigitalM.png'
-=======
       image: 'https://cdn3d.iconscout.com/3d/premium/thumb/business-meeting-5706083-4755632.png'
->>>>>>> 7d57a90e78321fef7b0110966acf66288fb41779
     },
     {
       title: 'Web Development',
       icon: <Monitor className="w-6 h-6" />,
       description: 'Fuel your ambition: Take charge of your career with our 2-month Web Development internship.',
-<<<<<<< HEAD
-      image: '/WebD.png'
-=======
       image: 'https://cdn3d.iconscout.com/3d/premium/thumb/business-meeting-5706083-4755632.png'
->>>>>>> 7d57a90e78321fef7b0110966acf66288fb41779
     },
     {
       title: 'Cybersecurity',
       icon: <Shield className="w-6 h-6" />,
       description: 'Fuel your ambition: Take charge of your career with our 2-month Cybersecurity internship.',
-<<<<<<< HEAD
-      image: '/Cyber.png'
-=======
       image: 'https://cdn3d.iconscout.com/3d/premium/thumb/business-meeting-5706083-4755632.png'
->>>>>>> 7d57a90e78321fef7b0110966acf66288fb41779
     }
   ];
 
@@ -231,11 +215,7 @@ const CareersPage = () => {
           
           <div>
             <img
-<<<<<<< HEAD
-              src="public\certification.png"
-=======
               src="https://cdn3d.iconscout.com/3d/premium/thumb/certificate-5856337-4892699.png"
->>>>>>> 7d57a90e78321fef7b0110966acf66288fb41779
               alt="Certificate"
               className="w-full"
             />
@@ -262,11 +242,7 @@ const CareersPage = () => {
           
           <div className="flex items-center justify-center">
             <img
-<<<<<<< HEAD
-              src="images\certificate.png"
-=======
               src="https://cdn3d.iconscout.com/3d/premium/thumb/woman-working-from-home-5706071-4755620.png"
->>>>>>> 7d57a90e78321fef7b0110966acf66288fb41779
               alt="Working from home"
               className="w-full max-w-md"
             />

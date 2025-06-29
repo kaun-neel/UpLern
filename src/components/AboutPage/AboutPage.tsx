@@ -83,12 +83,8 @@ const AboutPage = () => {
             Uplern is an ISO-certified organization, dedicated to upholding the highest standards of quality, reliability, and continuous improvement. Our certification reflects our commitment to delivering services that meet global benchmarks for excellence and operational efficiency. At Uplern, we follow structured processes and best practices to ensure our clients receive consistent, secure, and value-driven solutions. This recognition not only reinforces our credibility but also demonstrates our dedication to fostering trust and long-term partnerships.
           </p>
           <div className="flex justify-center gap-8">
-<<<<<<< HEAD
-            <img src="images\certification.png" alt="ISO" className="h-16" />
-=======
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/ISO_Logo_%28Red_square%29.svg/180px-ISO_Logo_%28Red_square%29.svg.png" alt="ISO" className="h-16" />
             <img src="https://www.iaf.nu/upfiles/logo.png" alt="IAF" className="h-16" />
->>>>>>> 7d57a90e78321fef7b0110966acf66288fb41779
           </div>
         </div>
       </div>

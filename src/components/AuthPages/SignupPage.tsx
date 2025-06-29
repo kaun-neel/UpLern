@@ -278,11 +278,7 @@ const SignupPage = () => {
               {/* Main illustration */}
               <div className="relative z-10 max-w-lg">
                 <img
-<<<<<<< HEAD
-                  src="images\createimage.png"
-=======
                   src="/create-account.png"
->>>>>>> 7d57a90e78321fef7b0110966acf66288fb41779
                   alt="Create Account Illustration"
                   className="w-full h-auto drop-shadow-2xl"
                 />
