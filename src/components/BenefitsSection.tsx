@@ -39,27 +39,35 @@ const BenefitsSection = () => {
           </p>
         </div>
         
-        {/* Fixed Grid Layout with Proper Alignment */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 justify-items-center">
+        {/* Completely Fixed Grid Layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 place-items-center">
           {benefits.map((benefit, index) => (
             <div 
               key={index} 
-              className="benefit-card group w-full max-w-sm mx-auto flex flex-col items-center justify-start text-center h-full"
+              className="w-full max-w-xs bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-lg border border-white/30 hover:shadow-xl hover:transform hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center min-h-[280px] justify-between"
             >
-              {/* Icon Container - Fixed Size and Centered */}
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-purple-50 flex items-center justify-center mb-4 sm:mb-6 z-10 relative group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+              {/* Icon Container */}
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-purple-50 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
                 {benefit.icon}
               </div>
               
-              {/* Title - Consistent Height and Alignment */}
-              <h3 className="font-bold text-base sm:text-lg mb-3 sm:mb-4 z-10 relative text-center px-2 leading-tight min-h-[3rem] flex items-center justify-center">
-                {benefit.title}
-              </h3>
-              
-              {/* Description - Flexible Height */}
-              <p className="text-gray-600 text-xs sm:text-sm text-center z-10 relative px-2 leading-relaxed flex-grow">
-                {benefit.description}
-              </p>
+              {/* Content Container */}
+              <div className="flex-1 flex flex-col justify-center">
+                {/* Title */}
+                <h3 className="font-bold text-base sm:text-lg mb-3 sm:mb-4 text-gray-800 leading-tight">
+                  {benefit.title}
+                </h3>
+                
+                {/* Description */}
+                <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
+                  {benefit.description}
+                </p>
+              </div>
+
+              {/* Bottom Decorative Element */}
+              <div className="w-full h-12 sm:h-16 bg-gradient-to-r from-purple-100/80 to-indigo-100/80 rounded-b-3xl -mx-6 sm:-mx-8 -mb-6 sm:-mb-8 mt-4 sm:mt-6 flex items-center justify-center">
+                <div className="w-8 h-1 bg-gradient-to-r from-purple-400 to-indigo-400 rounded-full"></div>
+              </div>
             </div>
           ))}
         </div>
