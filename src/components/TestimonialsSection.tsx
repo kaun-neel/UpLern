@@ -124,7 +124,7 @@ const TestimonialsSection = () => {
   const visibleTestimonials = getVisibleTestimonials();
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-16 yellow-gradient-bg relative overflow-hidden">
+    <section className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-16 yellow-gradient-bg relative overflow-hidden">
       {/* Background Decorations - Hidden on mobile */}
       <div className="hidden md:block absolute top-20 left-10 w-32 h-32 bg-purple-200/30 rounded-full opacity-20 blur-3xl"></div>
       <div className="hidden md:block absolute bottom-20 right-10 w-40 h-40 bg-blue-200/30 rounded-full opacity-20 blur-3xl"></div>
@@ -240,8 +240,8 @@ const TestimonialsSection = () => {
           </div>
         </div>
 
-        {/* Progress Indicator - Reduced bottom margin */}
-        <div className="mt-4 sm:mt-6 text-center">
+        {/* Progress Indicator - Minimal bottom margin */}
+        <div className="mt-2 sm:mt-4 text-center">
           <span className="text-xs sm:text-sm text-gray-600">
             Showing {activeIndex + 1}-{Math.min(activeIndex + testimonialsPerView, testimonials.length)} of {testimonials.length} testimonials
           </span>
