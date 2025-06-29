@@ -100,7 +100,7 @@ const AccountPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 sm:gap-8">
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <div className="glass-card-dark rounded-2xl p-4 sm:p-6 relative">
+            <div className="glass-card-dark rounded-2xl p-4 sm:p-6">
               {/* Mobile Tab Selector with Purple Gradient and Arrow */}
               <div className="lg:hidden mb-4">
                 <div className="relative">
@@ -116,9 +116,9 @@ const AccountPage = () => {
                     />
                   </button>
                   
-                  {/* FIXED: Mobile Dropdown Menu with MAXIMUM Z-INDEX */}
+                  {/* FIXED: Mobile Dropdown Menu with All Options */}
                   {showProfileDropdown && (
-                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300" style={{ zIndex: 9999 }}>
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300">
                       {/* Main Navigation Options */}
                       <div className="py-2">
                         {menuItems.map((item) => (
@@ -240,9 +240,9 @@ const AccountPage = () => {
                           </div>
                         </button>
 
-                        {/* FIXED: Desktop Profile Dropdown Menu with MAXIMUM Z-INDEX */}
+                        {/* FIXED: Desktop Profile Dropdown Menu with All Options */}
                         {showProfileDropdown && (
-                          <div className="absolute top-full left-0 right-0 mt-3 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300" style={{ zIndex: 9999 }}>
+                          <div className="absolute top-full left-0 right-0 mt-3 bg-white rounded-2xl shadow-2xl border border-gray-200 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300">
                             {/* User Info Header */}
                             <div className="px-5 py-4 bg-gradient-to-r from-purple-50 via-indigo-50 to-purple-50 border-b border-gray-100">
                               <div className="flex items-center gap-4">
@@ -471,8 +471,8 @@ const AccountPage = () => {
             </div>
           </div>
 
-          {/* Main Content - REDUCED Z-INDEX */}
-          <div className="lg:col-span-3" style={{ zIndex: 1 }}>
+          {/* Main Content */}
+          <div className="lg:col-span-3">
             {activeTab === 'profile' && (
               <div className="glass-card-dark rounded-2xl p-6 sm:p-8">
                 <div className="flex items-center justify-between mb-6 sm:mb-8">
@@ -567,11 +567,10 @@ const AccountPage = () => {
         </div>
       </div>
 
-      {/* CRITICAL: Overlay to close dropdown with MAXIMUM Z-INDEX */}
+      {/* Overlay to close dropdown - CRITICAL FOR DROPDOWN FUNCTIONALITY */}
       {showProfileDropdown && (
         <div 
-          className="fixed inset-0 bg-transparent" 
-          style={{ zIndex: 9998 }}
+          className="fixed inset-0 z-40 bg-transparent" 
           onClick={() => setShowProfileDropdown(false)}
         />
       )}
