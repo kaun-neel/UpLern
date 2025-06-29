@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, BookOpen, Award, ChevronDown, Settings, LogOut, Crown, Edit, Shield, Bell } from 'lucide-react';
+import { User, BookOpen, Award, ChevronDown } from 'lucide-react';
 import { useAuth } from '../../lib/auth.tsx';
 import { localDB } from '../../lib/database';
 import toast from 'react-hot-toast';
@@ -9,9 +9,9 @@ import CertificatesPage from './CertificatesPage';
 
 const AccountPage = () => {
   const navigate = useNavigate();
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('profile');
-  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [showMobileDropdown, setShowMobileDropdown] = useState(false);
   const [profile, setProfile] = useState({
     first_name: '',
     middle_name: '',
@@ -57,104 +57,28 @@ const AccountPage = () => {
     getProfile();
   }, [user, navigate]);
 
-  const handleLogout = async () => {
-    try {
-      const { error } = await signOut();
-      if (error) {
-        toast.error(error);
-        return;
-      }
-      toast.success('Logged out successfully');
-      navigate('/');
-    } catch (error) {
-      toast.error('Failed to log out');
-    }
-  };
-
   const menuItems = [
     { icon: <User size={20} />, label: 'Profile', key: 'profile' },
     { icon: <BookOpen size={20} />, label: 'My Courses', key: 'courses' },
     { icon: <Award size={20} />, label: 'Certificates', key: 'certificates' }
   ];
 
-  const profileDropdownItems = [
+  // Mobile dropdown items - only courses and certificates
+  const mobileDropdownItems = [
     { 
-      icon: <Settings size={18} />, 
-      label: 'Account Settings', 
-      action: () => {
-        setActiveTab('profile');
-        setShowProfileDropdown(false);
-      },
-      description: 'Manage your account preferences'
+      icon: <User size={18} />, 
+      label: 'Profile', 
+      key: 'profile'
     },
-    { 
-      icon: <Edit size={18} />, 
-      label: 'Edit Profile', 
-      action: () => {
-        toast.info('Edit profile feature coming soon!');
-        setShowProfileDropdown(false);
-      },
-      description: 'Update your personal information'
-    },
-    // ADDED: My Courses Navigation
     { 
       icon: <BookOpen size={18} />, 
       label: 'My Courses', 
-      action: () => {
-        setActiveTab('courses');
-        setShowProfileDropdown(false);
-      },
-      description: 'View your enrolled courses and progress',
-      primary: true
+      key: 'courses'
     },
-    // ADDED: Certificates Navigation
     { 
       icon: <Award size={18} />, 
       label: 'My Certificates', 
-      action: () => {
-        setActiveTab('certificates');
-        setShowProfileDropdown(false);
-      },
-      description: 'Download and share your certificates',
-      primary: true
-    },
-    { 
-      icon: <Bell size={18} />, 
-      label: 'Notifications', 
-      action: () => {
-        toast.info('Notification settings coming soon!');
-        setShowProfileDropdown(false);
-      },
-      description: 'Manage your notification preferences'
-    },
-    { 
-      icon: <Shield size={18} />, 
-      label: 'Privacy & Security', 
-      action: () => {
-        toast.info('Privacy settings coming soon!');
-        setShowProfileDropdown(false);
-      },
-      description: 'Control your privacy settings'
-    },
-    { 
-      icon: <Crown size={18} />, 
-      label: 'Upgrade to Premium', 
-      action: () => {
-        navigate('/premium-pass');
-        setShowProfileDropdown(false);
-      },
-      description: 'Get unlimited access to all courses',
-      highlight: true
-    },
-    { 
-      icon: <LogOut size={18} />, 
-      label: 'Sign Out', 
-      action: () => {
-        handleLogout();
-        setShowProfileDropdown(false);
-      }, 
-      danger: true,
-      description: 'Sign out of your account'
+      key: 'certificates'
     }
   ];
 
@@ -182,30 +106,31 @@ const AccountPage = () => {
           {/* Sidebar */}
           <div className="lg:col-span-1">
             <div className="glass-card-dark rounded-2xl p-4 sm:p-6">
-              {/* Mobile Tab Selector with Purple Gradient and Arrow */}
+              
+              {/* MOBILE: Purple Gradient Tab with Dropdown */}
               <div className="lg:hidden mb-4">
                 <div className="relative">
                   <button
-                    onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+                    onClick={() => setShowMobileDropdown(!showMobileDropdown)}
                     className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-medium text-base flex items-center justify-between hover:from-purple-600 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
                   >
                     <span>{menuItems.find(item => item.key === activeTab)?.label || 'Profile'}</span>
                     <ChevronDown 
                       className={`w-5 h-5 transition-transform duration-300 ${
-                        showProfileDropdown ? 'rotate-180' : ''
+                        showMobileDropdown ? 'rotate-180' : ''
                       }`} 
                     />
                   </button>
                   
                   {/* Mobile Dropdown Menu */}
-                  {showProfileDropdown && (
+                  {showMobileDropdown && (
                     <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden">
-                      {menuItems.map((item) => (
+                      {mobileDropdownItems.map((item) => (
                         <button
                           key={item.key}
                           onClick={() => {
                             setActiveTab(item.key);
-                            setShowProfileDropdown(false);
+                            setShowMobileDropdown(false);
                           }}
                           className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-purple-50 transition-colors ${
                             activeTab === item.key ? 'bg-purple-100 text-purple-700' : 'text-gray-700'
@@ -220,179 +145,30 @@ const AccountPage = () => {
                 </div>
               </div>
 
-              {/* Desktop Menu */}
+              {/* DESKTOP: Simple Menu Items (No Dropdown, No Arrow) */}
               <ul className="hidden lg:block space-y-3">
                 {menuItems.map((item, index) => (
                   <li key={index}>
-                    {/* Enhanced Profile Tab with Purple Gradient and Dropdown Arrow */}
-                    {item.key === 'profile' ? (
-                      <div className="relative">
-                        <button
-                          onClick={() => {
-                            setActiveTab(item.key);
-                            setShowProfileDropdown(!showProfileDropdown);
-                          }}
-                          className={`w-full flex items-center justify-between px-5 py-4 rounded-xl transition-all duration-300 text-left group relative overflow-hidden ${
-                            activeTab === item.key
-                              ? 'bg-gradient-to-r from-purple-500 via-purple-600 to-indigo-600 text-white shadow-xl transform scale-[1.02]'
-                              : 'hover:bg-gradient-to-r hover:from-purple-100 hover:to-indigo-100 text-gray-700 hover:text-purple-700 hover:shadow-lg hover:scale-[1.01] border-2 border-transparent hover:border-purple-200'
-                          }`}
-                        >
-                          <div className="flex items-center gap-4 relative z-10">
-                            <div className={`p-2 rounded-xl transition-all duration-300 ${
-                              activeTab === item.key 
-                                ? 'bg-white/20 shadow-lg' 
-                                : 'group-hover:bg-purple-200 group-hover:shadow-md'
-                            }`}>
-                              {item.icon}
-                            </div>
-                            <span className="font-semibold text-base">{item.label}</span>
-                          </div>
-                          
-                          {/* Dropdown Arrow - Always Visible */}
-                          <div className="relative z-10">
-                            <ChevronDown 
-                              className={`w-5 h-5 transition-all duration-300 ${
-                                showProfileDropdown ? 'rotate-180 scale-110' : ''
-                              } ${
-                                activeTab === item.key ? 'text-white' : 'text-gray-400 group-hover:text-purple-600'
-                              }`} 
-                            />
-                          </div>
-                        </button>
-
-                        {/* Enhanced Profile Dropdown Menu - ALWAYS VISIBLE WHEN OPEN */}
-                        {showProfileDropdown && (
-                          <div className="absolute top-full left-0 right-0 mt-3 bg-white rounded-2xl shadow-2xl border border-gray-200 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300">
-                            {/* User Info Header */}
-                            <div className="px-5 py-4 bg-gradient-to-r from-purple-50 via-indigo-50 to-purple-50 border-b border-gray-100">
-                              <div className="flex items-center gap-4">
-                                <div className="relative">
-                                  <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center shadow-lg">
-                                    <User className="w-6 h-6 text-white" />
-                                  </div>
-                                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <p className="font-bold text-gray-900 text-base truncate">
-                                    {profile.first_name} {profile.last_name}
-                                  </p>
-                                  <p className="text-sm text-gray-600 truncate">
-                                    {profile.email}
-                                  </p>
-                                  <div className="flex items-center gap-2 mt-1">
-                                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                                    <span className="text-xs text-green-600 font-medium">Online</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Dropdown Items */}
-                            <div className="py-2">
-                              {profileDropdownItems.map((dropdownItem, idx) => (
-                                <button
-                                  key={idx}
-                                  onClick={dropdownItem.action}
-                                  className={`w-full flex items-start gap-4 px-5 py-3 text-left hover:bg-gray-50 transition-all duration-200 group ${
-                                    dropdownItem.danger 
-                                      ? 'hover:bg-red-50 border-t border-gray-100' 
-                                      : dropdownItem.highlight 
-                                      ? 'hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50' 
-                                      : dropdownItem.primary
-                                      ? 'hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50'
-                                      : ''
-                                  }`}
-                                >
-                                  <div className={`p-2 rounded-lg transition-all duration-200 group-hover:scale-110 ${
-                                    dropdownItem.danger 
-                                      ? 'text-red-500 bg-red-50 group-hover:bg-red-100' 
-                                      : dropdownItem.highlight 
-                                      ? 'text-purple-600 bg-purple-50 group-hover:bg-purple-100' 
-                                      : dropdownItem.primary
-                                      ? 'text-blue-600 bg-blue-50 group-hover:bg-blue-100'
-                                      : 'text-gray-500 bg-gray-50 group-hover:bg-gray-100'
-                                  }`}>
-                                    {dropdownItem.icon}
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <div className={`font-semibold text-sm transition-colors duration-200 ${
-                                      dropdownItem.danger 
-                                        ? 'text-red-700 group-hover:text-red-800' 
-                                        : dropdownItem.highlight 
-                                        ? 'text-purple-700 group-hover:text-purple-800' 
-                                        : dropdownItem.primary
-                                        ? 'text-blue-700 group-hover:text-blue-800'
-                                        : 'text-gray-700 group-hover:text-gray-900'
-                                    }`}>
-                                      {dropdownItem.label}
-                                    </div>
-                                    <div className={`text-xs mt-0.5 transition-colors duration-200 ${
-                                      dropdownItem.danger 
-                                        ? 'text-red-500' 
-                                        : dropdownItem.highlight 
-                                        ? 'text-purple-500' 
-                                        : dropdownItem.primary
-                                        ? 'text-blue-500'
-                                        : 'text-gray-500'
-                                    }`}>
-                                      {dropdownItem.description}
-                                    </div>
-                                  </div>
-                                  {dropdownItem.highlight && (
-                                    <div className="flex items-center">
-                                      <span className="px-2 py-1 bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-xs rounded-full font-medium">
-                                        New
-                                      </span>
-                                    </div>
-                                  )}
-                                  {dropdownItem.primary && (
-                                    <div className="flex items-center">
-                                      <span className="px-2 py-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs rounded-full font-medium">
-                                        Go
-                                      </span>
-                                    </div>
-                                  )}
-                                </button>
-                              ))}
-                            </div>
-
-                            {/* Footer */}
-                            <div className="px-5 py-3 bg-gray-50 border-t border-gray-100">
-                              <div className="flex items-center justify-between text-xs text-gray-500">
-                                <span>Account ID: {user?.id.slice(0, 8)}...</span>
-                                <span>Member since 2024</span>
-                              </div>
-                            </div>
-                          </div>
-                        )}
+                    <button
+                      onClick={() => setActiveTab(item.key)}
+                      className={`w-full flex items-center gap-4 px-5 py-4 rounded-xl transition-all duration-300 text-left group ${
+                        activeTab === item.key
+                          ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg transform scale-[1.02]'
+                          : 'hover:bg-purple-50 text-gray-700 hover:text-purple-600 hover:shadow-md hover:scale-[1.01]'
+                      }`}
+                    >
+                      <div className={`p-2 rounded-lg transition-colors ${
+                        activeTab === item.key ? 'bg-white/20' : 'group-hover:bg-purple-100'
+                      }`}>
+                        {item.icon}
                       </div>
-                    ) : (
-                      /* Regular Menu Items */
-                      <button
-                        onClick={() => {
-                          setActiveTab(item.key);
-                          setShowProfileDropdown(false);
-                        }}
-                        className={`w-full flex items-center gap-4 px-5 py-4 rounded-xl transition-all duration-300 text-left group ${
-                          activeTab === item.key
-                            ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg transform scale-[1.02]'
-                            : 'hover:bg-purple-50 text-gray-700 hover:text-purple-600 hover:shadow-md hover:scale-[1.01]'
-                        }`}
-                      >
-                        <div className={`p-2 rounded-lg transition-colors ${
-                          activeTab === item.key ? 'bg-white/20' : 'group-hover:bg-purple-100'
-                        }`}>
-                          {item.icon}
-                        </div>
-                        <span className="font-semibold">{item.label}</span>
-                      </button>
-                    )}
+                      <span className="font-semibold">{item.label}</span>
+                    </button>
                   </li>
                 ))}
               </ul>
 
-              {/* Quick Stats */}
+              {/* Quick Stats - Desktop Only */}
               <div className="hidden lg:block mt-8 pt-6 border-t border-gray-200">
                 <div className="space-y-4">
                   <div className="flex items-center justify-between text-sm">
@@ -511,11 +287,11 @@ const AccountPage = () => {
         </div>
       </div>
 
-      {/* Overlay to close dropdown - CRITICAL FOR DROPDOWN FUNCTIONALITY */}
-      {showProfileDropdown && (
+      {/* Overlay to close mobile dropdown */}
+      {showMobileDropdown && (
         <div 
-          className="fixed inset-0 z-40 bg-transparent" 
-          onClick={() => setShowProfileDropdown(false)}
+          className="fixed inset-0 z-40 bg-transparent lg:hidden" 
+          onClick={() => setShowMobileDropdown(false)}
         />
       )}
     </div>
