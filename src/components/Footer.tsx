@@ -52,8 +52,8 @@ const Footer = () => {
             </div>
           </div>
           
-          {/* Legal & Support */}
-          <div>
+          {/* Legal & Support - Shifted to the right with margin */}
+          <div className="lg:ml-8">
             <h3 className="text-lg font-bold mb-4 text-gray-800">Legal & Support</h3>
             <ul className="space-y-2">
               {legalLinks.map((link) => (
