@@ -77,87 +77,6 @@ const AccountPage = () => {
     { icon: <Award size={20} />, label: 'Certificates', key: 'certificates' }
   ];
 
-  const profileDropdownItems = [
-    { 
-      icon: <Settings size={18} />, 
-      label: 'Account Settings', 
-      action: () => {
-        setActiveTab('profile');
-        setShowProfileDropdown(false);
-      },
-      description: 'Manage your account preferences'
-    },
-    { 
-      icon: <Edit size={18} />, 
-      label: 'Edit Profile', 
-      action: () => {
-        toast.info('Edit profile feature coming soon!');
-        setShowProfileDropdown(false);
-      },
-      description: 'Update your personal information'
-    },
-    // ADDED: My Courses Navigation
-    { 
-      icon: <BookOpen size={18} />, 
-      label: 'My Courses', 
-      action: () => {
-        setActiveTab('courses');
-        setShowProfileDropdown(false);
-      },
-      description: 'View your enrolled courses and progress',
-      primary: true
-    },
-    // ADDED: Certificates Navigation
-    { 
-      icon: <Award size={18} />, 
-      label: 'My Certificates', 
-      action: () => {
-        setActiveTab('certificates');
-        setShowProfileDropdown(false);
-      },
-      description: 'Download and share your certificates',
-      primary: true
-    },
-    { 
-      icon: <Bell size={18} />, 
-      label: 'Notifications', 
-      action: () => {
-        toast.info('Notification settings coming soon!');
-        setShowProfileDropdown(false);
-      },
-      description: 'Manage your notification preferences'
-    },
-    { 
-      icon: <Shield size={18} />, 
-      label: 'Privacy & Security', 
-      action: () => {
-        toast.info('Privacy settings coming soon!');
-        setShowProfileDropdown(false);
-      },
-      description: 'Control your privacy settings'
-    },
-    { 
-      icon: <Crown size={18} />, 
-      label: 'Upgrade to Premium', 
-      action: () => {
-        navigate('/premium-pass');
-        setShowProfileDropdown(false);
-      },
-      description: 'Get unlimited access to all courses',
-      highlight: true
-    },
-    { 
-      icon: <LogOut size={18} />, 
-      label: 'Sign Out', 
-      action: () => {
-        handleLogout();
-        setShowProfileDropdown(false);
-      }, 
-      danger: true,
-      description: 'Sign out of your account'
-    }
-  ];
-
   if (loading) {
     return (
       <div className="min-h-screen yellow-gradient-bg py-8 sm:py-12 px-4 sm:px-6">
@@ -197,24 +116,84 @@ const AccountPage = () => {
                     />
                   </button>
                   
-                  {/* Mobile Dropdown Menu */}
+                  {/* FIXED: Mobile Dropdown Menu with All Options */}
                   {showProfileDropdown && (
-                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden">
-                      {menuItems.map((item) => (
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300">
+                      {/* Main Navigation Options */}
+                      <div className="py-2">
+                        {menuItems.map((item) => (
+                          <button
+                            key={item.key}
+                            onClick={() => {
+                              setActiveTab(item.key);
+                              setShowProfileDropdown(false);
+                            }}
+                            className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-purple-50 transition-colors ${
+                              activeTab === item.key ? 'bg-purple-100 text-purple-700' : 'text-gray-700'
+                            }`}
+                          >
+                            <div className={`p-2 rounded-lg ${
+                              activeTab === item.key ? 'bg-purple-200' : 'bg-gray-100'
+                            }`}>
+                              {item.icon}
+                            </div>
+                            <span className="font-medium">{item.label}</span>
+                            {activeTab === item.key && (
+                              <div className="ml-auto w-2 h-2 bg-purple-500 rounded-full"></div>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* Divider */}
+                      <div className="border-t border-gray-200"></div>
+
+                      {/* Additional Quick Actions */}
+                      <div className="py-2">
                         <button
-                          key={item.key}
                           onClick={() => {
-                            setActiveTab(item.key);
+                            navigate('/premium-pass');
                             setShowProfileDropdown(false);
                           }}
-                          className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-purple-50 transition-colors ${
-                            activeTab === item.key ? 'bg-purple-100 text-purple-700' : 'text-gray-700'
-                          }`}
+                          className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50 transition-colors"
                         >
-                          {item.icon}
-                          <span className="font-medium">{item.label}</span>
+                          <div className="p-2 rounded-lg bg-purple-100">
+                            <Crown className="w-5 h-5 text-purple-600" />
+                          </div>
+                          <span className="font-medium text-purple-700">Upgrade to Premium</span>
+                          <div className="ml-auto">
+                            <span className="px-2 py-1 bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-xs rounded-full font-medium">
+                              New
+                            </span>
+                          </div>
                         </button>
-                      ))}
+
+                        <button
+                          onClick={() => {
+                            toast.info('Account settings coming soon!');
+                            setShowProfileDropdown(false);
+                          }}
+                          className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 transition-colors"
+                        >
+                          <div className="p-2 rounded-lg bg-gray-100">
+                            <Settings className="w-5 h-5 text-gray-600" />
+                          </div>
+                          <span className="font-medium text-gray-700">Account Settings</span>
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            handleLogout();
+                            setShowProfileDropdown(false);
+                          }}
+                          className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-red-50 transition-colors border-t border-gray-100"
+                        >
+                          <div className="p-2 rounded-lg bg-red-100">
+                            <LogOut className="w-5 h-5 text-red-600" />
+                          </div>
+                          <span className="font-medium text-red-700">Sign Out</span>
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -261,7 +240,7 @@ const AccountPage = () => {
                           </div>
                         </button>
 
-                        {/* Enhanced Profile Dropdown Menu - ALWAYS VISIBLE WHEN OPEN */}
+                        {/* FIXED: Desktop Profile Dropdown Menu with All Options */}
                         {showProfileDropdown && (
                           <div className="absolute top-full left-0 right-0 mt-3 bg-white rounded-2xl shadow-2xl border border-gray-200 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300">
                             {/* User Info Header */}
@@ -288,73 +267,150 @@ const AccountPage = () => {
                               </div>
                             </div>
 
-                            {/* Dropdown Items */}
+                            {/* Main Navigation Options */}
                             <div className="py-2">
-                              {profileDropdownItems.map((dropdownItem, idx) => (
-                                <button
-                                  key={idx}
-                                  onClick={dropdownItem.action}
-                                  className={`w-full flex items-start gap-4 px-5 py-3 text-left hover:bg-gray-50 transition-all duration-200 group ${
-                                    dropdownItem.danger 
-                                      ? 'hover:bg-red-50 border-t border-gray-100' 
-                                      : dropdownItem.highlight 
-                                      ? 'hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50' 
-                                      : dropdownItem.primary
-                                      ? 'hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50'
-                                      : ''
-                                  }`}
-                                >
-                                  <div className={`p-2 rounded-lg transition-all duration-200 group-hover:scale-110 ${
-                                    dropdownItem.danger 
-                                      ? 'text-red-500 bg-red-50 group-hover:bg-red-100' 
-                                      : dropdownItem.highlight 
-                                      ? 'text-purple-600 bg-purple-50 group-hover:bg-purple-100' 
-                                      : dropdownItem.primary
-                                      ? 'text-blue-600 bg-blue-50 group-hover:bg-blue-100'
-                                      : 'text-gray-500 bg-gray-50 group-hover:bg-gray-100'
-                                  }`}>
-                                    {dropdownItem.icon}
+                              {/* My Courses */}
+                              <button
+                                onClick={() => {
+                                  setActiveTab('courses');
+                                  setShowProfileDropdown(false);
+                                }}
+                                className="w-full flex items-start gap-4 px-5 py-3 text-left hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-colors group"
+                              >
+                                <div className="p-2 rounded-lg bg-blue-50 group-hover:bg-blue-100 transition-all duration-200 group-hover:scale-110">
+                                  <BookOpen className="w-5 h-5 text-blue-600" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="font-semibold text-sm text-blue-700 group-hover:text-blue-800 transition-colors duration-200">
+                                    My Courses
                                   </div>
-                                  <div className="flex-1 min-w-0">
-                                    <div className={`font-semibold text-sm transition-colors duration-200 ${
-                                      dropdownItem.danger 
-                                        ? 'text-red-700 group-hover:text-red-800' 
-                                        : dropdownItem.highlight 
-                                        ? 'text-purple-700 group-hover:text-purple-800' 
-                                        : dropdownItem.primary
-                                        ? 'text-blue-700 group-hover:text-blue-800'
-                                        : 'text-gray-700 group-hover:text-gray-900'
-                                    }`}>
-                                      {dropdownItem.label}
-                                    </div>
-                                    <div className={`text-xs mt-0.5 transition-colors duration-200 ${
-                                      dropdownItem.danger 
-                                        ? 'text-red-500' 
-                                        : dropdownItem.highlight 
-                                        ? 'text-purple-500' 
-                                        : dropdownItem.primary
-                                        ? 'text-blue-500'
-                                        : 'text-gray-500'
-                                    }`}>
-                                      {dropdownItem.description}
-                                    </div>
+                                  <div className="text-xs mt-0.5 text-blue-500 transition-colors duration-200">
+                                    View your enrolled courses and progress
                                   </div>
-                                  {dropdownItem.highlight && (
-                                    <div className="flex items-center">
-                                      <span className="px-2 py-1 bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-xs rounded-full font-medium">
-                                        New
-                                      </span>
-                                    </div>
-                                  )}
-                                  {dropdownItem.primary && (
-                                    <div className="flex items-center">
-                                      <span className="px-2 py-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs rounded-full font-medium">
-                                        Go
-                                      </span>
-                                    </div>
-                                  )}
-                                </button>
-                              ))}
+                                </div>
+                                <div className="flex items-center">
+                                  <span className="px-2 py-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs rounded-full font-medium">
+                                    Go
+                                  </span>
+                                </div>
+                              </button>
+
+                              {/* My Certificates */}
+                              <button
+                                onClick={() => {
+                                  setActiveTab('certificates');
+                                  setShowProfileDropdown(false);
+                                }}
+                                className="w-full flex items-start gap-4 px-5 py-3 text-left hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-colors group"
+                              >
+                                <div className="p-2 rounded-lg bg-blue-50 group-hover:bg-blue-100 transition-all duration-200 group-hover:scale-110">
+                                  <Award className="w-5 h-5 text-blue-600" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="font-semibold text-sm text-blue-700 group-hover:text-blue-800 transition-colors duration-200">
+                                    My Certificates
+                                  </div>
+                                  <div className="text-xs mt-0.5 text-blue-500 transition-colors duration-200">
+                                    Download and share your certificates
+                                  </div>
+                                </div>
+                                <div className="flex items-center">
+                                  <span className="px-2 py-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs rounded-full font-medium">
+                                    Go
+                                  </span>
+                                </div>
+                              </button>
+                            </div>
+
+                            {/* Divider */}
+                            <div className="border-t border-gray-200"></div>
+
+                            {/* Additional Options */}
+                            <div className="py-2">
+                              <button
+                                onClick={() => {
+                                  toast.info('Edit profile feature coming soon!');
+                                  setShowProfileDropdown(false);
+                                }}
+                                className="w-full flex items-start gap-4 px-5 py-3 text-left hover:bg-gray-50 transition-colors group"
+                              >
+                                <div className="p-2 rounded-lg bg-gray-50 group-hover:bg-gray-100 transition-all duration-200 group-hover:scale-110">
+                                  <Edit className="w-5 h-5 text-gray-600" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="font-semibold text-sm text-gray-700 group-hover:text-gray-900 transition-colors duration-200">
+                                    Edit Profile
+                                  </div>
+                                  <div className="text-xs mt-0.5 text-gray-500 transition-colors duration-200">
+                                    Update your personal information
+                                  </div>
+                                </div>
+                              </button>
+
+                              <button
+                                onClick={() => {
+                                  navigate('/premium-pass');
+                                  setShowProfileDropdown(false);
+                                }}
+                                className="w-full flex items-start gap-4 px-5 py-3 text-left hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50 transition-colors group"
+                              >
+                                <div className="p-2 rounded-lg bg-purple-50 group-hover:bg-purple-100 transition-all duration-200 group-hover:scale-110">
+                                  <Crown className="w-5 h-5 text-purple-600" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="font-semibold text-sm text-purple-700 group-hover:text-purple-800 transition-colors duration-200">
+                                    Upgrade to Premium
+                                  </div>
+                                  <div className="text-xs mt-0.5 text-purple-500 transition-colors duration-200">
+                                    Get unlimited access to all courses
+                                  </div>
+                                </div>
+                                <div className="flex items-center">
+                                  <span className="px-2 py-1 bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-xs rounded-full font-medium">
+                                    New
+                                  </span>
+                                </div>
+                              </button>
+
+                              <button
+                                onClick={() => {
+                                  toast.info('Account settings coming soon!');
+                                  setShowProfileDropdown(false);
+                                }}
+                                className="w-full flex items-start gap-4 px-5 py-3 text-left hover:bg-gray-50 transition-colors group"
+                              >
+                                <div className="p-2 rounded-lg bg-gray-50 group-hover:bg-gray-100 transition-all duration-200 group-hover:scale-110">
+                                  <Settings className="w-5 h-5 text-gray-600" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="font-semibold text-sm text-gray-700 group-hover:text-gray-900 transition-colors duration-200">
+                                    Account Settings
+                                  </div>
+                                  <div className="text-xs mt-0.5 text-gray-500 transition-colors duration-200">
+                                    Manage your account preferences
+                                  </div>
+                                </div>
+                              </button>
+
+                              <button
+                                onClick={() => {
+                                  handleLogout();
+                                  setShowProfileDropdown(false);
+                                }}
+                                className="w-full flex items-start gap-4 px-5 py-3 text-left hover:bg-red-50 transition-colors group border-t border-gray-100"
+                              >
+                                <div className="p-2 rounded-lg bg-red-50 group-hover:bg-red-100 transition-all duration-200 group-hover:scale-110">
+                                  <LogOut className="w-5 h-5 text-red-600" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="font-semibold text-sm text-red-700 group-hover:text-red-800 transition-colors duration-200">
+                                    Sign Out
+                                  </div>
+                                  <div className="text-xs mt-0.5 text-red-500 transition-colors duration-200">
+                                    Sign out of your account
+                                  </div>
+                                </div>
+                              </button>
                             </div>
 
                             {/* Footer */}
