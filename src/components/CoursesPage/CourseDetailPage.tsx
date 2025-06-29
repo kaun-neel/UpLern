@@ -458,21 +458,14 @@ const CourseDetailPage: React.FC = () => {
       {/* Certificate Section - Only show if not enrolled */}
       {!isEnrolled && (
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-center glass-card rounded-3xl p-6 sm:p-8">
-            <img
-              src="/image.png"
-              alt="Certificate"
-              className="w-full max-w-sm sm:max-w-md mx-auto"
-            />
-            <div className="text-center md:text-left">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-4">
-                Earn a carrier <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-pink-500">certificate</span>
-              </h2>
-              <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-                You are encouraged to add this credential to your LinkedIn profile, résumé, or CV, and
-                share it on professional networks or during performance evaluations
-              </p>
-            </div>
+          <div className="glass-card rounded-3xl p-8 sm:p-12 text-center">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-6">
+              Earn a carrier <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-pink-500">certificate</span>
+            </h2>
+            <p className="text-gray-600 text-lg sm:text-xl leading-relaxed max-w-3xl mx-auto">
+              You are encouraged to add this credential to your LinkedIn profile, résumé, or CV, and
+              share it on professional networks or during performance evaluations
+            </p>
           </div>
         </div>
       )}
