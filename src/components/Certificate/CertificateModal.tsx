@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { X, Award, Download, Share2, Mail, MessageCircle, Copy } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -22,6 +22,18 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
   certificateId
 }) => {
   const certificateRef = useRef<HTMLDivElement>(null);
+  const mobileCertificateRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   if (!isOpen) return null;
 
@@ -34,21 +46,37 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
   };
 
   const downloadCertificate = async () => {
-    if (!certificateRef.current) return;
+    const targetRef = isMobile ? mobileCertificateRef : certificateRef;
+    if (!targetRef.current) return;
 
     try {
       toast.loading('Generating certificate PDF...');
       
-      const canvas = await html2canvas(certificateRef.current, {
+      // Mobile-optimized settings
+      const canvasOptions = isMobile ? {
+        scale: 1.5, // Reduced scale for mobile
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        width: 800, // Smaller width for mobile
+        height: 600, // Smaller height for mobile
+        logging: false, // Disable logging for performance
+        removeContainer: true,
+        imageTimeout: 15000 // Longer timeout for mobile
+      } : {
         scale: 2,
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
         width: 1056,
-        height: 816
-      });
+        height: 816,
+        logging: false,
+        removeContainer: true
+      };
 
-      const imgData = canvas.toDataURL('image/png');
+      const canvas = await html2canvas(targetRef.current, canvasOptions);
+
+      const imgData = canvas.toDataURL('image/png', 0.8); // Reduced quality for mobile
       const pdf = new jsPDF({
         orientation: 'landscape',
         unit: 'mm',
@@ -59,14 +87,54 @@ const CertificateModal: React.FC<CertificateModalProps> = ({
       const imgHeight = 210;
 
       pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-      pdf.save(`${courseName}-Certificate-${studentName.replace(/\s+/g, '-')}.pdf`);
+      
+      // Generate filename
+      const filename = `${courseName.replace(/[^a-zA-Z0-9]/g, '-')}-Certificate-${studentName.replace(/[^a-zA-Z0-9]/g, '-')}.pdf`;
+      pdf.save(filename);
       
       toast.dismiss();
       toast.success('Certificate downloaded successfully!');
     } catch (error) {
       toast.dismiss();
       console.error('Error generating certificate:', error);
-      toast.error('Failed to download certificate. Please try again.');
+      
+      // Fallback for mobile - try with even lower settings
+      if (isMobile) {
+        try {
+          toast.loading('Retrying with optimized settings...');
+          
+          const fallbackCanvas = await html2canvas(targetRef.current, {
+            scale: 1,
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: '#ffffff',
+            width: 600,
+            height: 450,
+            logging: false,
+            removeContainer: true,
+            imageTimeout: 30000
+          });
+
+          const fallbackImgData = fallbackCanvas.toDataURL('image/jpeg', 0.7);
+          const fallbackPdf = new jsPDF({
+            orientation: 'landscape',
+            unit: 'mm',
+            format: 'a4'
+          });
+
+          fallbackPdf.addImage(fallbackImgData, 'JPEG', 0, 0, 297, 210);
+          fallbackPdf.save(`${courseName}-Certificate-${studentName}.pdf`);
+          
+          toast.dismiss();
+          toast.success('Certificate downloaded successfully!');
+        } catch (fallbackError) {
+          toast.dismiss();
+          console.error('Fallback download failed:', fallbackError);
+          toast.error('Download failed. Please try again or use a desktop browser.');
+        }
+      } else {
+        toast.error('Failed to download certificate. Please try again.');
+      }
     }
   };
 
@@ -274,7 +342,61 @@ Excited to apply these new skills! 💪
           {/* Certificate */}
           <div className="flex justify-center">
             <div className="w-full max-w-4xl">
-              {/* Mobile Certificate Preview */}
+              {/* Mobile Certificate Preview - Optimized for Download */}
+              <div 
+                ref={mobileCertificateRef}
+                className="block lg:hidden bg-gradient-to-br from-purple-50 via-white to-indigo-50 rounded-2xl p-8 border-4 border-purple-200 mb-6"
+                style={{ width: '800px', height: '600px', transform: 'scale(0.5)', transformOrigin: 'top left', margin: '-150px -200px 0 0' }}
+              >
+                <div className="text-center h-full flex flex-col justify-between">
+                  {/* Header */}
+                  <div>
+                    <div className="w-24 h-24 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                      <Award className="w-12 h-12 text-white" />
+                    </div>
+                    <h3 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 text-transparent bg-clip-text mb-4">
+                      Certificate of Completion
+                    </h3>
+                    <p className="text-xl text-gray-600 mb-8">This certifies that</p>
+                  </div>
+                  
+                  {/* Student Info */}
+                  <div>
+                    <h4 className="text-5xl font-bold text-gray-900 mb-6" style={{ fontFamily: 'serif' }}>
+                      {studentName}
+                    </h4>
+                    <div className="w-64 h-2 bg-gradient-to-r from-purple-500 to-indigo-500 mx-auto mb-8"></div>
+                    
+                    <p className="text-2xl text-gray-700 mb-4">has successfully completed the course</p>
+                    <h5 className="text-3xl font-bold text-purple-900 mb-6">{courseName}</h5>
+                    <p className="text-xl text-gray-600 mb-8">
+                      Completed on {formatDate(completionDate)}
+                    </p>
+                  </div>
+                  
+                  {/* Footer */}
+                  <div className="flex justify-between items-end text-lg text-gray-600">
+                    <div>
+                      <div className="w-32 h-1 bg-gray-300 mb-2"></div>
+                      <p className="font-semibold">Zyntiq Team</p>
+                      <p className="text-sm">Authorized Signature</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-full flex items-center justify-center mb-2">
+                        <Award className="w-8 h-8 text-purple-600" />
+                      </div>
+                      <p className="text-sm">Official Seal</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-semibold">Certificate ID</p>
+                      <p className="text-sm font-mono">{certificateId}</p>
+                      <p className="text-xs text-gray-400">Verify at zyntiq.in</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Mobile Display Certificate - Visible Version */}
               <div className="block lg:hidden bg-gradient-to-br from-purple-50 via-white to-indigo-50 rounded-2xl p-6 border-4 border-purple-200 mb-6">
                 <div className="text-center">
                   <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
