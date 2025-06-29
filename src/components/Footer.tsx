@@ -3,14 +3,6 @@ import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 
 const Footer = () => {
-  const quickLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'About Us', path: '/about' },
-    { name: 'Courses', path: '/courses' },
-    { name: 'Careers', path: '/careers' },
-    { name: 'Contact', path: '/contact' }
-  ];
-
   const legalLinks = [
     { name: 'Privacy Policy', path: '/privacy-policy' },
     { name: 'Terms of Service', path: '/terms-of-service' },
@@ -21,7 +13,7 @@ const Footer = () => {
   return (
     <footer className="yellow-gradient-medium pt-12 sm:pt-16 pb-6 sm:pb-8 px-4 sm:px-6 md:px-16">
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-8 sm:mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
           {/* Company Info */}
           <div className="sm:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-3 mb-4">
@@ -58,24 +50,6 @@ const Footer = () => {
                 <Linkedin size={16} className="text-gray-700" />
               </a>
             </div>
-          </div>
-          
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-lg font-bold mb-4 text-gray-800">Quick Links</h3>
-            <ul className="space-y-2">
-              {quickLinks.map((link) => (
-                <li key={link.name}>
-                  <Link 
-                    to={link.path}
-                    className="text-gray-700 hover:text-purple-600 transition-colors text-sm sm:text-base"
-                    onClick={() => window.scrollTo(0, 0)}
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
           </div>
           
           {/* Legal & Support */}
