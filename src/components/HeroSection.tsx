@@ -2,11 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
+  // Icons with proper positioning for both mobile and desktop
   const icons = [
     {
       src: "images/mic.png",
       alt: "Microphone",
-      // Centered positioning for mobile and desktop
       className: "absolute w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 floating-delay-1",
       style: { top: '15%', left: '15%' }
     },

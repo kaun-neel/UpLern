@@ -126,7 +126,7 @@ const CareersPage = () => {
 
       {/* Internship Cards */}
       <div className="max-w-6xl mx-auto px-6 -mt-32 relative z-20">
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
           {internships.map((internship, index) => (
             <div key={index} className="glass-card-dark rounded-3xl p-6 hover:shadow-xl transition-all">
               <div className="flex items-start gap-4 mb-4">
@@ -159,19 +159,17 @@ const CareersPage = () => {
             {/* ========================================== */}
             {/* TO ATTACH YOUR IMAGE HERE:
                 1. Replace the div below with an img tag
-                2. Set src="/your-image-name.png" 
+                2. Set src="/image.png" 
                 3. Add appropriate alt text
                 4. Adjust styling as needed
             ========================================== */}
             <div className="h-64 bg-purple-100/80 backdrop-blur-sm rounded-3xl flex items-center justify-center border border-purple-200/50 relative">
               {/* Placeholder content - replace with your image */}
-              <div className="text-center">
-                <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl">📊</span>
-                </div>
-                <p className="text-purple-700 font-medium">Program Overview Image</p>
-                <p className="text-purple-600 text-sm mt-1">Replace this section with your image</p>
-              </div>
+              <img 
+                src="/image.png" 
+                alt="Program Overview Chart" 
+                className="w-full h-full object-contain rounded-3xl"
+              />
               
               {/* Sample chart bars for visual effect */}
               <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-2">
